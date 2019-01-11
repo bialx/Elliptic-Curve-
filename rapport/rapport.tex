@@ -1,0 +1,124 @@
+\documentclass{article}
+
+% set font encoding for PDFLaTeX or XeLaTeX
+\usepackage{ifxetex}
+\ifxetex
+  \usepackage{fontspec}
+\else
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{a4wide}
+  \usepackage{lmodern}
+  \usepackage[frenchb]{babel}
+  \usepackage{amsmath,amsfonts,amssymb,amsthm,epsfig,epstopdf,titling,url,array,amssymb}
+  \usepackage{graphicx}
+  \usepackage{caption} 
+  \usepackage{array}
+  \usepackage{graphics,graphicx}
+  \usepackage[usenames,dvipsnames]{pstricks}
+  \usepackage{calc}
+  \usepackage{multirow}
+  \usepackage{algorithmic}
+  \usepackage{algorithm}
+  \usepackage{appendix}
+  \usepackage{stmaryrd}
+  \usepackage{tikz}  
+  \usetikzlibrary{decorations.pathmorphing}
+  \usetikzlibrary{decorations.pathreplacing}
+  \usetikzlibrary{decorations.shapes}
+  \usetikzlibrary{decorations.text}
+  \usetikzlibrary{decorations.markings}
+  \usetikzlibrary{decorations.footprints}
+  \usepackage{color}
+  \usepackage{geometry}
+	\geometry{hmargin=2.5cm,vmargin=2cm}
+  \usepackage{varioref}
+  \usepackage{listings}
+%  \usepackage[obeyspaces]{url}
+
+
+  \lstdefinelanguage{Sage}[]{Python}
+  {morekeywords={False,sage,True},sensitive=true}
+	\lstset{frame=none,
+  showtabs=False,
+  showspaces=False,
+  showstringspaces=False,
+  commentstyle={\ttfamily\color{dgreencolor}},
+  keywordstyle={\ttfamily\color{dbluecolor}\bfseries},
+  stringstyle={\ttfamily\color{dgraycolor}\bfseries},
+  language=Sage,
+  basicstyle={\fontsize{10pt}{10pt}\ttfamily},
+  aboveskip=0.3em,
+  belowskip=0.1em,
+  numbers=left,
+  numberstyle=\footnotesize,
+}
+\definecolor{dblackcolor}{rgb}{0.0,0.0,0.0}
+\definecolor{dbluecolor}{rgb}{0.01,0.02,0.7}
+\definecolor{dgreencolor}{rgb}{0.2,0.4,0.0}
+\definecolor{dgraycolor}{rgb}{0.30,0.3,0.30}
+\newcommand{\dblue}{\color{dbluecolor}\bf}
+\newcommand{\dred}{\color{dredcolor}\bf}
+\newcommand{\dblack}{\color{dblackcolor}\bf}
+
+\fi
+
+% $\genfrac(){}{0}{a}{b}$
+
+
+% used in maketitle
+\title{Compter les points sur une courbe elliptique}
+\author{Jérémie Coulaud}
+
+% Enable SageTeX to run SageMath code right inside this LaTeX file.
+% documentation: http://mirrors.ctan.org/macros/latex/contrib/sagetex/sagetexpackage.pdf
+%\usepackage{sagetex}
+
+\graphicspath{{../pictures/}}
+
+\begin{document}
+\newtheorem{prop}{Proposition}
+\newtheorem{defi}{Définition}
+\newtheorem{thm}{Théorème}
+\maketitle
+\newpage
+\tableofcontents
+\newpage
+
+\section{Introduction aux courbes elliptiques}
+
+
+\section{Compter les points sur une courbe}
+On va considérer dans la suite que la caractéristique du corps utilisée pour définir nos courbes elliptiques est plus grande que $3$. On peut donc écrire notre courbe elliptique sur $\mathbb{F}_p$ sous leur forme réduite $y^2 = x^3 + ax+b$
+
+\subsection{Algorithme naif}
+On note $E: y^2 = f(x)$, compter les points de $E$ revient donc pour chaque valeur de $x \in \mathbb{F}_p$ à regarder si $f(x)$ est un carré modulo $p$. On calcule donc le symbole de Legendre de $f(x)$, on a les cas suivant : 
+\begin{itemize}
+\item  $\genfrac(){}{0}{f(x)}{p} = -1$, $f(x)$ n'est pas un carré modulo $p$, on ne trouve aucun point appartenant à la courbe.
+\item $\genfrac(){}{0}{f(x)}{p} = 0$, $f(x)$ est divisible par $p$, on trouve $1$ point sur la courbe.
+\item $\genfrac(){}{0}{f(x)}{p} = 1$, $f(x)$ est un carré modulo $p$, on trouve $2$ points sur la courbe.
+\end{itemize}
+\medskip
+Au final en considérant le point à l'infini on peut calculer le nombre de points de $E$ : 
+\begin{equation*}
+\#E(\mathbb{F}_p) = 1 + \sum_{x \in \mathbb{F}_p}(\genfrac(){}{0}{f(x)}{p} + 1)
+\end{equation*}
+Soit : 
+\begin{equation}
+\#E(\mathbb{F}_p) = 1 + p +\sum_{x \in \mathbb{F}_p}\genfrac(){}{0}{f(x)}{p}
+\end{equation}
+La complexité est en la taille de $p$. Cette méthode est pratique quand $p$ est petit mais devient impraticable s'il est trop grand.
+\subsection{Shanks}
+Il s'agit d'un algorithme Baby steps-giant steps de complexité exponentielle.
+
+\subsection{Schoof}
+Soit $E$ une courbe elliptique défini sur $\mathbb{F}_p$ avec $p$ premier $>3$ sous sa forme réduite 
+$$ E: y^2 = x^3 + ax+b$$
+On rappelle le théorème de Hasse-Weil:
+
+\begin{thm}
+$\#E(\mathbb{F}_p) = p + 1 - t$ avec $|t| \leq 2 \sqrt{p}$ trace de l'endomorphisme de Frobenius de $E$.
+\end{thm}
+Pour trouver le nombre de points de $E$ il faut donc déterminer $t$. 
+L'idée de Schoof est de calculer $t$ modulo de petits nombres premiers puis d'utiliser le théorème des restes chinois. 
+\end{document}
