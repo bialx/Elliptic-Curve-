@@ -121,4 +121,24 @@ $\#E(\mathbb{F}_p) = p + 1 - t$ avec $|t| \leq 2 \sqrt{p}$ trace de l'endomorphi
 \end{thm}
 Pour trouver le nombre de points de $E$ il faut donc déterminer $t$. 
 L'idée de Schoof est de calculer $t$ modulo de petits nombres premiers puis d'utiliser le théorème des restes chinois. 
+
+Avant de développer l'algorithme il est nécessaire de donner d'autres définitions. 
+
+\begin{defi}[Frobenius]
+Soit $E$ une courbe elliptique défini sur $\mathbb{F}_p$, l'endomorphisme de Frobenius est défini par 
+
+$\begin{array}{ccccc}
+\phi_p & : & E(\mathbb{F}_p) & \to & E(\mathbb{F}_p) \\
+ & & (x,y) & \mapsto & (x^p, y^p) \\
+\end{array}$
+\end{defi}
+On peut définir le polynôme caractéristique de cet endomorphisme par $\phi_p^2 - t \phi_p + p = 0$, cette relation reste vrai sur les points de $l$-torsion. Ainsi nous avons : 
+$$  \phi_p^2(P)  + p_l = t_{l} \phi_p(P) \quad \forall P \in E[l]$$
+Avec $t_l \equiv t \pmod l$, $p_l \equiv p \pmod l$ et $0 \leq t_l, p_l \leq l$.
+ 
+
+
+
+
+
 \end{document}
