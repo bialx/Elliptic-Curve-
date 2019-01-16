@@ -1,8 +1,8 @@
-
-R.<u> = GF(p)[]
-S.<v> = R[]
-T = S.fraction_field()
-E = EllipticCurve(T, [a, b])
+#
+# R.<u> = GF(p)[]
+# S.<v> = R[]
+# T = S.fraction_field()
+# E = EllipticCurve(T, [a, b])
 
 
 #source https://hal-univ-rennes1.archives-ouvertes.fr/tel-01101949/document
@@ -14,8 +14,12 @@ def schoof(a,b,p):
     prime = 1
     list_l = []
     list_t = []
-    K = GF(p)
-    R.<x> = PolynomialRing(K)
+    try:
+        K = GF(p)
+        R.<x> = PolynomialRing(K)
+    except:
+        raise NameError('wrong p ,cant construct the Ring R.<x> = PolynomialRing(K)')
+
 
 #Compute a set of small prime whose product is > 4* sqrt(p)
     while N <= 4*sqrt(p):
@@ -35,10 +39,10 @@ def schoof(a,b,p):
 
     for l in list_l:
         div = E.division_polynomial(l, two_torsion_multiplicity = 0)
-
-        #Create the extension in which we are going to do all of our compution
-        X.<u> = K.quotient(div)
-        Xpol.<v> = PolynomialRing(X)
-        Y.<w> = Xpol.quotient(v**2 - x**3 - b)
-
-        p_l = GF(l)(p)
+        print(div)
+        #Create the quotient ring in which we are going to do all of our compution
+        # F_p[X,Y]/(f_l(X), Y² - X¨3 - aX - b)
+        #
+        # S.<x2> = R.quotient(R,div)
+        # Quotient_X_Y.<e,f> = QuotientRing(Y,y**2 - a*x**3 - b)
+        # p_l = GF(l)(p)
