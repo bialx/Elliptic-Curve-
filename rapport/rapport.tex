@@ -87,6 +87,17 @@
 
 \section{Introduction aux courbes elliptiques}
 
+Maintenant que l'on dispose de formule d'additions pour deux points sur une courbe elliptique on peut donner un sens à la multiplication scalaire d'un point comme $kP = \underbrace{P + \ldots + P}_{k \text{ fois}}$. On va noter cette multiplication scalaire par :
+\newline
+
+$\begin{array}{ccccc}
+[l]_E & : & E(\mathbb{K}) & \to & E(\mathbb{K}) \\
+ & & P & \mapsto & lP\\
+\end{array}$
+
+Ce qui nous permet de définir l'ensemble des points de l-torsion comme le noyau de $[l]$. On note $E[l]$ cet ensemble.
+\newline
+$$E[l] = \left\{ P \in E(\overline{\mathbb{K}}) \, | \, [l]P = 0_E \right\} $$
 
 \section{Compter les points sur une courbe}
 On va considérer dans la suite que la caractéristique du corps utilisée pour définir nos courbes elliptiques est plus grande que $3$. On peut donc écrire notre courbe elliptique sur $\mathbb{F}_p$ sous leur forme réduite $y^2 = x^3 + ax+b$
@@ -133,12 +144,53 @@ $\begin{array}{ccccc}
 \end{array}$
 \end{defi}
 On peut définir le polynôme caractéristique de cet endomorphisme par $\phi_p^2 - t \phi_p + p = 0$, cette relation reste vrai sur les points de $l$-torsion. Ainsi nous avons : 
-$$  \phi_p^2(P)  + p_l = t_{l} \phi_p(P) \quad \forall P \in E[l]$$
+\begin{equation}
+\label{eqnfrobenius}
+ \phi_p^2(P)  + [p_l]P = [t_{l}] \phi_p(P) \quad \forall P \in E[l]
+\end{equation} 
 Avec $t_l \equiv t \pmod l$, $p_l \equiv p \pmod l$ et $0 \leq t_l, p_l \leq l$.
- 
+Il faut aussi introduire les polynôme de division d'une courbe elliptiques $E$. On appelle $f_n(X)$ le n-ième polynôme de divisons de $E$.
+
+\begin{defi}
+Soit une courbe elliptique $E : y^2 = x^3 + ax+b$ défini sur $\mathbb{K}$. On définit $f_n(X)$ sur $\mathbb{Z}[x]$ de manière récursive : 
 
 
+\begin{align*}
+f_0(X) &= 0 \\
+f_1(X) &= 1 \\
+f_2(X) &= 1 \\
+f_3(X) &= 3X^4 + 6aX^2 +12bX - a^2 \\
+f_4(x) &= 2X^6 + 10aX^4 +40bX^3 - 10a^2X^2 - (a^2 + 8ab)X - 2(a^3 + 8b^2)
+\end{align*}
+On pose $F(X)= 4X^3 + 4aX + 4b$, et on a:
 
+\begin{equation}
+\left\lbrace
+\begin{array}{ll}
+f_{2n}& =  f_n(f_{n+2}f_{n-1}^2 - f_{n-2}f_{n+1}^2)   \\
+f_{2n+1}& = \left\lbrace 
+\begin{array}{ccc}
+F^2f_{n+2}f_n^3 - f_{n-1}f_{n+1}^3 & \mbox{si} & m \text{ est pair}\\
+f_{n+2}f_n^3 - f_{n-1}f_{n+1}^3F^2 & \mbox{si} & m \text{ est impair} \end{array}\right
 
+\end{array}\right.
+\end{equation} 
+Ces polynômes sont de degrés au plus $\frac{(n^2 -1)}{2}$ si $n$ est pair, ou bien  au plus $\frac{(n^2 -2)}{2}$ si $n$ est impair.
+\end{defi}
+
+\begin{proof}
+Preuve du degré de $f_n$ ? 
+Avec $n$ premier on a $E[n] \simeq \frac{\mathbb{Z}}{n\mathbb{Z}} \times \frac{\mathbb{Z}}{n\mathbb{Z}}$, soit $n^2 - 1$ points de n-torsion ? on doit les compter 2fois donc j'imagine. Sinon la démo doit découler toute seule en utilisant les formules de recurrence mais un peu plus pénible a écrire
+\end{proof}
+Les polynômes de division ont des caractéristiques utiles pour notre algorithme. En effet $P = (x_1, y_1)$ est un point de l-torsion si et seulement si $x_1$ est une racine du l-ième polynôme de division $f_l$. De plus $P$ est sur la courbe $E$. Les points de l-torsion sont donc solution du système d'équation : 
+\begin{equation}
+E(X,Y) = Y^2 - X^3 - aX - b = 0, \quad f_l(X) = 0
+\end{equation}
+L'équation \ref{eqnfrobenius} peut donc se réécrire en utilisant les points de l-torsion. On va maintenant faire des calcul dans l'anneau $\mathbb{F}= \frac{\mathbb{F_p}[X,Y]}{(f_l(X), E(X,Y)}$.L'idée de l'algorithme de Schoof est donc de tester pour des valeurs $\tau_l \in \lbrace 0, \ldots, l-1 \rbrace$ si l'équation suivante est vrai:
+
+\begin{equation}
+(X^{p^2}, Y^{p^2}) + [p_l](X,Y) = [\tau_l](X^{p}, Y^{p})
+\end{equation}
+L'unique solution que l'on trouve est $t_l$.On répète l'opération pour d'autres $l$ premiers jusqu'avoir assez de $t_l$ pour appliquer le théorème des restes chinois et retrouver la valeur de $t$.
 
 \end{document}
