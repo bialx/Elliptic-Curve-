@@ -17,6 +17,7 @@ def schoof(a,b,p):
     try:
         K = GF(p)
         R.<x> = PolynomialRing(K)
+        E = EllipticCurve(K, [a,b])
     except:
         raise NameError('wrong p ,cant construct the Ring R.<x> = PolynomialRing(K)')
 
@@ -41,8 +42,9 @@ def schoof(a,b,p):
         div = E.division_polynomial(l, two_torsion_multiplicity = 0)
         print(div)
         #Create the quotient ring in which we are going to do all of our compution
-        # F_p[X,Y]/(f_l(X), Y² - X¨3 - aX - b)
+        # W = F_p[X,Y]/(f_l(X), Y² - X¨3 - aX - b)
         #
-        # S.<x2> = R.quotient(R,div)
-        # Quotient_X_Y.<e,f> = QuotientRing(Y,y**2 - a*x**3 - b)
-        # p_l = GF(l)(p)
+        B = R.quotient(div, 'x2')
+        C = PolynomialRing(B, 'y')
+        x=C.gen()
+        W = C.quotient(y**2 - x**3 - x - 3)

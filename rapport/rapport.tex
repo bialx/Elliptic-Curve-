@@ -182,7 +182,69 @@ Ces polynômes sont de degrés au plus $\frac{(n^2 -1)}{2}$ si $n$ est pair, ou 
 Preuve du degré de $f_n$ ? 
 Avec $n$ premier on a $E[n] \simeq \frac{\mathbb{Z}}{n\mathbb{Z}} \times \frac{\mathbb{Z}}{n\mathbb{Z}}$, soit $n^2 - 1$ points de n-torsion ? on doit les compter 2fois donc j'imagine. Sinon la démo doit découler toute seule en utilisant les formules de recurrence mais un peu plus pénible a écrire
 \end{proof}
-Les polynômes de division ont des caractéristiques utiles pour notre algorithme. En effet $P = (x_1, y_1)$ est un point de l-torsion si et seulement si $x_1$ est une racine du l-ième polynôme de division $f_l$. De plus $P$ est sur la courbe $E$. Les points de l-torsion sont donc solution du système d'équation : 
+
+On peut utiliser les polynôme de division pour calculer la multiplication scalaire d'un point de la courbe $E$.
+On a les formules suivantes : 
+
+\begin{thm}
+Soit $E$ une courbe elliptique défini sur $\mathbb{K}$, un point $P$ sur cette courbe et $m \in \mathbb{N}^*$.
+
+\begin{equation}
+[m]P = 
+\left\lbrace
+\begin{array}{ccc}
+O_E & \mbox{si} & P \in E[m]  \\
+\left(    \frac{\phi_m(X,Y)}{\psi^2_m(X,Y)}, \frac{\omega_m(X,Y)}{\psi^3_m(X,Y)}\right) & \mbox{sinon}  & 
+\end{array}\right.
+\end{equation}
+
+En posant : 
+\begin{equation*}
+\psi_m= \left\lbrace
+\begin{array}{cc}
+2Yf_m & \mbox{si m est pair} \\
+f_m & \mbox{sinon}
+\end{array}\right.
+\end{equation*}
+et 
+\begin{equation*}
+\left\lbrace
+\begin{array}{ll}
+\phi_m &= X \psi^2_m - \psi_{m-1}\psi_{m+1} \\
+\psi_m \omega_m &= \psi_{2m}
+\end{array}\right.
+\end{equation*}
+On peut aussi réécrire $[m]P$ sous cette forme : 
+\begin{equation}\label{mP}
+[m]P = \left\lbrace
+\begin{array}{lll}
+O_E & \mbox{si} & P \in E[m]  \\
+\left(  X -   \frac{\psi_{m-1}(X,Y)\psi_{m+1}(X,Y)}{\psi^2_m(X,Y)}, \frac{\psi_{2m}(X,Y)}{\psi^4_m(X,Y)}\right) & \mbox{sinon}  & 
+\end{array}\right.
+\end{equation}
+\end{thm}
+
+\begin{proof}
+On veut démontrer \ref{mP}. 
+\newline
+On note $[m]P = (x_1, y_1)$ 
+On a alors : 
+
+
+\begin{equation*}
+x_1 = \frac{\phi_m}{\psi^2_m}\\
+    =  \frac{X \psi^2_m - \psi_{m-1}\psi_{m+1}}{\psi_m^2} \\
+    = X - \frac{\psi_{m-1}\psi_{m+1}}{\psi_m^2}
+\end{equation*}
+et 
+\begin{equation*}
+y_1 = \frac{\omega_m}{\psi^3_m} \\
+	= \frac{\psi_{2m}}{\psi_m} \frac{1}{\psi_m^3} \\
+	= \frac{\psi_{2m}}{\psi_m^4}
+\end{equation*}
+\end{proof}
+
+On peut ainsi exprimer $[m]P$ comme un polynôme en $X,Y$. Mais ce n'est pas la seule particularité de ces polynôme utile pour notre algorithme. En effet $P = (x_1, y_1)$ est un point de l-torsion si et seulement si $x_1$ est une racine du l-ième polynôme de division $f_l$. De plus $P$ est sur la courbe $E$. Les points de l-torsion sont donc solution du système d'équation : 
 \begin{equation}
 E(X,Y) = Y^2 - X^3 - aX - b = 0, \quad f_l(X) = 0
 \end{equation}
@@ -192,5 +254,7 @@ L'équation \ref{eqnfrobenius} peut donc se réécrire en utilisant les points d
 (X^{p^2}, Y^{p^2}) + [p_l](X,Y) = [\tau_l](X^{p}, Y^{p})
 \end{equation}
 L'unique solution que l'on trouve est $t_l$.On répète l'opération pour d'autres $l$ premiers jusqu'avoir assez de $t_l$ pour appliquer le théorème des restes chinois et retrouver la valeur de $t$.
-
+\newline
+\medskip
+On va maintenant détailler l'algorithme étape par étape. 
 \end{document}
