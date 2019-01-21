@@ -1,0 +1,55 @@
+
+def division_polynomial(K,a,b,l):
+    R.<x> = PolynomialRing(GF(K))
+    E = EllipticCurve(GF(K), [a,b])
+    dict = {}
+    dict[0], dict[1], dict[2] = 0,1,1
+    dict[3] = 3*x**4 + 6*a*x**2 + 12*b*x - a**2
+    dict[4] = 2*x**6 + 10*a*(x**4) + 40*b*(x**3) - 10*(a**2)*(x**2) -  8*a*b*x - 2*(a**3 + 8*b**2)
+    dict[-1] = 4*x**3 + 4*a*x + 4*b
+    n = 5
+    while n < l:
+        dict = reccurence_poly(n, dict)
+        n += 1
+    return dict
+
+def reccurence_poly(n, dict):
+    if n%2 != 0:
+        m = floor(n/2)
+        if m%2 == 0:
+            dict[n] = (dict.get(m+2)*(dict.get(m)**3))*dict.get(-1)**2 - dict.get(m-1)*(dict.get(m+1)**3)
+        else:
+            dict[n] = (dict.get(m+2)*(dict.get(m)**3)) - dict.get(m-1)*(dict.get(m+1)**3)*dict.get(-1)**2
+    else:
+        m = n/2
+        dict[n] = dict.get(m)*(dict.get(m+2)*(dict.get(m-1)**2) - dict.get(m-2)*(dict.get(m+1)**2))
+    return dict
+
+
+#compute nP using division polynomial,  args : n, param = carac and [a,b] to construct E,
+#                                              ring in wich the computations take place, dict with divsion polynomial
+def nP(n, param_E,dict):
+    K, a, b = param_E
+    R.<x> = GF(K)
+    B.<x2> = R.quotient(dict.get(n))
+    C.<y> = PolynomialRing(B)
+    x = C.gen()
+    W = C.quotient(y**2 - x**3 - a*x - b)
+    K, a, b = param_E
+    if dict.has_key(2*n) == false or dict.has_key(n + 1) == false or dict.has_key(n - 1) :
+        dict = division_polynomial(K,a,b,2*n)
+    if n % 2 == 0:
+        psi_n = 2*y*(dict.get(n))
+        psi_n_minus_1 = dict.get(n-1)
+        psi_n_plus_1 = dict.get(n+1)
+    else:
+        psi_n = dict.get(n)
+        psi_n_minus_1 = 2*y*dict.get(n-1)
+        psi_n_plus_1 = 2*y*dict.get(n+1)
+    psi_2n = dict.get(2*n)
+
+    x1 = x - ( psi_n_minus_1*psi_n_plus_1 / psi_n**2)
+    y1 = psi_2n / psi_n**4
+    return x1,y1
+
+print(nP(4, (11, 1,3), division_polynomial(97,1,3,8)))

@@ -160,7 +160,7 @@ f_0(X) &= 0 \\
 f_1(X) &= 1 \\
 f_2(X) &= 1 \\
 f_3(X) &= 3X^4 + 6aX^2 +12bX - a^2 \\
-f_4(x) &= 2X^6 + 10aX^4 +40bX^3 - 10a^2X^2 - (a^2 + 8ab)X - 2(a^3 + 8b^2)
+f_4(x) &= 2X^6 + 10aX^4 +40bX^3 - 10a^2X^2 - 8abX - 2(a^3 + 8b^2)
 \end{align*}
 On pose $F(X)= 4X^3 + 4aX + 4b$, et on a:
 
@@ -170,8 +170,8 @@ On pose $F(X)= 4X^3 + 4aX + 4b$, et on a:
 f_{2n}& =  f_n(f_{n+2}f_{n-1}^2 - f_{n-2}f_{n+1}^2)   \\
 f_{2n+1}& = \left\lbrace 
 \begin{array}{ccc}
-F^2f_{n+2}f_n^3 - f_{n-1}f_{n+1}^3 & \mbox{si} & m \text{ est pair}\\
-f_{n+2}f_n^3 - f_{n-1}f_{n+1}^3F^2 & \mbox{si} & m \text{ est impair} \end{array}\right
+F^2f_{n+2}f_n^3 - f_{n-1}f_{n+1}^3 & \mbox{si} & n \text{ est pair}\\
+f_{n+2}f_n^3 - f_{n-1}f_{n+1}^3F^2 & \mbox{si} & n \text{ est impair} \end{array}\right
 
 \end{array}\right.
 \end{equation} 
@@ -248,7 +248,7 @@ On peut ainsi exprimer $[m]P$ comme un polynôme en $X,Y$. Mais ce n'est pas la 
 \begin{equation}
 E(X,Y) = Y^2 - X^3 - aX - b = 0, \quad f_l(X) = 0
 \end{equation}
-L'équation \ref{eqnfrobenius} peut donc se réécrire en utilisant les points de l-torsion. On va maintenant faire des calcul dans l'anneau $\mathbb{F}= \frac{\mathbb{F_p}[X,Y]}{(f_l(X), E(X,Y)}$.L'idée de l'algorithme de Schoof est donc de tester pour des valeurs $\tau_l \in \lbrace 0, \ldots, l-1 \rbrace$ si l'équation suivante est vrai:
+L'équation \ref{eqnfrobenius} peut donc se réécrire en utilisant les points de l-torsion. On va maintenant faire des calcul dans l'anneau $\mathbb{F}= \frac{\mathbb{F_p}[X,Y]}{(f_l(X), E(X,Y))}$.L'idée de l'algorithme de Schoof est donc de tester pour des valeurs $\tau_l \in \lbrace 0, \ldots, l-1 \rbrace$ si l'équation suivante est vrai:
 
 \begin{equation}
 (X^{p^2}, Y^{p^2}) + [p_l](X,Y) = [\tau_l](X^{p}, Y^{p})

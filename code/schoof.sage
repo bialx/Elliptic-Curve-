@@ -53,15 +53,3 @@ def schoof(a,b,p):
         W = C.quotient(y**2 - x**3 - x - 3)
 
         p_l = K(p)
-        psi_2m = E.division_polynomial(2*p_l, two_torsion_multiplicity = 0))
-        if p_l % 2 == 0:
-            psi_m = W(2*y*(E.division_polynomial(p_l, two_torsion_multiplicity = 0)))
-            psi_mbef = W(E.division_polynomial(p_l - 1, two_torsion_multiplicity = 0))
-            psi_mbaft = W(E.division_polynomial(p_l + 1, two_torsion_multiplicity = 0))
-        else:
-            psi_m = W((E.division_polynomial(p_l, two_torsion_multiplicity = 0)))
-            psi_mbef = W(2*y*(E.division_polynomial(p_l - 1, two_torsion_multiplicity = 0)))
-            psi_mbaft = W(2*y*(E.division_polynomial(p_l + 1, two_torsion_multiplicity = 0)))
-
-        x1 = x - (psi_aft*psi_bef)/psi_m**2
-        y1 = psi_2m / psi_m**4
