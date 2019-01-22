@@ -24,7 +24,7 @@ def test_right_polynomial():
         except ArithmeticError as e:
             print(e, f"with parameters : a,b,p = {a}, {b}, {p}")
             continue
-        polynome = division_polynomial(GF(p), a, b, l)
+        polynome = division_polynomial(p, a, b, l)
 
         for cle, valeur in polynome.items():
             if cle == -1 or cle == 0:

@@ -1,11 +1,13 @@
-#
+laod("division_polynomial.sage")
+
 # R.<u> = GF(p)[]
 # S.<v> = R[]
 # T = S.fraction_field()
 # E = EllipticCurve(T, [a, b])
 
 
-#source https://hal-univ-rennes1.archives-ouvertes.fr/tel-01101949/document
+#source comprehesnion polynome de division + algo schoof :
+#https://hal-univ-rennes1.archives-ouvertes.fr/tel-01101949/document
 #http://www-users.math.umn.edu/~musiker/schoof.pdf
 
 
@@ -42,14 +44,22 @@ def schoof(a,b,p):
 #Create the extension in which we are going to do all of our compution
 
     for l in list_l:
-        div = E.division_polynomial(l, two_torsion_multiplicity = 0)
-        print(div)
         #Create the quotient ring in which we are going to do all of our compution
         # W = F_p[X,Y]/(f_l(X), Y² - X¨3 - aX - b)
         #
         B = R.quotient(div, 'x2')
         C = PolynomialRing(B, 'y')
         x = C.gen()
-        W = C.quotient(y**2 - x**3 - x - 3)
-
+        W = C.quotient(y**2 - x**3 - a*x - b)
+        dict = division_polynomial(p, a, b, l)
+        E2 = E.base_extend(W)
         p_l = K(p)
+        phi_2 = E2[x**(p**2), y**(p**2)]
+        pl_times_P_x, pl_times_P_y  = np(p_l, (p, a, b, l), dict)
+        pl_times_P = E2[pl_times_P_x, pl_times_P_y]
+
+
+        #sum_to_check = phi_2 + pl_times_P
+
+        for i in range(l):
+            if np(i, (p, a, b, l), dict) == sum_to_check:

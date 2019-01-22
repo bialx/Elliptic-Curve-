@@ -1,6 +1,6 @@
 
 def division_polynomial(K,a,b,l):
-    R.<x> = PolynomialRing(GF(K))
+    R.<x,y> = PolynomialRing(GF(K))
     E = EllipticCurve(GF(K), [a,b])
     dict = {}
     dict[0], dict[1], dict[2] = 0,1,1
@@ -28,16 +28,15 @@ def reccurence_poly(n, dict):
 
 #compute nP using division polynomial,  args : n, param = carac and [a,b] to construct E,
 #                                              ring in wich the computations take place, dict with divsion polynomial
-def nP(n, param_E,dict):
-    K, a, b = param_E
-    R.<x> = GF(K)
-    B.<x2> = R.quotient(dict.get(n))
+def nP(n, param_E, dict):
+    K, a, b, l = param_E
+    R.<x> = PolynomialRing(GF(K))
+    B.<x2> = R.quotient(dict.get(l))
     C.<y> = PolynomialRing(B)
-    x = C.gen()
     W = C.quotient(y**2 - x**3 - a*x - b)
-    K, a, b = param_E
-    if dict.has_key(2*n) == false or dict.has_key(n + 1) == false or dict.has_key(n - 1) :
-        dict = division_polynomial(K,a,b,2*n)
+
+    if 2*n not in dict or (n + 1) not in dict or (n-1) not in dict:
+        dict = division_polynomial(K,a,b, 2*n + 1)
     if n % 2 == 0:
         psi_n = 2*y*(dict.get(n))
         psi_n_minus_1 = dict.get(n-1)
@@ -47,9 +46,13 @@ def nP(n, param_E,dict):
         psi_n_minus_1 = 2*y*dict.get(n-1)
         psi_n_plus_1 = 2*y*dict.get(n+1)
     psi_2n = dict.get(2*n)
-
+    print(f"psi n : {type(psi_n)}\npsi_2n :{type(psi_2n)}\npsi_n_plus_1: {type(psi_n_plus_1)}\npsi_n_minus_1 {type(psi_n_minus_1)}")
     x1 = x - ( psi_n_minus_1*psi_n_plus_1 / psi_n**2)
+
     y1 = psi_2n / psi_n**4
     return x1,y1
+#
+division_poly = division_polynomial(97,1,3,8)
 
-print(nP(4, (11, 1,3), division_polynomial(97,1,3,8)))
+x1, y1 = nP(4, (11, 1,3,3), division_poly)
+print(x1)
