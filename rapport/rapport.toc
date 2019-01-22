@@ -4,3 +4,4 @@
 \contentsline {subsection}{\numberline {2.1}Algorithme naif}{3}
 \contentsline {subsection}{\numberline {2.2}Shanks}{3}
 \contentsline {subsection}{\numberline {2.3}Schoof}{3}
+\contentsline {subsubsection}{\numberline {2.3.1}Calcul de $(X^{p^2}, Y^{p^2}) + [p_l](X,Y)$}{5}

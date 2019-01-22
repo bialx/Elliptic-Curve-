@@ -171,9 +171,9 @@ f_{2n}& =  f_n(f_{n+2}f_{n-1}^2 - f_{n-2}f_{n+1}^2)   \\
 f_{2n+1}& = \left\lbrace 
 \begin{array}{ccc}
 F^2f_{n+2}f_n^3 - f_{n-1}f_{n+1}^3 & \mbox{si} & n \text{ est pair}\\
-f_{n+2}f_n^3 - f_{n-1}f_{n+1}^3F^2 & \mbox{si} & n \text{ est impair} \end{array}\right
+f_{n+2}f_n^3 - f_{n-1}f_{n+1}^3F^2 & \mbox{si} & n \text{ est impair} \end{array}\right.
 
-\end{array}\right.
+\end{array} \right.
 \end{equation} 
 Ces polynômes sont de degrés au plus $\frac{(n^2 -1)}{2}$ si $n$ est pair, ou bien  au plus $\frac{(n^2 -2)}{2}$ si $n$ est impair.
 \end{defi}
@@ -257,4 +257,38 @@ L'unique solution que l'on trouve est $t_l$.On répète l'opération pour d'autr
 \newline
 \medskip
 On va maintenant détailler l'algorithme étape par étape. 
+
+
+\subsubsection{Calcul de $(X^{p^2}, Y^{p^2}) + [p_l](X,Y)$}
+
+Comme vu en introduction aux courbes elliptiques la somme de deux points appartenant à la courbe dépend de plusieurs cas. Est ce que nos points sont distincts où ont la même coordonnée en $x$.En effet les formules à appliquer seront différentes dépendamment que l'on soit dans un cas ou l'autre et nous ne disposons pas de méthode pour vérifier rapidement dans quel cas on se situe. Mais il est plus probable d'avoir des coordonnéees différentes, on va donc travailler dans ce cas la. Si l'algorithme trouve un $t_l$ vérifiant l'équation on est dans le bon cas, s'il n'en trouve aucun cela veut dire que l'on se trouve dans l'autre cas.
+\paragraph*{Cas : $(X^{p^2}, Y^{p^2}) \ne \pm [p_l](X,Y)$}
+
+On peut utiliser notre formule usuelle d'addition sur courbe elliptique pour calculer $(x_1, y_1) = (X^{p^2}, Y^{p^2}) + (X_{\bar{p_l}}, Y_{\bar{p_l}})$ en notant $(X_{\bar{p_l}}, Y_{\bar{p_l}}) =  [p_l](X,Y)$. 
+\newline
+Soit $\lambda = \frac{Y_{\bar{p_l}} - Y^{p^2}}{X_{\bar{p_l} - X^{p^2}}}$, on a alors :
+\begin{equation}
+(x_1, y_1) = (\lambda^2 - X^{p^2} - X_{\bar{p_l}}, \, \lambda (X^{p^2} - x_1) -  Y^{p^2})
+\end{equation}
+On va aussi noter $(X_{\tau}, Y_{\tau}) =  [\tau](X,Y)$. On doit maintenant tester en faisant varier la valeur de $\tau$ entre $0$ et $l -1$ si $x_1 = X_{\tau}$. Si c'est le cas on se retrouve avec deux possibilités comme valeur de $y_1$, soit on a le point soit on a son opposé. On regarde donc si $y_1 = Y_{\tau}$, on a alors $t_l = \tau$, sinon on a $t_l = - \tau$
+
+\paragraph*{Cas : $(X^{p^2}, Y^{p^2}) = \pm [p_l](X,Y)$}
+La encore deux cas possible. On va d'abord regarder lorsque $(X^{p^2}, Y^{p^2}) = [p_l](X,Y)$. 
+\newline
+Soit $P=(X,Y)$, on rappelle l’équation caractéristique de l'endomorphisme Frobenius restreinte aux points de $l$-torsion: 
+\begin{equation}
+\phi_p^2(P)  + [p_l]P = [t_{l}] \phi_p(P) \quad \pmod{l}
+\end{equation}
+On a alors dans notre cas $2[p_l]P = [t_{l}] \phi_p(P) \, \pmod{l}$. De plus on a $\phi_p^2 = [p_l]P$. En combinant ces deux égalités on trouve :
+
+\begin{equation}
+[t_l^2 p_l]P = [t_l^2] \phi_p^2 = [t_l] \phi ([t_l] \phi_p) = [(2p_l)^2]P \quad \pmod{l}
+\end{equation}
+Ainsi $p_l$ est un carré modulo $l$. On pose $p_l = \omega^2 \pmod{l}$. On va maintenant calculer $\omega \phi P$, si $[p_l]P = \omega \phi P$ alors $t_l = 2\omega$ sinon $t_l = -2\omega$.
+\newline
+\medskip
+Si $p_l$ n'est pas un carré modulo $l$ on est dans le cas $(X^{p^2}, Y^{p^2}) = - [p_l](X,Y)$ et on on a alors $t_l = 0$ d'après l'équation caractéristique. 
+
+
+
 \end{document}
