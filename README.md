@@ -11,6 +11,6 @@ Partie Code :
     schoof.sage -> contient le code de l'algorithme de schoof
     
     division_polynomial.sage -> contient un ensemble de fonctions permettant de calculer les polynomes de division
-                                d'une courbe ellitpique et de calculer les coordonnées de nP en focntion de ses polynomes
+                                d'une courbe ellitpique et de calculer les coordonnées de nP en focntion de ces polynomes
                                 
     test.sage -> contient un ensemble de test permettant de vérifier la validité des fonctions écrites
