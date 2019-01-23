@@ -26,8 +26,8 @@ def reccurence_poly(n, dict):
     return dict
 
 
-#compute nP using division polynomial,  args : n, param = carac and [a,b] to construct E,
-#                                              ring in wich the computations take place, dict with divsion polynomial
+#compute nP using division polynomial,  args : n, param = carac, [a,b] to construct E, l the division polynomial used in the modulus of the ring
+#                                               dict with divsion polynomial
 def nP(n, param_E, dict):
     K, a, b, l = param_E
     R.<x> = PolynomialRing(GF(K))
@@ -46,13 +46,8 @@ def nP(n, param_E, dict):
         psi_n_minus_1 = 2*y*dict.get(n-1)
         psi_n_plus_1 = 2*y*dict.get(n+1)
     psi_2n = dict.get(2*n)
-    print(f"psi n : {type(psi_n)}\npsi_2n :{type(psi_2n)}\npsi_n_plus_1: {type(psi_n_plus_1)}\npsi_n_minus_1 {type(psi_n_minus_1)}")
+    # print(f"psi n : {type(psi_n)}\npsi_2n :{type(psi_2n)}\npsi_n_plus_1: {type(psi_n_plus_1)}\npsi_n_minus_1 {type(psi_n_minus_1)}")
     x1 = x - ( psi_n_minus_1*psi_n_plus_1 / psi_n**2)
 
     y1 = psi_2n / psi_n**4
     return x1,y1
-#
-division_poly = division_polynomial(97,1,3,8)
-
-x1, y1 = nP(4, (11, 1,3,3), division_poly)
-print(x1)
