@@ -1,4 +1,6 @@
 load("division_polynomial.sage")
+load("schoof.sage")
+
 #http://www.math.sciences.univ-nantes.fr/~sorger/chow/html/en/reference/polynomial_rings/sage/rings/polynomial/polynomial_quotient_ring.html
 #
 # E = EllipticCurve(GF(97), [1,3])
@@ -34,3 +36,8 @@ def test_right_polynomial():
             nbr_test += 1
     if error == 0:
         print(f"test is correct, we construct the same {l} first division polynomial as sage !")
+
+
+
+def test_add():
+    return 0

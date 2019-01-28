@@ -54,14 +54,14 @@ def schoof(a,b,p):
 
 
 #Pre comuptation of division polynomial so we can store them in a dictionary structure and acces its element in constant time
-    dict = division_polynomial(p, a, b, 2*max(l)+1)
+    dict = division_polynomial(p, a, b, 2*max(list_l)+1)
 
     for l in list_l:
         anwser = 0
         #Create the quotient ring in which we are going to do all of our compution
         # W = F_p[X,Y]/(f_l(X), Y² - X¨3 - aX - b)
         #
-        B = R.quotient(div, 'x2')
+        B = R.quotient(dict.get(l), 'x2')
         C = PolynomialRing(B, 'y')
         x = C.gen()
         W = C.quotient(y**2 - x**3 - a*x - b)
