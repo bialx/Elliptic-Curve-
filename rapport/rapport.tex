@@ -86,6 +86,25 @@
 \newpage
 
 \section{Introduction aux courbes elliptiques}
+La cryptographie sur courbe elliptique introduite en 1985 à révolutionné la cryptographie à clé publique permettant une alternative efficace aux classique RSA et Diffie Hellman. Les courbes elliptiques sont énormément utilisé pour les signatures (ECDSA), notamment pour le Bitcoin, et supporté dans la majorité des applications TLS, SSH. On se contentera de donner une explication succincte de ce qu'est une courbe elliptique ainsi que différents propriétés associées.
+\medskip
+On définit une courbe elliptique sur un corps $K$ dans un plan par une équation cubique de la forme : 
+\begin{equation*}
+y^2 + a_1xy + a_3y  = x^3 + a_2x^2 + a_4x + a_6
+\end{equation*}
+Les coefficient $a_{1 \leq i \leq 6}$ sont des éléments du corps $K$.
+
+Dans le cas ou le corps $K$ a une caractéristique différent de $2$ ou $3$ on peut via des changements de variable se ramener à l'équation suivante : 
+\begin{equation*}
+y^2 = x^3 + ax +b
+\end{equation*}
+
+\bigskip
+Insérer des définitions pour discriminant j-invariant and co si jamais
+\bigskip
+Si on dispose de deux points $P$ et $Q$ appartenant à une courbe $E$ sur un corps $K$ on peut se demander ce que signifie l'addition de ces deux points.
+
+\includegraphics[scale=0.7]{pictures/hqdefault.jpg} 
 
 Maintenant que l'on dispose de formule d'additions pour deux points sur une courbe elliptique on peut donner un sens à la multiplication scalaire d'un point comme $kP = \underbrace{P + \ldots + P}_{k \text{ fois}}$. On va noter cette multiplication scalaire par :
 \newline
@@ -289,6 +308,49 @@ Ainsi $p_l$ est un carré modulo $l$. On pose $p_l = \omega^2 \pmod{l}$. On va m
 \medskip
 Si $p_l$ n'est pas un carré modulo $l$ on est dans le cas $(X^{p^2}, Y^{p^2}) = - [p_l](X,Y)$ et on on a alors $t_l = 0$ d'après l'équation caractéristique. 
 
+\paragraph{Algorithme}
+On donne une version complète en langage naturel de l'algorithme de schoof : 
+
+\begin{algorithm}
+\caption{Schoof}
+\begin{algorithmic}
+\REQUIRE $E$ une courbe elliptique de la forme $y^2 = x^3 + ax = b$ sur $\mathbb{F}_p$
+\ENSURE Le nombre de points de $E$
+
+\STATE Choisir un ensemble de premier S tel que $\prod_{l \in S}l \leq 4\sqrt{p}$
+\IF{$\gcd(x^q - x, x^3 + ax +b)$} 
+\STATE $t_2 = 0$
+\ELSE
+\STATE $t_2 = 1$
+\ENDIF
+
+\FORALL{$l \in S$}
+\STATE Calculer le polynôme de division $f_l$, on fera les calculs dans l'anneau $\mathbb{F}= \frac{\mathbb{F_p}[X,Y]}{(f_l(X), y^2 -x^3 - ax - b})$
+\STATE On pose $p_l = p \mod(l)$
+\STATE Calculer $(x^p, y^p), \, (x^{p^2}, y^{p^2}), \, [p_l](x, y) = (x_{p_l}, y_{p_l})$
+\IF{$x^{p^2} \ne  x_{p_l}$}
+\STATE Calculer $(X, Y) = (x^{p^2}, y^{p^2}) + (x_{p_l}, y_{p_l})$
+\FORALL{$1 \leq \tau \leq l - 1$}
+\IF{$X = x^p_{\tau}$}
+\IF{$Y = y^q_{p_l}$}
+\STATE $t_l = \tau$
+\ELSE 
+\STATE $t_l = - \tau$
+\ENDIF
+\ENDIF
+\ENDFOR
+\ELSE
+\IF{$p$ est un carré modulo $l$}
+\STATE blabla
+\ENDIF
+\ENDIF
+\ENDFOR
+\end{algorithmic}
+\end{algorithm}
 
 
+
+
+\subsubsection{Complexité}
+La complexité de l'algorithme de Schoof est en $O(\log{q}^8)$. 
 \end{document}
