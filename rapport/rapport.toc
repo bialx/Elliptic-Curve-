@@ -1,9 +1,11 @@
 \select@language {french}
 \contentsline {section}{\numberline {1}Introduction aux courbes elliptiques}{3}
-\contentsline {section}{\numberline {2}Compter les points sur une courbe}{3}
+\contentsline {section}{\numberline {2}Compter les points sur une courbe}{4}
 \contentsline {subsection}{\numberline {2.1}Algorithme naif}{4}
-\contentsline {subsection}{\numberline {2.2}Shanks}{4}
-\contentsline {subsection}{\numberline {2.3}Schoof}{4}
-\contentsline {subsubsection}{\numberline {2.3.1}Calcul de $(X^{p^2}, Y^{p^2}) + [p_l](X,Y)$}{6}
-\contentsline {paragraph}{Algorithme}{6}
-\contentsline {subsubsection}{\numberline {2.3.2}Complexit\IeC {\'e}}{6}
+\contentsline {subsection}{\numberline {2.2}Shanks}{5}
+\contentsline {subsection}{\numberline {2.3}Schoof}{5}
+\contentsline {subsubsection}{\numberline {2.3.1}Choix de l'ensemble de premiers}{6}
+\contentsline {subsubsection}{\numberline {2.3.2}Calcul des polynome de division}{7}
+\contentsline {subsubsection}{\numberline {2.3.3}Calcul de $(X^{p^2}, Y^{p^2}) + [p_l](X,Y)$}{7}
+\contentsline {paragraph}{Algorithme}{7}
+\contentsline {subsubsection}{\numberline {2.3.4}Complexit\IeC {\'e}}{7}

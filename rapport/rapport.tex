@@ -87,24 +87,67 @@
 
 \section{Introduction aux courbes elliptiques}
 La cryptographie sur courbe elliptique introduite en 1985 à révolutionné la cryptographie à clé publique permettant une alternative efficace aux classique RSA et Diffie Hellman. Les courbes elliptiques sont énormément utilisé pour les signatures (ECDSA), notamment pour le Bitcoin, et supporté dans la majorité des applications TLS, SSH. On se contentera de donner une explication succincte de ce qu'est une courbe elliptique ainsi que différents propriétés associées.
-\medskip
-On définit une courbe elliptique sur un corps $K$ dans un plan par une équation cubique de la forme : 
+
+\begin{defi}
+On définit une courbe elliptique sur un corps $K$ dans un plan par une équation de Weierstrass de la forme : 
 \begin{equation*}
 y^2 + a_1xy + a_3y  = x^3 + a_2x^2 + a_4x + a_6
 \end{equation*}
 Les coefficient $a_{1 \leq i \leq 6}$ sont des éléments du corps $K$.
+\end{defi}
 
-Dans le cas ou le corps $K$ a une caractéristique différent de $2$ ou $3$ on peut via des changements de variable se ramener à l'équation suivante : 
+Dans le cas ou le corps $K$ a une caractéristique différent de $2$ ou $3$ on peut via des changements de variable se ramener à l'équation courte suivante : 
 \begin{equation*}
 y^2 = x^3 + ax +b
 \end{equation*}
 
-\bigskip
-Insérer des définitions pour discriminant j-invariant and co si jamais
-\bigskip
-Si on dispose de deux points $P$ et $Q$ appartenant à une courbe $E$ sur un corps $K$ on peut se demander ce que signifie l'addition de ces deux points.
+\begin{defi}
+Soit $E : y^2 = x^3 + ax +b$ une courbe sur $K$ on pose : 
+\begin{equation*}
+\Delta = -16*(4a^3 + 27b^2) \quad \text{et} \quad j(E) = \frac{(-48a)^3}{\Delta}
+\end{equation*}
+$\Delta$ est appellé le Discriminant de $E$, et $j(E)$ son j-invariant. La courbe $E$ est une courbe elliptique si et seulement si $\Delta \ne 0$.
+\end{defi}
 
+\begin{defi}
+L'ensemble des points de la courbe $E$ est noté $E(K)$ avec :
+\begin{equation*}
+E(K) = \left\{ (x,y) \in \mathbb{K} \, | \, y^2 + a_1xy + a_3y  = x^3 + a_2x^2 + a_4x + a_6 = 0_E \right\} \cup {O}
+\end{equation*}
+Où $O$ est le point à l'infini
+\end{defi}
+
+
+On peut définir une loi de groupe abélien $\oplus$ sur $E(K)$ de neutre le point à l'infini $O$. On a pour tout $P = (x,y) $ dans $E(K)$ donnée sous forme réduite:
+\begin{itemize}
+\item[(1)] $O \oplus (x,y) = (x,y) \oplus O = (x,y)$
+\item[(2)] $\ominus (x,y) = (x, -y)$
+\item[(3)] Soit $P,Q,R \in E(K)$, si ces trois points sont alignés alors $P \oplus Q \oplus R = 0$
+\end{itemize}
+
+Maintenant qu'on a donnée une structure de groupe abélien à $E(K)$ on peut donner des formules explicites d'additions de points sur la courbe.
+
+\begin{prop}
+Soit $P =(x_1, y_1), Q=(x_2, y_2)$.
+$$P \oplus Q = (x_3, y_3) = (\lambda^2 -x_1 -x_2, \lambda(x_1 - x_3 - y_1)) $$
+En posant : 
+
+\begin{equation}
+\lambda =
+\left\lbrace
+\begin{array}{ccc}
+\frac{y_2 - y_1}{x_2 - x_1} & \mbox{si} & P \ne Q  \\
+\frac{3x^2 + a}{2y_1} & \mbox{si}  & P = Q
+\end{array}\right.
+\end{equation}
+\end{prop}
+\newpage
+\begin{figure}[h!]
 \includegraphics[scale=0.7]{pictures/hqdefault.jpg} 
+\caption{vision graphique de l'addition de deux points sur la courbe}
+\end{figure}
+
+
 
 Maintenant que l'on dispose de formule d'additions pour deux points sur une courbe elliptique on peut donner un sens à la multiplication scalaire d'un point comme $kP = \underbrace{P + \ldots + P}_{k \text{ fois}}$. On va noter cette multiplication scalaire par :
 \newline
@@ -179,7 +222,7 @@ f_0(X) &= 0 \\
 f_1(X) &= 1 \\
 f_2(X) &= 1 \\
 f_3(X) &= 3X^4 + 6aX^2 +12bX - a^2 \\
-f_4(x) &= 2X^6 + 10aX^4 +40bX^3 - 10a^2X^2 - 8abX - 2(a^3 + 8b^2)
+f_4(X) &= 2X^6 + 10aX^4 +40bX^3 - 10a^2X^2 - 8abX - 2(a^3 + 8b^2)
 \end{align*}
 On pose $F(X)= 4X^3 + 4aX + 4b$, et on a:
 
@@ -267,15 +310,23 @@ On peut ainsi exprimer $[m]P$ comme un polynôme en $X,Y$. Mais ce n'est pas la 
 \begin{equation}
 E(X,Y) = Y^2 - X^3 - aX - b = 0, \quad f_l(X) = 0
 \end{equation}
-L'équation \ref{eqnfrobenius} peut donc se réécrire en utilisant les points de l-torsion. On va maintenant faire des calcul dans l'anneau $\mathbb{F}= \frac{\mathbb{F_p}[X,Y]}{(f_l(X), E(X,Y))}$.L'idée de l'algorithme de Schoof est donc de tester pour des valeurs $\tau_l \in \lbrace 0, \ldots, l-1 \rbrace$ si l'équation suivante est vrai:
+L'équation \ref{eqnfrobenius} peut donc se réécrire en utilisant les points de l-torsion. On va maintenant faire des calcul dans l'anneau $\mathbb{W}= \frac{\mathbb{F_p}[X,Y]}{(f_l(X), E(X,Y))}$.L'idée de l'algorithme de Schoof est donc de tester pour des valeurs $\tau_l \in \lbrace 0, \ldots, l-1 \rbrace$ si l'équation suivante est vrai:
 
 \begin{equation}
 (X^{p^2}, Y^{p^2}) + [p_l](X,Y) = [\tau_l](X^{p}, Y^{p})
 \end{equation}
-L'unique solution que l'on trouve est $t_l$.On répète l'opération pour d'autres $l$ premiers jusqu'avoir assez de $t_l$ pour appliquer le théorème des restes chinois et retrouver la valeur de $t$.
+L'unique solution que l'on trouve est $t_l$.On répète l'opération pour d'autres $l$ premiers jusqu'à avoir assez de $t_l$ pour appliquer le théorème des restes chinois et retrouver la valeur de $t$.
 \newline
 \medskip
 On va maintenant détailler l'algorithme étape par étape. 
+
+
+\subsubsection{Choix de l'ensemble de premiers}
+L'idée de Schoof est de calculer la trace de l'endomorphisme de Frobenius modulo de petits premiers. Il faut choisir un ensemble $S = (l_1, \ldots l_n)$ tel que $\prod l_i > 4\sqrt{p}$. En effet on rappelle que  $|t| \leq 2 \sqrt{p}$, on veut s'assurer de bien pouvoir reconstruire notre solution quand on va utiliser les restes chinois. Pour construire $S$ on va juste ajouter des nombres premiers à une liste en utlisant la fonction \path{next_prime} de SAGE tant que le produit des éléments de $S$ est plus petit que $ 4\sqrt{p}$.
+
+
+\subsubsection{Calcul des polynome de division}
+Il existe dans SAGE une fonction permettant de calculer les polynôme de division, \path{polynomial_polynomial(n)} renvoyant le n-ième polynome de division. Mais comme au cours de l'algorithme on doit souvent utiliser différents polynôme de division et de plus ils sont calculé via des formules de récurrence. Il ne me paraissait pas forcement très judicieux d'utiliser la fonction de sage qui allait de toute façon très certainement à chaque appel devoir recalculer via les formules de récurrence le polynôme souhaité. L'idée étant de stocker tous ces polynômes dans un dictionnaire, une fois la phase de pré calcul faite on peut donc accéder à tous les polynômes de division que l'on souhaite en temps constant au cours de l’exécution de l'algorithme de Schoof. Et en utilisant la fonction de SAGE j'ai tout de même vérifié via une fonction de test que je trouvais bien les même polynômes qu'avec ma fonction.
 
 
 \subsubsection{Calcul de $(X^{p^2}, Y^{p^2}) + [p_l](X,Y)$}
