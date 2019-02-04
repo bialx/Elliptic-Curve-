@@ -1,4 +1,4 @@
-# The elliptic curve E is in Weierstrass form y^2=f(x)=x^3+ax+b
+# The liptic curve E is in Weierstrass form y^2=f(x)=x^3+ax+b
 
 divpoly_factor = 0    # global variable for factor of the division polynomial when ZeroDivisionError's occur
 
@@ -14,39 +14,39 @@ def add(P,Q,a,f):
     if x1 == x2:
         if b1 == b2:
           return double(P,a,f)
-        else: 
+        else:
           return ()
     try:
-        lambda = (y2-y1) / (x2-x1)
+        lambd = (y2-y1) / (x2-x1)
     except ZeroDivisionError:
         ### raise an error so that we can restart the algorithm working in a smaller quotient ring
         divpoly_factor = a2 - a1
         raise
-    x3 = f*lambda^2 -x1 - x2
-    y3 = lambda*(x1-x3) - y1
+    x3 = f*lambd^2 -x1 - x2
+    y3 = lambd*(x1-x3) - y1
     return (x3,y3)
-    
-def double(P,A,f):
+
+def double(P,a,f):
     """double P : P+P """
     global divpoly_factor
     if not P:
       return P
     x1, y1 = P[0], P[1]
     try:
-        m = (3*a1^2+A) / (2*b1*f)
+        lambd = (3*x1^2+a) / (2*y1*f)
     except ZeroDivisionError:
-        divpoly_factor = 2*b1*f
+        divpoly_factor = 2*y1*f
         raise
-    a3 = f*m^2 - 2*a1
-    b3 = m*(a1-a3) - b1
-    return (a3,b3)
+    x3 = f*lambd^2 - 2*x1
+    y3 = lambd*(x1-x3) - y1
+    return (x3,y3)
 
 def neg(P):
     """ negate P : -P """
     if not P:
       return P
     return (P[0], -P[1])
-    
+
 def nP_double_and_add(n,P,a,f):
     """ compute the scalar multiple nP using double and add"""
     if not n:
@@ -60,41 +60,41 @@ def nP_double_and_add(n,P,a,f):
           Q = add(P,Q,a,f)
         i -= 1
     return Q
-    
+
 def mult (P,Q):
     """ compute the composition of) P*Q """
     return (P[0].lift()(Q[0]),P[1].lift()(Q[0])*Q[1])
-        
-def trace_mod (E, ell):
-    """ compute the trace of Frobenius of E modulo ell """
+
+def trace_mod (E, l):
+    """ compute the trace of Frobenius of E modulo l """
     K = E.base_ring()
     p = K.cardinality()                        # finite field GF(K)
-    R.<t>=PolynomialRing(K)
+    R.<t> = PolynomialRing(K)
     a, b = E.a4(), E.a6()                          # E: y^2 = x^3 + Ax + B
-    if ell == 2:                                    # t is odd iff f is irreducible
-        if (t^3+A*t+B).is_irreducible():
+    if l == 2:                                    # t is odd iff f is irreducible
+        if (t^3+a*t+b).is_irreducible():
           return 1
-        else: 
+        else:
           return 0
-    h = E.division_polynomial(ell,t,0).monic()
+    h = E.division_polynomial(l,t,0).monic()
     while true:
         try:
-            RR.<x> = R.quotient(ideal(h))       
-            f = x^3+A*x+B
+            RR.<x> = R.quotient(ideal(h))
+            f = x^3+a*x+b
             xq, yq = x^q, f^((p-1)/2)
             phi = (xq, yq)                        # pi is the Frobenius endomorphism
             phi2 = mult(pi,pi)                    # pi2 = pi^2
             identite = (x, RR(1))                 # identity
-            Q = mult(q%ell, identite , a, f)    
+            Q = mult(q%l, identite , a, f)
             S = add(phi2, Q, a, f)                    # S = pi^2 + q = t*pi
             if not S:
               return 0                          # if S=0 then t=0
             if S == pi:
               return 1                          # if S=pi then t=1
-            if neg(S) == pi: 
+            if neg(S) == pi:
               return -1                         # if S=-pi then t=-1
             P = phi
-            for tau in range(2, ell-1):
+            for tau in range(2, l-1):
                 P = add(P, phi, a, f)               # P = tau*phi
                 if P == S:
                   return tau                   # if S = P then we have found t
@@ -102,22 +102,22 @@ def trace_mod (E, ell):
             assert false
         except ZeroDivisionError:
             h = gcd(h, divpoly_factor.lift())    # if we hit a zero divisor, start over with new h
-            print ("found %d-divpoly factor of degree %d"%(ell,h.degree()))
+            print ("found %d-divpoly factor of degree %d"%(l,h.degree()))
 
 def Schoof(E):
     """ compute the trace of Frobenius of E using Schoof's algorithm """
-    q=E.base_ring().cardinality()
-    t, m, ell = 0, 1, 1
+    q = E.base_ring().cardinality()
+    t, M, l = 0, 1, 1
     while M <= 4*sqrt(q):
-        ell = next_prime(ell)
+        l = next_prime(l)
         start = cputime()
-        tell = trace_mod(E,ell)
-        print ("trace %d mod %d computed in %.2f secs"%(tell,ell,cputime()-start))
-        a = M*M.inverse_mod(ell)
-        b = ell*ell.inverse_mod(M)
-        M *= ell
-        t = (a*tell+b*t) % M
+        t_l = trace_mod(E,l)
+        print ("trace %d mod %d computed in %.2f secs"%(t_l,l,cputime()-start))
+        a = M*M.inverse_mod(l)
+        b = l*l.inverse_mod(M)
+        M *= l
+        t = (a*t_l+b*t) % M
     if t >= M/2:
       return t-M
-    else: 
+    else:
       return t

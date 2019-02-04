@@ -1,5 +1,8 @@
 load("division_polynomial.sage")
 
+
+# The elliptic curve E is in Weierstrass form y^2=f(x)=x^3+ax+b
+
 # R.<u> = GF(p)[]
 # S.<v> = R[]
 # T = S.fraction_field()
