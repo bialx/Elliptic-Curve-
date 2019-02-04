@@ -1,3 +1,4 @@
+︠5322941c-1397-4cde-a8ca-5882aa6e3268r︠
 # The liptic curve E is in Weierstrass form y^2=f(x)=x^3+ax+b
 
 divpoly_factor = 0    # global variable for factor of the division polynomial when ZeroDivisionError's occur
@@ -22,7 +23,7 @@ def add(P,Q,a,f):
         ### raise an error so that we can restart the algorithm working in a smaller quotient ring
         divpoly_factor = a2 - a1
         raise
-    x3 = f*lambd^2 -x1 - x2
+    x3 = f*lambd**2 -x1 - x2
     y3 = lambd*(x1-x3) - y1
     return (x3,y3)
 
@@ -62,8 +63,11 @@ def nP_double_and_add(n,P,a,f):
     return Q
 
 def mult (P,Q):
-    """ compute the composition of) P*Q """
-    return (P[0].lift()(Q[0]),P[1].lift()(Q[0])*Q[1])
+    """ compute the composition of P*Q """
+    # P_0, P_1 = P
+#     Q_0, Q_1 = Q
+    return ((P[0].lift())(Q[0]),((P[1].lift())(Q[0]))*Q[1])
+    # return ((P_0.lift())(Q_0), ((P_1.lift())(Q_0))*Q_1)
 
 def trace_mod (E, l):
     """ compute the trace of Frobenius of E modulo l """
@@ -72,7 +76,7 @@ def trace_mod (E, l):
     R.<t> = PolynomialRing(K)
     a, b = E.a4(), E.a6()                          # E: y^2 = x^3 + Ax + B
     if l == 2:                                    # t is odd iff f is irreducible
-        if (t^3+a*t+b).is_irreducible():
+        if (t**3+a*t+b).is_irreducible():
           return 1
         else:
           return 0
@@ -80,12 +84,16 @@ def trace_mod (E, l):
     while true:
         try:
             RR.<x> = R.quotient(ideal(h))
-            f = x^3+a*x+b
-            xq, yq = x^q, f^((p-1)/2)
-            phi = (xq, yq)                        # pi is the Frobenius endomorphism
+            f = x**3+a*x+b
+            xp = x**p
+            yp = RR(f.lift()**((p-1)/2))
+            print xp, yp, type(xp), type(yp)
+            phi = (xp, yp)                       # pi is the Frobenius endomorphism
+            print 1
             phi2 = mult(pi,pi)                    # pi2 = pi^2
+            print 2
             identite = (x, RR(1))                 # identity
-            Q = mult(q%l, identite , a, f)
+            Q = nP_double_and_add(p%l, identite , a, f)
             S = add(phi2, Q, a, f)                    # S = pi^2 + q = t*pi
             if not S:
               return 0                          # if S=0 then t=0
@@ -106,9 +114,9 @@ def trace_mod (E, l):
 
 def Schoof(E):
     """ compute the trace of Frobenius of E using Schoof's algorithm """
-    q = E.base_ring().cardinality()
+    p = E.base_ring().cardinality()
     t, M, l = 0, 1, 1
-    while M <= 4*sqrt(q):
+    while M <= 4*sqrt(p):
         l = next_prime(l)
         start = cputime()
         t_l = trace_mod(E,l)
@@ -121,3 +129,9 @@ def Schoof(E):
       return t-M
     else:
       return t
+
+K = GF(229)
+E = EllipticCurve(K, 13,215)
+t = Schoof(E)
+print t
+︡
