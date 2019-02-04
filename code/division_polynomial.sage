@@ -13,6 +13,7 @@ def division_polynomial(K,a,b,l):
         n += 1
     return dict
 
+
 def reccurence_poly(n, dict):
     if n%2 != 0:
         m = floor(n/2)

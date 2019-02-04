@@ -34,6 +34,7 @@
 	\geometry{hmargin=2.5cm,vmargin=2cm}
   \usepackage{varioref}
   \usepackage{listings}
+  
 %  \usepackage[obeyspaces]{url}
 
 
@@ -50,7 +51,7 @@
   basicstyle={\fontsize{10pt}{10pt}\ttfamily},
   aboveskip=0.3em,
   belowskip=0.1em,
-  numbers=left,
+  numbers=none,
   numberstyle=\footnotesize,
 }
 \definecolor{dblackcolor}{rgb}{0.0,0.0,0.0}
@@ -180,7 +181,21 @@ Soit :
 \begin{equation}
 \#E(\mathbb{F}_p) = 1 + p +\sum_{x \in \mathbb{F}_p}\genfrac(){}{0}{f(x)}{p}
 \end{equation}
-La complexité est en la taille de $p$. Cette méthode est pratique quand $p$ est petit mais devient impraticable s'il est trop grand.
+La complexité est en la taille de $p$. Cette méthode est pratique quand $p$ est petit mais devient impraticable s'il est trop grand. On illustre ce fait par un algorithme simple :
+\medskip
+\begin{lstlisting}
+def brute_force(p, a,b):
+    R.<x> = PolynomialRing(GF(p))
+    f = x**3 + a*x + b
+    return 1+p+sum([kronecker(f(i),p) for i in range(p)])
+
+\end{lstlisting}
+
+On va tester la non efficacité de cette méthode lorsque $p$ devient trop grand par le graphique suivant:
+
+\includegraphics[scale=0.5]{pictures/brute_force_cputime.png} 
+
+On retrouve bien l'aspect linéaire en $p$ évoqué précédemment.
 \subsection{Shanks}
 Il s'agit d'un algorithme Baby steps-giant steps de complexité exponentielle.
 
@@ -205,16 +220,17 @@ $\begin{array}{ccccc}
  & & (x,y) & \mapsto & (x^p, y^p) \\
 \end{array}$
 \end{defi}
-On peut définir le polynôme caractéristique de cet endomorphisme par $\phi_p^2 - t \phi_p + p = 0$, cette relation reste vrai sur les points de $l$-torsion. Ainsi nous avons : 
+On peut définir le polynôme caractéristique de cet endomorphisme par $\phi_p^2 - t \phi_p + p = 0$, cette relation reste en particulier vrai sur les points de $l$-torsion, ce qui nous sera utile par la suite. Ainsi nous avons : 
 \begin{equation}
 \label{eqnfrobenius}
  \phi_p^2(P)  + [p_l]P = [t_{l}] \phi_p(P) \quad \forall P \in E[l]
 \end{equation} 
-Avec $t_l \equiv t \pmod l$, $p_l \equiv p \pmod l$ et $0 \leq t_l, p_l \leq l$.
-Il faut aussi introduire les polynôme de division d'une courbe elliptiques $E$. On appelle $f_n(X)$ le n-ième polynôme de divisons de $E$.
+Avec $t_l \equiv t \pmod l$, $p_l \equiv p \pmod l$ et $0 \leq t_l, p_l \leq l$. 
+\newline
+Il faut aussi introduire les polynôme de division d'une courbe elliptiques $E$.
 
 \begin{defi}
-Soit une courbe elliptique $E : y^2 = x^3 + ax+b$ défini sur $\mathbb{K}$. On définit $f_n(X)$ sur $\mathbb{Z}[x]$ de manière récursive : 
+Soit une courbe elliptique $E : y^2 = x^3 + ax+b$ défini sur $\mathbb{K}$. On appelle $f_n(X)$ le n-ième polynôme de divisons définit sur $\mathbb{Z}[x]$ de manière récursive par : 
 
 
 \begin{align*}
@@ -242,7 +258,7 @@ Ces polynômes sont de degrés au plus $\frac{(n^2 -1)}{2}$ si $n$ est pair, ou 
 
 \begin{proof}
 Preuve du degré de $f_n$ ? 
-Avec $n$ premier on a $E[n] \simeq \frac{\mathbb{Z}}{n\mathbb{Z}} \times \frac{\mathbb{Z}}{n\mathbb{Z}}$, soit $n^2 - 1$ points de n-torsion ? on doit les compter 2fois donc j'imagine. Sinon la démo doit découler toute seule en utilisant les formules de recurrence mais un peu plus pénible a écrire
+Avec $n$ premier on a $E[n] \simeq \frac{\mathbb{Z}}{n\mathbb{Z}} \times \frac{\mathbb{Z}}{n\mathbb{Z}}$, soit $n^2 - 1$ points de n-torsion ? on doit les compter 2 fois donc j'imagine. Sinon la démo doit découler toute seule en utilisant les formules de recurrence mais un peu plus pénible a écrire
 \end{proof}
 
 On peut utiliser les polynôme de division pour calculer la multiplication scalaire d'un point de la courbe $E$.
@@ -310,12 +326,12 @@ On peut ainsi exprimer $[m]P$ comme un polynôme en $X,Y$. Mais ce n'est pas la 
 \begin{equation}
 E(X,Y) = Y^2 - X^3 - aX - b = 0, \quad f_l(X) = 0
 \end{equation}
-L'équation \ref{eqnfrobenius} peut donc se réécrire en utilisant les points de l-torsion. On va maintenant faire des calcul dans l'anneau $\mathbb{W}= \frac{\mathbb{F_p}[X,Y]}{(f_l(X), E(X,Y))}$.L'idée de l'algorithme de Schoof est donc de tester pour des valeurs $\tau_l \in \lbrace 0, \ldots, l-1 \rbrace$ si l'équation suivante est vrai:
+L'équation \ref{eqnfrobenius} peut donc se réécrire en utilisant les points de l-torsion. On va maintenant faire des calculs dans l'anneau $\mathbb{W}= \frac{\mathbb{F_p}[X,Y]}{(f_l(X), E(X,Y))}$.L'idée de l'algorithme de Schoof est donc de tester pour des valeurs $\tau_l \in \lbrace 0, \ldots, l-1 \rbrace$ si l'équation suivante est vrai:
 
 \begin{equation}
 (X^{p^2}, Y^{p^2}) + [p_l](X,Y) = [\tau_l](X^{p}, Y^{p})
 \end{equation}
-L'unique solution que l'on trouve est $t_l$.On répète l'opération pour d'autres $l$ premiers jusqu'à avoir assez de $t_l$ pour appliquer le théorème des restes chinois et retrouver la valeur de $t$.
+L'unique solution que l'on trouve est $t_l$.On répète l'opération pour d'autres $l$ premiers jusqu'à avoir assez de $t_l$ pour appliquer le théorème des restes chinois et retrouver la valeur de $t$. L’intérêt de travailler avec des points de $l$-torsion est ainsi de pouvoir borner la taille des polynômes en jeu dans l'équation du Frobenius, en $O(l^2)$, ce qui est plus efficace qu'uniquement travailler avec des fonctions rationnelles.
 \newline
 \medskip
 On va maintenant détailler l'algorithme étape par étape. 
@@ -324,6 +340,10 @@ On va maintenant détailler l'algorithme étape par étape.
 \subsubsection{Choix de l'ensemble de premiers}
 L'idée de Schoof est de calculer la trace de l'endomorphisme de Frobenius modulo de petits premiers. Il faut choisir un ensemble $S = (l_1, \ldots l_n)$ tel que $\prod l_i > 4\sqrt{p}$. En effet on rappelle que  $|t| \leq 2 \sqrt{p}$, on veut s'assurer de bien pouvoir reconstruire notre solution quand on va utiliser les restes chinois. Pour construire $S$ on va juste ajouter des nombres premiers à une liste en utlisant la fonction \path{next_prime} de SAGE tant que le produit des éléments de $S$ est plus petit que $ 4\sqrt{p}$.
 
+
+
+\subsubsection{Cas $l=2$}
+Ce cas est particulier et doit être traiter à part car on suppose nos premiers impairs. 0n a $t_2 \equiv 0 \pmod 2$ si et seulement si $E(\mathbb{F_p})$ à un élément d'ordre $2$, c'est à dire un point de $2$-torsion. Or les points de $2$ torsions sont de la forme $(x, 0)$. En effet, si $2P = 0$, pour $P \in E(\mathbb{F_p})$ alors $P = -P$, et cela correspond aux points de l'axe des abscisses. Ainsi $t_2$ est congru à $0$ si et seulement si $x^3 +ax +b$ à une racine dans $\mathbb{F_p}$. Mais les racines de $\mathbb{F_p}$ sont entièrement déterminé par le polynôme $x^p - x$, nos deux polynomes partageraient alors une racine commune. La facon utilisé ici pour décider si $t_2 \equiv 0 \pmod 2$ est donc de calculer si $\gcd(x^p - x, x^3 +ax +b) \ne 1$.
 
 \subsubsection{Calcul des polynome de division}
 Il existe dans SAGE une fonction permettant de calculer les polynôme de division, \path{polynomial_polynomial(n)} renvoyant le n-ième polynome de division. Mais comme au cours de l'algorithme on doit souvent utiliser différents polynôme de division et de plus ils sont calculé via des formules de récurrence. Il ne me paraissait pas forcement très judicieux d'utiliser la fonction de sage qui allait de toute façon très certainement à chaque appel devoir recalculer via les formules de récurrence le polynôme souhaité. L'idée étant de stocker tous ces polynômes dans un dictionnaire, une fois la phase de pré calcul faite on peut donc accéder à tous les polynômes de division que l'on souhaite en temps constant au cours de l’exécution de l'algorithme de Schoof. Et en utilisant la fonction de SAGE j'ai tout de même vérifié via une fonction de test que je trouvais bien les même polynômes qu'avec ma fonction.
@@ -392,7 +412,19 @@ On donne une version complète en langage naturel de l'algorithme de schoof :
 \ENDFOR
 \ELSE
 \IF{$p$ est un carré modulo $l$}
-\STATE blabla
+\STATE Calculer $w$ tel que $p \equiv w^2 \pmod l$ 
+\STATE Calculer $[w](x^p,y^p)]$
+\IF{$[w](x^p,y^p)] = (x^{p^2}, y^{p^2})$}
+\STATE $t_l = 2w$
+\ENDIF
+\IF{$[w](x^p,y^p)] = (x^{p^2}, -y^{p^2})$}
+\STATE $t_l = -2w$
+\ELSE
+\STATE $t_l =0$
+\ENDIF
+\ELSE
+\STATE $t_l = 0$
+
 \ENDIF
 \ENDIF
 \ENDFOR

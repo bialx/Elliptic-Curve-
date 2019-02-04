@@ -1,6 +1,6 @@
 load("division_polynomial.sage")
 load("schoof.sage")
-
+load("brute_force.sage")
 #http://www.math.sciences.univ-nantes.fr/~sorger/chow/html/en/reference/polynomial_rings/sage/rings/polynomial/polynomial_quotient_ring.html
 #
 # E = EllipticCurve(GF(97), [1,3])
@@ -11,6 +11,26 @@ load("schoof.sage")
 # C = PolynomialRing(B, 'x')
 # x=C.gen()
 # R = C.quotient(y**2 - x**3 - x - 3)
+
+
+
+def test_brute_force(nbr_test):
+    error = O
+    i = 0
+    while i < nbr_test:
+        i += 1
+        p = random_prime(5000, False, 11)
+        a,b = randint(3, p-1), randint(3,p-1)
+        try :
+            E = EllipticCurve(GF(p), [a,b])
+        except ArithmeticError as e:
+            print(e, f"with parameters : a,b,p = {a}, {b}, {p}")
+            continue
+        error = E.cardinality() - brute_force(p,a,b)
+    if error == 0:
+        return (f"succes over {nbr_test} tests")
+    else:
+        return(f"error over {nbr_test} tests")
 
 
 #We compare our fonction with the buil in sage function E.division_polynomial to check if our induction relation for polynomial division is correct
