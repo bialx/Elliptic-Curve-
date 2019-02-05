@@ -20,3 +20,6 @@ Partie Code :
     test.sage -> contient un ensemble de test permettant de vérifier la validité des fonctions écrites
     
     graphic.sage -> graphics used to illustrate how efficient our method are (or how unefficient)
+
+
+Warning : if you are using python 3.X when running Sage you may end up facing error because some sage method arent fully implemented in python3. Better to switch to python 2.7 to avoid any error
