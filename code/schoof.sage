@@ -1,31 +1,27 @@
 load("division_polynomial.sage")
-
+load("EC_basic_computation.sage")
 
 # The elliptic curve E is in Weierstrass form y^2=f(x)=x^3+ax+b
-
-# R.<u> = GF(p)[]
-# S.<v> = R[]
-# T = S.fraction_field()
-# E = EllipticCurve(T, [a, b])
 
 
 #source comprehesnion polynome de division + algo schoof :
 #https://hal-univ-rennes1.archives-ouvertes.fr/tel-01101949/document
 #http://www-users.math.umn.edu/~musiker/schoof.pdf
 
-
-def schoof(a,b,p):
+def schoof2(E):
+    K = E.base_ring()
+    p = K.cardinality()
+    a, b = E.a4(), E.a6()
     N = 1
     prime = 1
+    answer = 0
     list_l = []
     list_t = []
-    try:
-        K = GF(p)
-        R.<x> = PolynomialRing(K)
-        E = EllipticCurve(K, [a,b])
-    except:
-        raise NameError('wrong p ,cant construct the Ring R.<x> = PolynomialRing(K)')
-#Compute a set of small prime whose product is > 4* sqrt(p)
+    R.<x> = PolynomialRing(K)
+    S.<x1, y1> = PolynomialRing(K)
+    f = x**3 + a*x + b
+
+    """ Compute a set of small prime whose product is > 4* sqrt(p) """
     while N <= 4*sqrt(p):
         if prime == p:
             pass
@@ -33,49 +29,89 @@ def schoof(a,b,p):
         N = N*prime
         list_l.append(prime)
 
-    E = EllipticCurve(K, [a, b])
-    if gcd(x**p - x, x**3 + a*x + b) != 1:
-        list_t.append(0)
-    else:
-        list_t.append(1)
 
-
-
-#Pre comuptation of division polynomial so we can store them in a dictionary structure and acces its element in constant time
+    """ Pre computation of division polynomial """
     dict = division_polynomial(p, a, b, 2*max(list_l)+1)
 
+
+    """ Create the ring where our computation w'll take place"""
+
     for l in list_l:
-        anwser = 0
-        #Create the quotient ring in which we are going to do all of our compution
-        # W = F_p[X,Y]/(f_l(X), Y² - X¨3 - aX - b)
-        #
-        B = R.quotient(dict.get(l), 'x2')
-        C = PolynomialRing(B, 'y')
-        x = C.gen()
-        W = C.quotient(y**2 - x**3 - a*x - b)
-        E2 = E.base_extend(W)
-        p_l = K(p)
-        phi_2 = E2[x**(p**2), y**(p**2)]
-        pl_times_P_x, pl_times_P_y  = np(p_l, (p, a, b, l), dict)
-        pl_times_P = E2[pl_times_P_x, pl_times_P_y]
-        x3, y3 = add(phi_2, pl_times_P, E2)
+        if l == 2:
+            if gcd(x**p - x, x**3 + a*x + b) != 1:
+                list_t.append(0)
+                continue
+            else:
+                list_t.append(1)
+                continue
 
-        for i in range(l):
-            x_t, y_t = np(i, (p, a, b, l), dict)
-            if x_t == x3:
-                if y_t == y3:
-                    list_t.append(i)
+        """ Create the ring where our computation w'll take place"""
+        poly_divi_l = R(dict.get(l))
+        if not  poly_divi_l.is_irreducible():                         #to ensure the ring is a field, f_l might not be irreducible
+            for poly, deg in list(reversed(factor(poly_divi_l))):
+                if poly.degree() > 1:
+                    poly_divi_l  = poly
+                    break
+        B.<x2> = R.quotient(ideal(poly_divi_l))
+        C.<y> = PolynomialRing(B)
+        W = C.quotient(y**2 - f)
+
+        phi = (W(x**p), W(y**p))           #(x^p, y^p)
+        phi2 = (W(x**(p**2)), W(y**(p**2)))  #(x^(p^2), y^(p^2))
+        print "phi2: ", phi2
+        phi2_x, phi2_y = phi2
+        prod = nP_double_and_add(p%l,(W(x),W(y)),a)    #[p mod l]*(x,y)
+        prod_x, prod_y = prod
+
+        if phi2_x != prod_x:
+            sum_x, sum_y = add(phi2, prod, a)      #(x^(p^2), y^(p^2)) + [p mod l]*(x,y)
+            S = (sum_x, sum_y)
+            for tau in range(1, l):
+                tau_prod = nP_double_and_add(ZZ(tau),phi,a)
+                tau_prod_x, tau_prod_y = tau_prod
+                if sum_x == tau_prod_x:
+                    if sum_y == tau_prod_y:
+                        list_t.append(tau)
+                        answer = 1
+                        break
+                    else:
+                        list_t.append(-tau)
+                        answer = 1
+                        break
+
+        else:
+            if kronecker(p, l) == 1:      # check if p is a square modulus l and p = w^2 mod l
+                w = Mod(p,l).sqrt()
+                w_times_phi_x, w_times_phi_y = nP_double_and_add(w,phi,a)    #[w](x^p, y^p)
+                w_times_phi = (w_times_phi_x, w_times_phi_y)
+                if w_times_phi == phi_2:               #  if [w](x^p, y^p) =  (x^(p^2), y^(p^2))
+                    list_t.append(2*w)
                     anwser = 1
-                    break
-                else:
-                    list_t.append(-i)
-                    answer = 1
-                    break
+                elif w_times_phi_x == phi2_x and w_times_phi_y == -phi2_y:      #  if [w](x^p, y^p) =  (x^(p^2), -y^(p^2))
+                    list_t.append(-2*w)
+                    anwser = 1
+            else:
+                list_t.append(0)
+                anwser = 1
 
-#Case we dont find any solution to statisfie the caracteristic equation
-#so we have the wrong assumption with our addition formulae
-        if anwser == 0:
-            return 0
+        """ In case we found no value to satisfy the equation"""
+        if answer == 0:
+            list_t.append(0)
 
-#we use the chinese remainder theorem to return the trace of the frobenius endomorphism
-    return ctr(izip(list_t, list_l))
+    """ return t using chinese remainder theorem"""
+    print list_t, list_l
+    t = crt(list_t, list_l)
+    if t > (N-1)/2:
+        return t-N
+    else:
+        return t
+
+
+
+p = 97
+l = 3
+K = GF(p)
+E = EllipticCurve(K,[2,1])
+a,b = E.a4(), E.a6()
+schoof2(E)
+print E.trace_of_frobenius()
