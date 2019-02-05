@@ -1,8 +1,5 @@
-divpoly_factor = 0    # global variable for factor of the division polynomial when ZeroDivisionError's occur
-
 def add(P,Q,a):
     """add P and Q"""
-    global divpoly_factor
     if not P:
       return Q
     if not Q:
@@ -16,8 +13,7 @@ def add(P,Q,a):
     try:
         lambd = (y2-y1) / (x2-x1)
     except ZeroDivisionError:
-        ### raise an error so that we can restart the algorithm working in a smaller quotient ring
-        divpoly_factor = x2 - x1
+        print ("in addition formulae cannot divide by 0")
         raise
     x3 = lambd**2 -x1 - x2
     y3 = lambd*(x1-x3) - y1
@@ -25,14 +21,13 @@ def add(P,Q,a):
 
 def double(P,a):
     """double P : P+P """
-    global divpoly_factor
     if not P:
       return P
     x1, y1 = P[0], P[1]
     try:
         lambd = (3*x1^2+a) / (2*y1)
     except ZeroDivisionError:
-        divpoly_factor = 2*y1
+        print ("in addition formulae cannot divide by 0")
         raise
     x3 = lambd^2 - 2*x1
     y3 = lambd*(x1-x3) - y1
@@ -44,8 +39,16 @@ def neg(P):
       return P
     return (P[0], -P[1])
 
+def nP(E,a,n, dict):
+    K = E.base_ring()
+    p = K.cardinality()
+    div_l = dict.get(l).monic()
+
+    return
+
 def nP_double_and_add(n,P,a):
-    """ compute the scalar multiplicatione nP using double and add"""
+    """ compute the scalar multiple nP using double and add"""
+
     if not n:
       return ()
     nbits = n.digits(2)
