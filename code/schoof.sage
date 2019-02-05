@@ -14,19 +14,6 @@ load("division_polynomial.sage")
 #http://www-users.math.umn.edu/~musiker/schoof.pdf
 
 
-
-def add(P,Q,E):
-    # Cas P != Q
-    # a = E.a4()
-    # b = E.a6()
-    x1, y1 = P
-    x2, y2 = Q
-    lambd = (y2 - y1)/(x2- x1)
-    x3 = lambd**2 - x1 - x2
-    y3 = lambd*(x1 - x3 ) - y1
-    return (x3, y3)
-
-
 def schoof(a,b,p):
     N = 1
     prime = 1
@@ -38,8 +25,6 @@ def schoof(a,b,p):
         E = EllipticCurve(K, [a,b])
     except:
         raise NameError('wrong p ,cant construct the Ring R.<x> = PolynomialRing(K)')
-
-
 #Compute a set of small prime whose product is > 4* sqrt(p)
     while N <= 4*sqrt(p):
         if prime == p:

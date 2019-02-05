@@ -1,6 +1,7 @@
 load("division_polynomial.sage")
 load("schoof.sage")
 load("brute_force.sage")
+load("EC_basic_computation.sage")
 #http://www.math.sciences.univ-nantes.fr/~sorger/chow/html/en/reference/polynomial_rings/sage/rings/polynomial/polynomial_quotient_ring.html
 #
 # E = EllipticCurve(GF(97), [1,3])
@@ -57,7 +58,26 @@ def test_right_polynomial():
     if error == 0:
         print(f"test is correct, we construct the same {l} first division polynomial as sage !")
 
-
-
-def test_add():
-    return 0
+def nP_classical(nbr_test):
+    error = 0
+    i = 0
+    while i < nbr_test:
+        i += 1
+        param = (random_prime(5,500), randint(4,10), randint(4,10))
+        p, a, b = param
+        try :
+            E = EllipticCurve(GF(p), [a,b])
+        except ArithmeticError as e:
+            print(e, f"with parameters : a,b,p = {a}, {b}, {p}")
+            continue
+        R.<x> = PolynomialRing(GF(p))
+        for point in E:
+            if list(point) == [0, 1, 0]:
+                pass
+            P = list(point)[:-1]
+            n = randint(2, p)
+            error = error + list(n*point)[:-1] - nP_double_and_add(n,P,a)
+        if error == 0:
+            return "succes"
+        else:
+            return "failure"
