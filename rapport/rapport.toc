@@ -1,4 +1,4 @@
-\babel@toc {french}{}
+\select@language {french}
 \contentsline {section}{\numberline {1}Introduction aux courbes elliptiques}{3}
 \contentsline {section}{\numberline {2}Compter les points sur une courbe}{4}
 \contentsline {subsection}{\numberline {2.1}Algorithme naif}{4}
@@ -9,4 +9,7 @@
 \contentsline {subsubsection}{\numberline {2.3.3}Calcul des polyn\IeC {\^o}mes de division}{7}
 \contentsline {subsubsection}{\numberline {2.3.4}Calcul de $(x^{p^2}, y^{p^2}) + [p_l](x,y)$}{7}
 \contentsline {paragraph}{Algorithme}{9}
-\contentsline {subsubsection}{\numberline {2.3.5}Complexit\IeC {\'e}}{9}
+\contentsline {subsubsection}{\numberline {2.3.5}Exemple}{9}
+\contentsline {paragraph}{$\textbf {l=2}$}{9}
+\contentsline {paragraph}{$\textbf {l=3}$}{9}
+\contentsline {subsubsection}{\numberline {2.3.6}Complexit\IeC {\'e}}{10}

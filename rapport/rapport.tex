@@ -9,7 +9,7 @@
   \usepackage[utf8]{inputenc}
   \usepackage{a4wide}
   \usepackage{lmodern}
-  \usepackage[frenchb]{babel}
+  \usepackage[french]{babel}
   \usepackage{amsmath,amsfonts,amssymb,amsthm,epsfig,epstopdf,titling,url,array,amssymb}
   \usepackage{graphicx}
   \usepackage{caption} 
@@ -388,7 +388,7 @@ On donne une version complète en langage naturel de l'algorithme de schoof :
 \ENSURE Le nombre de points de $E$
 
 \STATE Choisir un ensemble de premier S tel que $\prod_{l \in S}l \leq 4\sqrt{p}$
-\IF{$\gcd(x^q - x, x^3 + ax +b)$} 
+\IF{$\gcd(x^q - x, x^3 + ax +b) \ne 1$} 
 \STATE $t_2 = 0$
 \ELSE
 \STATE $t_2 = 1$
@@ -431,8 +431,38 @@ On donne une version complète en langage naturel de l'algorithme de schoof :
 \end{algorithm}
 
 
+\subsubsection{Exemple}
+On va travailler avec la courbe $E$ suivante, $E$ : $y^2 =x^3 +2x+1$ sur $\mathbb{F}_{19}$.
 
+\paragraph{$\textbf{l=2}$}
+On calcule $\gcd(x^{19} -x, x^3 + 2x+1)$ et on trouve $1$, donc $t \equiv 1 \pmod 2$
 
+\paragraph{$\textbf{l=3}$}
+On a $p^2 = 361$ et $p_l \equiv 1 \pmod 3$, on pose ainsi $p_l = 1$. L'équation du Frobenius devient : 
+\begin{equation}
+(x^{361}, y^{361}) + (x,y) = [\tau_l](x^{19}, y^{19})  \quad (x,y) \in E[3], \, \tau_l = \pm 1
+\end{equation}
+Le troisième polynôme de division est $f_l = 3x^4 + 12x^2 +12x - 4$ mais ce polynôme n'est pas irréductible dans $\mathbb{F}_{19}$, on va plutôt travailler avec un de ces diviseurs : $x^3 + 8x^2+16$.
+\newline 
+Il nous faut maintenant calculer la partie gauche de cette équation.
+On a $x^{361} = 3x^2 +2x +5 \pmod f_{l}$ et $y^{361} = y(y^2)^{180} = y(4x^2+9x+16)$. On est dans le cas ou $x^{361} \ne x$. On doit maintenant utiliser nos formules de sommations pour calculer $(x_3, y_3) =(x^{361}, y^{361}) + (x,y)$ : 
+
+\begin{align*}
+x_3 &= (\frac{y(4x^2+9x+16) - y}{3x^2 +2x +5 - x})^2 -3x^2 -2x - 5 - x 
+ 	&= (y(4x^2+9x+15)(x^2+15x+6))^2 -3x^2 -3x - 5 \\
+ 	&= 11 - 3x^2 -3x - 5  \\
+ 	&= 16x^2 + 16x + 6 
+\end{align*}
+et, 
+
+\begin{align*}
+y_3 &= \frac{y(4x^2+9x+16) - y}{3x^2 +2x +5 - x} (4x^2+9x+16 -  16x^2 - 16x - 6) - y(4x^2+9x+16) \\
+	&= y(4x^2+9x+15)(x^2+15x+6)( -12x^2 - 7x +10 ) - y(4x^2+9x+16)\\
+	&= y(13x^2 + 13x + 14)
+\end{align*}
+(reprendre le calcul de $y_3$, le resultat final est juste mais erreur dans les calcules intermédiaire !
+
+Maintenant nous devons calculer pour $\tau$ variant de $0$ à $2$ si $(x_3, y_3) = \tau (x^p, y^p)$.
 \subsubsection{Complexité}
-La complexité de l'algorithme de Schoof est en $O(\log{q}^8)$. L'algorithme est plus efficace qu'une version naive quand la taille de $p$ augmente mais reste néanmoins limité pour $p$ trop grand. En effet le degré des polynômes de division en $\O(l^2)$ empeche une performance optimale pour des tailles de $p$ trop importante.Une solution est donc de travailler avec des polynomes plus adapté, de plus petit degré. 
+La complexité de l'algorithme de Schoof est en $O(\log{q}^8)$. L'algorithme est plus efficace qu'une version naive quand la taille de $p$ augmente mais reste néanmoins limité pour $p$ trop grand. En effet le degré des polynômes de division en $O(l^2)$ empêche une performance optimale pour des tailles de $p$ trop importante.Une solution est donc de travailler avec des polynômes plus adapté, de plus petit degré. 
 \end{document}
