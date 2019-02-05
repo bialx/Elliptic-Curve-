@@ -29,12 +29,8 @@ def schoof2(E):
         N = N*prime
         list_l.append(prime)
 
-
     """ Pre computation of division polynomial """
     dict = division_polynomial(p, a, b, 2*max(list_l)+1)
-
-
-    """ Create the ring where our computation w'll take place"""
 
     for l in list_l:
         if l == 2:
