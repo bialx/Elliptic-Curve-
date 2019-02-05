@@ -13,7 +13,7 @@ load("EC_basic_computation.sage")
 # x=C.gen()
 # R = C.quotient(y**2 - x**3 - x - 3)
 
-
+nbr_test = 500
 
 def test_brute_force(nbr_test):
     error = O
@@ -35,11 +35,12 @@ def test_brute_force(nbr_test):
 
 
 #We compare our fonction with the buil in sage function E.division_polynomial to check if our induction relation for polynomial division is correct
-def test_right_polynomial():
-    nbr_test = 0
+def test_right_polynomial(nbr_test):
+    i = 0
     error = 0
     l = 50
-    while nbr_test < 100:
+    while i < nbr_test:
+        i += 1
         param = (random_prime(5,500), randint(4,10), randint(4,10))
         p, a, b = param
         try :
@@ -54,9 +55,11 @@ def test_right_polynomial():
                 continue
             else:
                 error = valeur - E.division_polynomial(cle, two_torsion_multiplicity = 0)
-            nbr_test += 1
+                i += 1
     if error == 0:
         print(f"test is correct, we construct the same {l} first division polynomial as sage !")
+
+
 
 def nP_classical(nbr_test):
     error = 0
@@ -68,15 +71,19 @@ def nP_classical(nbr_test):
         try :
             E = EllipticCurve(GF(p), [a,b])
         except ArithmeticError as e:
-            print(e, f"with parameters : a,b,p = {a}, {b}, {p}")
+            print(e)
             continue
         R.<x> = PolynomialRing(GF(p))
         for point in E:
             if list(point) == [0, 1, 0]:
-                pass
+                continue
+            if list(point)[1] == 0:
+                continue
             P = list(point)[:-1]
             n = randint(2, p)
-            error = error + list(n*point)[:-1] - nP_double_and_add(n,P,a)
+            if list(ZZ(n)*point)[:-1] != list(nP_double_and_add(ZZ(n),P,a)):
+                error = 1
+                break
         if error == 0:
             return "succes"
         else:
