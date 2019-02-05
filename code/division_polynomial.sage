@@ -29,26 +29,99 @@ def reccurence_poly(n, dict):
 
 #compute nP using division polynomial,  args : n, param = carac, [a,b] to construct E, l the division polynomial used in the modulus of the ring
 #                                               dict with divsion polynomial
-def nP(n, param_E, dict):
+#compute nP using division polynomial,  args : n, param = carac, [a,b] to construct E, l the division polynomial used in the modulus of the ring
+#                                               dict with divsion polynomial, P = (x,y)
+def nP(n, param_E, dict, P):
+    print "entering nP computation", P
+    n = RR(n)
     K, a, b, l = param_E
+    P_x, P_y = P
+    S.<x1, y1> = PolynomialRing(GF(K))
     R.<x> = PolynomialRing(GF(K))
-    B.<x2> = R.quotient(dict.get(l))
-    C.<y> = PolynomialRing(B)
-    W = C.quotient(y**2 - x**3 - a*x - b)
+    poly_divi_l = R(dict.get(l))
+    if not  poly_divi_l.is_irreducible():
+        for poly, deg in list(reversed(factor(poly_divi_l))):
+            if poly.degree() > 1:
+                poly_divi_l  = poly
+                break
 
+    f = x**3 -a*x - b
+    B.<x2> = R.quotient(poly_divi_l)
+    C.<y> = PolynomialRing(B)
+    W = C.quotient(y**2 - f)
+
+    if n == 1:
+        return W(x),W(y)
     if 2*n not in dict or (n + 1) not in dict or (n-1) not in dict:
         dict = division_polynomial(K,a,b, 2*n + 1)
-    if n % 2 == 0:
-        psi_n = 2*y*(dict.get(n))
-        psi_n_minus_1 = dict.get(n-1)
-        psi_n_plus_1 = dict.get(n+1)
-    else:
-        psi_n = dict.get(n)
-        psi_n_minus_1 = 2*y*dict.get(n-1)
-        psi_n_plus_1 = 2*y*dict.get(n+1)
-    psi_2n = dict.get(2*n)
-    # print(f"psi n : {type(psi_n)}\npsi_2n :{type(psi_2n)}\npsi_n_plus_1: {type(psi_n_plus_1)}\npsi_n_minus_1 {type(psi_n_minus_1)}")
-    x1 = x - ( psi_n_minus_1*psi_n_plus_1 / psi_n**2)
 
-    y1 = psi_2n / psi_n**4
-    return x1,y1
+    inter_n = S(dict.get(n))
+    inter_n_minus_1 =S(dict.get(n-1))
+    inter_n_plus_1 = S(dict.get(n+1))
+    inter_2n = S(dict.get(2*n))
+    print inter_n.parent(),inter_n_minus_1.parent(),inter_n_plus_1.parent(),inter_2n.parent(), inter_n,inter_n_minus_1,inter_n_plus_1,inter_2n, type(inter_n)
+
+    if n % 2 == 0:
+        print "n = ",n
+   #      print "n",inter_n, type(inter_n), type(5), type(inter_n) != type(5)
+        if type(inter_n) != type(5):
+            psi_n = (2*y1*inter_n)(x1=P_x,y1=P_y)
+            psi_n = W(psi_n)
+        if type(inter_n_minus_1) != type(5):
+            psi_n_minus_1 = inter_n_minus_1(x1=P_x,y1=P_y)
+            psi_n_minus_1 = W(psi_n_minus_1)
+        if type(inter_n_plus_1) != type(5):
+            psi_n_plus_1 = inter_n_plus_1(x1=P_x,y1=P_y)
+            psi_n_plus_1 = W(psi_n_plus_1)
+        # if type(inter_n) == type(5):
+#             print "ok"
+#             psi_n = (2*y1*inter_n)(x1=P_x,y1=P_y)
+#             ps__n = W(psi_n)
+#         if type(inter_n_minus_1) == type(5):
+#             psi_n_minus_1 = W(inter_n_minus_1)
+#         if type(inter_n_plus_1) != type(5):
+#             psi_n_plus_1 = W(inter_n_plus_1)
+
+    else:
+        if type(inter_n) != type(5):
+            psi_n = inter_n(x1=P_x,y1=P_y)
+            psi_n = W(psi_n)
+        if type(inter_n_minus_1) != type(5):
+            psi_n_minus_1 = (2*y1*inter_n_minus_1)(x1=P_x, y1=P_y)
+            psi_n_minus_1 = W(psi_n_minus_1)
+        if type(inter_n_plus_1) != type(5):
+            psi_n_plus_1 = (2*y1*inter_n_plus_1)(x1=P_x, y1=P_y)
+            print "->", psi_n_plus_1, psi_n_plus_1.parent()
+            psi_n_plus_1 = W(psi_n_plus_1)
+        # if type(inter_n) == type(5):
+#             psi_n = W(inter)
+#         if type(inter_n_minus_1) == type(5):
+#             psi_n_minus_1 = (2*y1*inter_n_minus_1)(x1=P_x, y1=P_y)
+#             psi_n_minus_1 = W(psi_n_minus_1)
+#         if type(inter_n_plus_1) == type(5):
+#             psi_n_plus_1 = (2*y1*inter_n_plus_1)(x1=P_x, y1=P_y)
+#             psi_n_plus_1 = W(psi_n_plus_1)
+    if type(inter_2n) != type(5):
+        psi_2n = inter_2n(x1=P_x, y1=P_y)
+        psi_2n = W(psi_2n)
+    # else:
+#         psi_2n = W(inter_2n)
+
+    print(" psi n : ",type(psi_n), psi_n)
+    print(" psi_2n :", type(psi_2n), psi_2n )
+    print(" psi_n_plus_1: ",type(psi_n_plus_1), psi_n_plus_1)
+    print(" psi_n_minus_1 ", type(psi_n_minus_1), psi_n_minus_1)
+
+    # divisor = (psi_n**2)
+#     poly_divi = dict.get(l)
+#     print l
+#     for elt in list(factor(poly_divi)):
+#          print elt
+#     print ("psi n carre : ",divisor)
+#     print ("l eme pol div : ", dict.get(l))
+#     print("is irreducible ? : ", R(poly_divi).is_irreducible())
+#     inter = psi_n_minus_1*psi_n_plus_1 / psi_n**2
+#     print inter
+    x1 = W(P_x) - W( psi_n_minus_1*psi_n_plus_1 / psi_n**2)
+    y1 = W(psi_2n / psi_n**4)
+    return W(x1), W(y1)
