@@ -45,7 +45,7 @@ def nP(n, param_E, dict, P):
                 poly_divi_l  = poly
                 break
 
-    f = x**3 -a*x - b
+    f = x**3 + a*x + b
     B.<x2> = R.quotient(poly_divi_l)
     C.<y> = PolynomialRing(B)
     W = C.quotient(y**2 - f)
