@@ -234,13 +234,13 @@ Soit une courbe elliptique $E : y^2 = x^3 + ax+b$ défini sur $\mathbb{K}$. On a
 
 
 \begin{align*}
-f_0(X) &= 0 \\
-f_1(X) &= 1 \\
-f_2(X) &= 1 \\
-f_3(X) &= 3X^4 + 6aX^2 +12bX - a^2 \\
-f_4(X) &= 2X^6 + 10aX^4 +40bX^3 - 10a^2X^2 - 8abX - 2(a^3 + 8b^2)
+f_0(x) &= 0 \\
+f_1(x) &= 1 \\
+f_2(x) &= 1 \\
+f_3(x) &= 3x^4 + 6ax^2 +12bx - a^2 \\
+f_4(x) &= 2x^6 + 10ax^4 +40bx^3 - 10a^2x^2 - 8abx - 2(a^3 + 8b^2)
 \end{align*}
-On pose $F(X)= 4X^3 + 4aX + 4b$, et on a:
+On pose $F(X)= 4x^3 + 4ax + 4b$, et on a:
 
 \begin{equation}
 \left\lbrace
@@ -272,7 +272,7 @@ Soit $E$ une courbe elliptique défini sur $\mathbb{K}$, un point $P$ sur cette 
 \left\lbrace
 \begin{array}{ccc}
 O_E & \mbox{si} & P \in E[m]  \\
-\left(    \frac{\phi_m(X,Y)}{\psi^2_m(X,Y)}, \frac{\omega_m(X,Y)}{\psi^3_m(X,Y)}\right) & \mbox{sinon}  & 
+\left(    \frac{\phi_m(x,y)}{\psi^2_m(x,y)}, \frac{\omega_m(x,y)}{\psi^3_m(x,y)}\right) & \mbox{sinon}  & 
 \end{array}\right.
 \end{equation}
 
@@ -280,7 +280,7 @@ En posant :
 \begin{equation*}
 \psi_m= \left\lbrace
 \begin{array}{cc}
-2Yf_m & \mbox{si m est pair} \\
+2yf_m & \mbox{si m est pair} \\
 f_m & \mbox{sinon}
 \end{array}\right.
 \end{equation*}
@@ -288,7 +288,7 @@ et
 \begin{equation*}
 \left\lbrace
 \begin{array}{ll}
-\phi_m &= X \psi^2_m - \psi_{m-1}\psi_{m+1} \\
+\phi_m &= x \psi^2_m - \psi_{m-1}\psi_{m+1} \\
 \psi_m \omega_m &= \psi_{2m}
 \end{array}\right.
 \end{equation*}
@@ -297,7 +297,7 @@ On peut aussi réécrire $[m]P$ sous cette forme :
 [m]P = \left\lbrace
 \begin{array}{lll}
 O_E & \mbox{si} & P \in E[m]  \\
-\left(  X -   \frac{\psi_{m-1}(X,Y)\psi_{m+1}(X,Y)}{\psi^2_m(X,Y)}, \frac{\psi_{2m}(X,Y)}{\psi^4_m(X,Y)}\right) & \mbox{sinon}  & 
+\left(  X -   \frac{\psi_{m-1}(x,y)\psi_{m+1}(x,y)}{\psi^2_m(x,y)}, \frac{\psi_{2m}(x,y)}{\psi^4_m(x,y)}\right) & \mbox{sinon}  & 
 \end{array}\right.
 \end{equation}
 \end{thm}
@@ -308,28 +308,24 @@ On veut démontrer \ref{mP}.
 On note $[m]P = (x_1, y_1)$ 
 On a alors : 
 
+\begin{align*}
+y_1 &= \frac{\omega_m}{\psi^3_m} = \frac{\psi_{2m}}{\psi_m} \frac{1}{\psi_m^3} = \frac{\psi_{2m}}{\psi_m^4} \\
+x_1 &= \frac{\phi_m}{\psi^2_m} =  \frac{X \psi^2_m - \psi_{m-1}\psi_{m+1}}{\psi_m^2} = X - \frac{\psi_{m-1}\psi_{m+1}}{\psi_m^2}	
+\end{align*}
 
-\begin{equation*}
-x_1 = \frac{\phi_m}{\psi^2_m}\\
-    =  \frac{X \psi^2_m - \psi_{m-1}\psi_{m+1}}{\psi_m^2} \\
-    = X - \frac{\psi_{m-1}\psi_{m+1}}{\psi_m^2}
-\end{equation*}
-et 
-\begin{equation*}
-y_1 = \frac{\omega_m}{\psi^3_m} \\
-	= \frac{\psi_{2m}}{\psi_m} \frac{1}{\psi_m^3} \\
-	= \frac{\psi_{2m}}{\psi_m^4}
-\end{equation*}
+
+
+
 \end{proof}
-
+On remarque que $[m]P = (x_1, y_1)$ avec $x_1$ uniquement fonction de $x$. En effet en utilisant les formules de récurrence, si $m$ est pair $\psi_m^2 = 4y^2f_m$, mais en utilisant l'équation de $E$ on peut remplacer $y^2$ par une fonction de $x$, et les polynômes de division sont en fonction de $x$. De plus comme $m$ est pair les polynômes $\psi_{m+1} et \psi_{m-1}$ sont uniquement en fonction de $x$. Dans le cas où $m$ est impair on à l'inverse, le numérateur fait apparaître un $y^2$ qu'on peut remplacer par une fonction de $x$ comme précédemment et le dénominateur est une fonction de $x$. Quand à $y_1$, son degré en $y$ est au plus $1$. Si $m$ est pair $\psi_m^4$ fait apparaître un $y^4$ qui s'exprime en fonction de $x$, et $\psi_{2m}$ amène un $y$. On montre la même chose quelque soit la parité de $m$ et $2m$.
 On peut ainsi exprimer $[m]P$ comme un polynôme en $X,Y$. Mais ce n'est pas la seule particularité de ces polynôme utile pour notre algorithme. En effet $P = (x_1, y_1)$ est un point de l-torsion si et seulement si $x_1$ est une racine du l-ième polynôme de division $f_l$. De plus $P$ est sur la courbe $E$. Les points de l-torsion sont donc solution du système d'équation : 
 \begin{equation}
-E(X,Y) = Y^2 - X^3 - aX - b = 0, \quad f_l(X) = 0
+E(x,y) = y^2 - x^3 - ax - b = 0, \quad f_l(x) = 0
 \end{equation}
-L'équation \ref{eqnfrobenius} peut donc se réécrire en utilisant les points de l-torsion. On va maintenant faire des calculs dans l'anneau $\mathbb{W}= \frac{\mathbb{F_p}[X,Y]}{(f_l(X), E(X,Y))}$.L'idée de l'algorithme de Schoof est donc de tester pour des valeurs $\tau_l \in \lbrace 0, \ldots, l-1 \rbrace$ si l'équation suivante est vrai:
+L'équation \ref{eqnfrobenius} peut donc se réécrire en utilisant les points de l-torsion. On va maintenant faire des calculs dans l'anneau $\mathbb{W}= \frac{\mathbb{F_p}[x,y]}{(f_l(x), E(x,y))}$.L'idée de l'algorithme de Schoof est donc de tester pour des valeurs $\tau_l \in \lbrace 0, \ldots, l-1 \rbrace$ si l'équation suivante est vrai dans cet anneau :
 
 \begin{equation}
-(X^{p^2}, Y^{p^2}) + [p_l](X,Y) = [\tau_l](X^{p}, Y^{p})
+(x^{p^2}, y^{p^2}) + [p_l](x,y) = [\tau_l](x^{p}, y^{p})  \quad, P=(x,y)
 \end{equation}
 L'unique solution que l'on trouve est $t_l$.On répète l'opération pour d'autres $l$ premiers jusqu'à avoir assez de $t_l$ pour appliquer le théorème des restes chinois et retrouver la valeur de $t$. L’intérêt de travailler avec des points de $l$-torsion est ainsi de pouvoir borner la taille des polynômes en jeu dans l'équation du Frobenius, en $O(l^2)$, ce qui est plus efficace qu'uniquement travailler avec des fonctions rationnelles.
 \newline
@@ -343,29 +339,29 @@ L'idée de Schoof est de calculer la trace de l'endomorphisme de Frobenius modul
 
 
 \subsubsection{Cas $l=2$}
-Ce cas est particulier et doit être traiter à part car on suppose nos premiers impairs. 0n a $t_2 \equiv 0 \pmod 2$ si et seulement si $E(\mathbb{F_p})$ à un élément d'ordre $2$, c'est à dire un point de $2$-torsion. Or les points de $2$ torsions sont de la forme $(x, 0)$. En effet, si $2P = 0$, pour $P \in E(\mathbb{F_p})$ alors $P = -P$, et cela correspond aux points de l'axe des abscisses. Ainsi $t_2$ est congru à $0$ si et seulement si $x^3 +ax +b$ à une racine dans $\mathbb{F_p}$. Mais les racines de $\mathbb{F_p}$ sont entièrement déterminé par le polynôme $x^p - x$, nos deux polynomes partageraient alors une racine commune. La facon utilisé ici pour décider si $t_2 \equiv 0 \pmod 2$ est donc de calculer si $\gcd(x^p - x, x^3 +ax +b) \ne 1$.
+Ce cas est particulier et doit être traiter à part car on suppose nos premiers impairs. 0n a $t_2 \equiv 0 \pmod 2$ si et seulement si $E(\mathbb{F_p})$ à un élément d'ordre $2$, c'est à dire un point de $2$-torsion. Or les points de $2$ torsions sont de la forme $(x, 0)$. En effet, si $2P = 0$, pour $P \in E(\mathbb{F_p})$ alors $P = -P$, et cela correspond aux points de l'axe des abscisses. Ainsi $t_2$ est congru à $0$ si et seulement si $x^3 +ax +b$ à une racine dans $\mathbb{F_p}$. Mais les racines de $\mathbb{F_p}$ sont entièrement déterminé par le polynôme $x^p - x$, nos deux polynômes partageraient alors une racine commune. La façon utilisé ici pour décider si $t_2 \equiv 0 \pmod 2$ est donc de calculer si $\gcd(x^p - x, x^3 +ax +b) \ne 1$.
 
-\subsubsection{Calcul des polynome de division}
-Il existe dans SAGE une fonction permettant de calculer les polynôme de division, \path{polynomial_polynomial(n)} renvoyant le n-ième polynome de division. Mais comme au cours de l'algorithme on doit souvent utiliser différents polynôme de division et de plus ils sont calculé via des formules de récurrence. Il ne me paraissait pas forcement très judicieux d'utiliser la fonction de sage qui allait de toute façon très certainement à chaque appel devoir recalculer via les formules de récurrence le polynôme souhaité. L'idée étant de stocker tous ces polynômes dans un dictionnaire, une fois la phase de pré calcul faite on peut donc accéder à tous les polynômes de division que l'on souhaite en temps constant au cours de l’exécution de l'algorithme de Schoof. Et en utilisant la fonction de SAGE j'ai tout de même vérifié via une fonction de test que je trouvais bien les même polynômes qu'avec ma fonction.
+\subsubsection{Calcul des polynômes de division}
+Il existe dans SAGE une fonction permettant de calculer les polynôme de division, \path{polynomial_polynomial(n)} renvoyant le n-ième polynôme de division. Mais comme au cours de l'algorithme on doit souvent utiliser différents polynôme de division et de plus ils sont calculé via des formules de récurrence. Il ne me paraissait pas forcement très judicieux d'utiliser la fonction de sage qui allait de toute façon très certainement à chaque appel devoir recalculer via les formules de récurrence le polynôme souhaité. L'idée étant de stocker tous ces polynômes dans un dictionnaire, une fois la phase de pré calcul faite on peut donc accéder à tous les polynômes de division que l'on souhaite en temps constant au cours de l’exécution de l'algorithme de Schoof. Et en utilisant la fonction de SAGE j'ai tout de même vérifié via une fonction de test que je trouvais bien les même polynômes qu'avec ma fonction.
 
 
-\subsubsection{Calcul de $(X^{p^2}, Y^{p^2}) + [p_l](X,Y)$}
+\subsubsection{Calcul de $(x^{p^2}, y^{p^2}) + [p_l](x,y)$}
 
-Comme vu en introduction aux courbes elliptiques la somme de deux points appartenant à la courbe dépend de plusieurs cas. Est ce que nos points sont distincts où ont la même coordonnée en $x$.En effet les formules à appliquer seront différentes dépendamment que l'on soit dans un cas ou l'autre et nous ne disposons pas de méthode pour vérifier rapidement dans quel cas on se situe. Mais il est plus probable d'avoir des coordonnéees différentes, on va donc travailler dans ce cas la. Si l'algorithme trouve un $t_l$ vérifiant l'équation on est dans le bon cas, s'il n'en trouve aucun cela veut dire que l'on se trouve dans l'autre cas.
-\paragraph*{Cas : $(X^{p^2}, Y^{p^2}) \ne \pm [p_l](X,Y)$}
+Comme vu en introduction aux courbes elliptiques la somme de deux points appartenant à la courbe dépend de plusieurs cas. Est ce que nos points sont distincts où ont la même coordonnée en $x$. En effet les formules à appliquer seront différentes dépendamment que l'on soit dans un cas ou l'autre. Il est plus probable d'avoir des coordonnées différentes, on va donc travailler dans ce cas la. Si l'algorithme trouve un $t_l$ vérifiant l'équation on est dans le bon cas, s'il n'en trouve aucun cela veut dire que l'on se trouve dans l'autre cas.
+\paragraph*{Cas : $(x^{p^2}, y^{p^2}) \ne \pm [p_l](x,y)$}
 
-On peut utiliser notre formule usuelle d'addition sur courbe elliptique pour calculer $(x_1, y_1) = (X^{p^2}, Y^{p^2}) + (X_{\bar{p_l}}, Y_{\bar{p_l}})$ en notant $(X_{\bar{p_l}}, Y_{\bar{p_l}}) =  [p_l](X,Y)$. 
+On peut utiliser notre formule usuelle d'addition sur courbe elliptique pour calculer $(x_1, y_1) = (x^{p^2}, y^{p^2}) + (x_{\bar{p_l}}, Y_{\bar{p_l}})$ en notant $(x_{\bar{p_l}}, y_{\bar{p_l}}) =  [p_l](x,y)$. 
 \newline
-Soit $\lambda = \frac{Y_{\bar{p_l}} - Y^{p^2}}{X_{\bar{p_l} - X^{p^2}}}$, on a alors :
+Soit $\lambda = \frac{y_{\bar{p_l}} - y^{p^2}}{x_{\bar{p_l} - x^{p^2}}}$, on a alors :
 \begin{equation}
-(x_1, y_1) = (\lambda^2 - X^{p^2} - X_{\bar{p_l}}, \, \lambda (X^{p^2} - x_1) -  Y^{p^2})
+(x_1, y_1) = (\lambda^2 - x^{p^2} - x_{\bar{p_l}}, \, \lambda (x^{p^2} - x_1) -  y^{p^2})
 \end{equation}
-On va aussi noter $(X_{\tau}, Y_{\tau}) =  [\tau](X,Y)$. On doit maintenant tester en faisant varier la valeur de $\tau$ entre $0$ et $l -1$ si $x_1 = X_{\tau}$. Si c'est le cas on se retrouve avec deux possibilités comme valeur de $y_1$, soit on a le point soit on a son opposé. On regarde donc si $y_1 = Y_{\tau}$, on a alors $t_l = \tau$, sinon on a $t_l = - \tau$
+On va aussi noter $(x_{\tau}, y_{\tau}) =  [\tau](x,y)$. On doit maintenant tester en faisant varier la valeur de $\tau$ entre $0$ et $l -1$ si $x_1 = x_{\tau}$. Si c'est le cas on se retrouve avec deux possibilités comme valeur de $y_1$, soit on a le point soit on a son opposé. On regarde donc si $y_1 = y_{\tau}$, on a alors $t_l = \tau$, sinon on a $t_l = - \tau$
 
-\paragraph*{Cas : $(X^{p^2}, Y^{p^2}) = \pm [p_l](X,Y)$}
-La encore deux cas possible. On va d'abord regarder lorsque $(X^{p^2}, Y^{p^2}) = [p_l](X,Y)$. 
+\paragraph*{Cas : $(x^{p^2}, y^{p^2}) = \pm [p_l](x,y)$}
+La encore deux cas possible. On va d'abord regarder lorsque $(x^{p^2}, y^{p^2}) = [p_l](x,y)$. 
 \newline
-Soit $P=(X,Y)$, on rappelle l’équation caractéristique de l'endomorphisme Frobenius restreinte aux points de $l$-torsion: 
+Soit $P=(x,y)$, on rappelle l’équation caractéristique de l'endomorphisme Frobenius restreinte aux points de $l$-torsion: 
 \begin{equation}
 \phi_p^2(P)  + [p_l]P = [t_{l}] \phi_p(P) \quad \pmod{l}
 \end{equation}
@@ -377,8 +373,11 @@ On a alors dans notre cas $2[p_l]P = [t_{l}] \phi_p(P) \, \pmod{l}$. De plus on 
 Ainsi $p_l$ est un carré modulo $l$. On pose $p_l = \omega^2 \pmod{l}$. On va maintenant calculer $\omega \phi P$, si $[p_l]P = \omega \phi P$ alors $t_l = 2\omega$ sinon $t_l = -2\omega$.
 \newline
 \medskip
-Si $p_l$ n'est pas un carré modulo $l$ on est dans le cas $(X^{p^2}, Y^{p^2}) = - [p_l](X,Y)$ et on on a alors $t_l = 0$ d'après l'équation caractéristique. 
+Si $p_l$ n'est pas un carré modulo $l$ on est dans le cas $(x^{p^2}, y^{p^2}) = - [p_l](x,y)$ et on on a alors $t_l = 0$ d'après l'équation caractéristique. 
 
+
+
+\newpage
 \paragraph{Algorithme}
 On donne une version complète en langage naturel de l'algorithme de schoof : 
 
@@ -435,5 +434,5 @@ On donne une version complète en langage naturel de l'algorithme de schoof :
 
 
 \subsubsection{Complexité}
-La complexité de l'algorithme de Schoof est en $O(\log{q}^8)$. 
+La complexité de l'algorithme de Schoof est en $O(\log{q}^8)$. L'algorithme est plus efficace qu'une version naive quand la taille de $p$ augmente mais reste néanmoins limité pour $p$ trop grand. En effet le degré des polynômes de division en $\O(l^2)$ empeche une performance optimale pour des tailles de $p$ trop importante.Une solution est donc de travailler avec des polynomes plus adapté, de plus petit degré. 
 \end{document}
