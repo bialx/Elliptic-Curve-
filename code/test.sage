@@ -2,16 +2,6 @@ load("division_polynomial.sage")
 load("schoof.sage")
 load("brute_force.sage")
 load("EC_basic_computation.sage")
-#http://www.math.sciences.univ-nantes.fr/~sorger/chow/html/en/reference/polynomial_rings/sage/rings/polynomial/polynomial_quotient_ring.html
-#
-# E = EllipticCurve(GF(97), [1,3])
-# p = E.division_polynomial(3, two_torsion_multiplicity = 0)
-#
-# A.<y> = PolynomialRing(GF(97))
-# B = A.quotient(p, 'y2')
-# C = PolynomialRing(B, 'x')
-# x=C.gen()
-# R = C.quotient(y**2 - x**3 - x - 3)
 
 nbr_test = 500
 
@@ -29,9 +19,9 @@ def test_brute_force(nbr_test):
             continue
         error = E.cardinality() - brute_force(p,a,b)
     if error == 0:
-        return (f"succes over {nbr_test} tests")
+        return ("succes")
     else:
-        return(f"error over {nbr_test} tests")
+        return("failure")
 
 
 #We compare our fonction with the buil in sage function E.division_polynomial to check if our induction relation for polynomial division is correct
@@ -46,7 +36,7 @@ def test_right_polynomial(nbr_test):
         try :
             E = EllipticCurve(GF(p), [a,b])
         except ArithmeticError as e:
-            print(e, f"with parameters : a,b,p = {a}, {b}, {p}")
+            print(e)
             continue
         polynome = division_polynomial(p, a, b, l)
 
@@ -57,7 +47,7 @@ def test_right_polynomial(nbr_test):
                 error = valeur - E.division_polynomial(cle, two_torsion_multiplicity = 0)
                 i += 1
     if error == 0:
-        print(f"test is correct, we construct the same {l} first division polynomial as sage !")
+        print("test is correct, we construct the same division polynomial as sage !")
 
 
 
@@ -85,6 +75,6 @@ def nP_classical(nbr_test):
                 error = 1
                 break
         if error == 0:
-            return "succes"
+            return ("succes")
         else:
-            return "failure"
+            return ("failure")
