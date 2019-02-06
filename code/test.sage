@@ -78,3 +78,28 @@ def nP_classical(nbr_test):
             return ("succes")
         else:
             return ("failure")
+
+        
+def test_schoof2(nbr_test):
+    error = 0
+    i = 0
+    while i < nbr_test:
+        i += 1
+        param = (random_prime(5,500), randint(4,10), randint(4,10))
+        p, a, b = param
+        try :
+            E = EllipticCurve(GF(p), [a,b])
+        except ArithmeticError as e:
+            print(e)
+            continue
+        R.<x> = PolynomialRing(GF(p))
+        error = error + schoof2(E) - E.trace_of_frobenius()
+    if error == 0:
+        return ("succes")
+    else:
+        return ("failure")
+     
+
+
+
+
