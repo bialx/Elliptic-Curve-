@@ -1,5 +1,5 @@
 def add(P,Q,a):
-    """add P and Q"""
+    """add P and Q : P + Q"""
     if not P:
       return Q
     if not Q:
@@ -27,7 +27,7 @@ def double(P,a):
     try:
         lambd = (3*x1^2+a) / (2*y1)
     except ZeroDivisionError:
-        print ("in addition formulae cannot divide by 0")
+        print ("in double formulae cannot divide by 0")
         raise
     x3 = lambd^2 - 2*x1
     y3 = lambd*(x1-x3) - y1
@@ -39,16 +39,9 @@ def neg(P):
       return P
     return (P[0], -P[1])
 
-def nP(E,a,n, dict):
-    K = E.base_ring()
-    p = K.cardinality()
-    div_l = dict.get(l).monic()
-
-    return
 
 def nP_double_and_add(n,P,a):
     """ compute the scalar multiple nP using double and add"""
-
     if not n:
       return ()
     nbits = n.digits(2)
