@@ -360,8 +360,17 @@ On va maintenant détailler l'algorithme étape par étape.
 
 
 \subsubsection{Choix de l'ensemble de premiers}
-L'idée de Schoof est de calculer la trace de l'endomorphisme de Frobenius modulo de petits premiers. Il faut choisir un ensemble $S = (l_1, \ldots l_n)$ tel que $\prod l_i > 4\sqrt{p}$. En effet on rappelle que  $|t| \leq 2 \sqrt{p}$, on veut s'assurer de bien pouvoir reconstruire notre solution quand on va utiliser les restes chinois. Pour construire $S$ on va juste ajouter des nombres premiers à une liste en utlisant la fonction \path{next_prime} de SAGE tant que le produit des éléments de $S$ est plus petit que $ 4\sqrt{p}$.
+L'idée de Schoof est de calculer la trace de l'endomorphisme de Frobenius modulo de petits premiers. Il faut choisir un ensemble $S = (l_1, \ldots l_n)$ tel que $\prod l_i > 4\sqrt{p}$. En effet on rappelle que  $|t| \leq 2 \sqrt{p}$, on veut s'assurer de bien pouvoir reconstruire notre solution quand on va utiliser les restes chinois. Pour construire $S$ on va juste ajouter des nombres premiers à une liste en utlisant la fonction \path{next_prime} de SAGE tant que le produit des éléments de $S$ est plus petit que $ 4\sqrt{p}$. Au final cela revient à la boucle suivante OU $n$ est initialisé à $1$ et \path{list_l} correspond à $S$:
+\bigskip
 
+\begin{lstlisting}
+while N <= 4*sqrt(p):
+	if prime == p:
+		pass
+	prime = next_prime(prime)
+	N = N*prime
+	list_l.append(prime)
+\end{lstlisting}
 
 
 \subsubsection{Cas $l=2$}
@@ -400,9 +409,6 @@ Ainsi $p_l$ est un carré modulo $l$. On pose $p_l = \omega^2 \pmod{l}$. On va m
 \newline
 \medskip
 Si $p_l$ n'est pas un carré modulo $l$ on est dans le cas $(x^{p^2}, y^{p^2}) = - [p_l](x,y)$ et on on a alors $t_l = 0$ d'après l'équation caractéristique. 
-
-\paragraph*{Implémentation}
-Il a fallut commencer par implémenter des fonctions de base sur les courbes elliptique pour additionner, calculer une multiplication scalaire, 
 
 \newpage
 \subsubsection{Algorithme}
@@ -458,6 +464,54 @@ On donne une version complète en langage naturel de l'algorithme de schoof :
 \end{algorithm}
 
 
+\paragraph*{Implémentation}
+Il a fallut commencer par implémenter des fonctions de base sur les courbes elliptique pour additionner, calculer une multiplication scalaire. Les algorithmes d'additions ne nécessite pas d'explications, juste une application des formules. Pour la multiplication scalaire on avait deux choix, utiliser les polynômes de division ou de l'exponentiation rapide. La méthode utilisant les polynômes a amené des problème d'implémentation, donc je suis resté avec un version plus simple d'exponentiation. L'idée de cet algorithme est d'utilisation la décomposition binaire de $n$ pour calculer $nP$. Pour récuperer cette décomposition on utilise la fonction \path{digits(base)} qui retourne une liste avec les bits de poids faible à gauche de l'écriture binaire de $n$. On va à chaque itération doubler le point que l'on a, on calcule donc $2(2(\ldots2(P))$. Il est meme nécessaire lorsque l'on rencontre un $1$ dans la décomposition binaire de $n$ de faire une addition en plus de doubler. Au final on obtient l'algorithme suivant avec comme entre $n$ et $P$: 
+\bigskip
+\begin{lstlisting}
+    nbits = n.digits(2)
+    i = len(nbits)-2
+    Q = P
+    while i >= 0:
+        Q = double(Q,a)
+        if nbits[i]:
+          Q = add(P,Q,a)
+        i -= 1
+    return Q
+\end{lstlisting}
+\bigskip
+
+Sans donner ici le détails complet de l'algorithme sous SAGE il est intéressant de détailler certains points de l'implémentation. Le premier soucis rencontré fut la construction de l'anneau dans lequel on doit travailler. On crée tout simplement un anneau de polynôme dans le corps $K$ pour commencer :
+\bigskip
+\begin{lstlisting}
+R.<x> = PolynomialRing(K)
+\end{lstlisting}
+\bigskip
+En notant \path{poly_divi_l} le l-ième polynome de division on peut construire l'anneau quotient : 
+\bigskip
+
+\begin{lstlisting}
+B.<x2> = R.quotient(ideal(poly_divi_l))
+\end{lstlisting}
+\bigskip
+Cependant on est pas certains que ce polynôme soit divisible, et ainsi créer un corps fini, si ce n'est pas le cas et que l'on doit calculer l'inverse d'un élément non inversible on rencontrera une erreur. Il est donc nécessaire de tester si le polynôme de division est irréductible et s'il ne l'est pas le remplacer par un de ces diviseurs. Ce qu'on illustre avec la condition suivante :
+\bigskip
+\begin{lstlisting}
+if not poly_divi_l.is_irreducible():      
+	for poly, deg in list(reversed(factor(poly_divi_l))):
+		if poly.degree() > 1:
+		poly_divi_l  = poly
+		break
+\end{lstlisting}
+\bigskip
+Une fois que cela est fait on peut, en notant $f=x^3 +ax+b$, créer l'anneau final :
+\bigskip
+\begin{lstlisting}
+B.<x2> = R.quotient(ideal(poly_divi_l))
+C.<y> = PolynomialRing(B)
+W = C.quotient(y**2 - f)
+\end{lstlisting}
+\bigskip
+Une fois que l'on a calculé une liste \path{list_t} contenant tous les $t$ modulo $l$ calculé par l'algorithme on peut utiliser la fonction de sage \path{crt(list_t, list_l)} renvoyant la valeur de $t$ final en utilisant les restes chinois.
 \subsubsection{Exemple}
 On va travailler avec la courbe $E$ suivante, $E$ : $y^2 =x^3 +2x+1$ sur $\mathbb{F}_{19}$.
 

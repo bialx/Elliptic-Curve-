@@ -9,9 +9,9 @@
 \contentsline {subsubsection}{\numberline {3.3.2}Cas $l=2$}{8}
 \contentsline {subsubsection}{\numberline {3.3.3}Calcul des polyn\IeC {\^o}mes de division}{8}
 \contentsline {subsubsection}{\numberline {3.3.4}Calcul de $(x^{p^2}, y^{p^2}) + [p_l](x,y)$}{8}
-\contentsline {subsubsection}{\numberline {3.3.5}Algorithme}{9}
-\contentsline {subsubsection}{\numberline {3.3.6}Exemple}{9}
-\contentsline {paragraph}{$\textbf {l=2}$}{9}
-\contentsline {paragraph}{$\textbf {l=3}$}{9}
-\contentsline {subsubsection}{\numberline {3.3.7}Exp\IeC {\'e}rimentations}{10}
-\contentsline {subsubsection}{\numberline {3.3.8}Complexit\IeC {\'e}}{10}
+\contentsline {subsubsection}{\numberline {3.3.5}Algorithme}{10}
+\contentsline {subsubsection}{\numberline {3.3.6}Exemple}{11}
+\contentsline {paragraph}{$\textbf {l=2}$}{11}
+\contentsline {paragraph}{$\textbf {l=3}$}{11}
+\contentsline {subsubsection}{\numberline {3.3.7}Exp\IeC {\'e}rimentations}{12}
+\contentsline {subsubsection}{\numberline {3.3.8}Complexit\IeC {\'e}}{12}
