@@ -8,16 +8,15 @@ Code -> l'ensemble des codes, fonctions utilisés lors de notre étude
 
 Partie Code : 
 
-    schoof.sage -> contient le code de l'algorithme de schoof (currently using basing operation to compute scalar multiplication, not using division polynomial yet)
+    schoof.sage -> schoof's algoritmh (currently using basing operation to compute scalar multiplication, not using division polynomial yet)
     
-    division_polynomial.sage -> contient un ensemble de fonctions permettant de calculer les polynomes de division
-                                d'une courbe ellitpique et de calculer les coordonnées de nP en focntion de ces polynomes
+    division_polynomial.sage -> function to compute division polynomial of an elliptic curve and scalar multplication nP using this polynomial
     
     EC_basic_computation -> function to add, multiply, negate point on elliptic curve
     
     brute_force.sage -> brute force to count points on an elliptic curve
     
-    test.sage -> contient un ensemble de test permettant de vérifier la validité des fonctions écrites
+    test.sage -> set of test to check if our functions are correct
     
     graphic.sage -> graphics used to illustrate how efficient our method are (or how unefficient)
 
