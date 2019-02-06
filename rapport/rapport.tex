@@ -86,6 +86,8 @@
 \tableofcontents
 \newpage
 
+\section{Introduction}
+Le but de ce rapport est de présenter des moyens de compter les points sur une courbe elliptique et de les implémenter pour tester leur efficacité. L’ensemble des codes sont disponible sur le github \url{https://github.com/bialx/Elliptic-Curve-}. Le langage choisi est SAGE, basé sur python il contient un large éventail de fonctions mathématique prédéfini, notamment pour les courbes elliptiques ce qui permet de se concentrer sur les algorithmes et non sur une implémentation d'objet mathématiques.
 \section{Introduction aux courbes elliptiques}
 La cryptographie sur courbe elliptique introduite en 1985 à révolutionné la cryptographie à clé publique permettant une alternative efficace aux classique RSA et Diffie Hellman. Les courbes elliptiques sont énormément utilisé pour les signatures (ECDSA), notamment pour le Bitcoin, et supporté dans la majorité des applications TLS, SSH. On se contentera de donner une explication succincte de ce qu'est une courbe elliptique ainsi que différents propriétés associées.
 
@@ -150,7 +152,7 @@ En posant :
 
 
 
-Maintenant que l'on dispose de formule d'additions pour deux points sur une courbe elliptique on peut donner un sens à la multiplication scalaire d'un point comme $kP = \underbrace{P + \ldots + P}_{k \text{ fois}}$. On va noter cette multiplication scalaire par :
+Maintenant que l'on dispose de formule d'additions pour deux points sur une courbe elliptique on peut donner un sens à la multiplication scalaire d'un point comme $lP = \underbrace{P + \ldots + P}_{l \text{ fois}}$. On va noter cette multiplication scalaire par :
 \newline
 
 $\begin{array}{ccccc}
@@ -181,7 +183,7 @@ Soit :
 \begin{equation}
 \#E(\mathbb{F}_p) = 1 + p +\sum_{x \in \mathbb{F}_p}\genfrac(){}{0}{f(x)}{p}
 \end{equation}
-La complexité est en la taille de $p$. Cette méthode est pratique quand $p$ est petit mais devient impraticable s'il est trop grand. On illustre ce fait par un algorithme simple :
+On peut implémenter cette fonction brute force tres simplement sous sage en utilisant \path{kronecker(a,p)} qui calcule le symbole de Legendre de $a$ modulo $p$.
 \medskip
 \begin{lstlisting}
 def brute_force(p, a,b):
@@ -191,7 +193,9 @@ def brute_force(p, a,b):
 
 \end{lstlisting}
 
-On va tester la non efficacité de cette méthode lorsque $p$ devient trop grand par le graphique suivant:
+\bigskip
+La complexité est en la taille de $p$. Cette méthode est pratique quand $p$ est petit mais devient impraticable s'il est trop grand.
+On va illustrer la non efficacité de cet algorithme lorsque $p$ devient trop grand par le graphique suivant:
 
 \includegraphics[scale=0.5]{pictures/brute_force_cputime.png} 
 
@@ -220,14 +224,36 @@ $\begin{array}{ccccc}
  & & (x,y) & \mapsto & (x^p, y^p) \\
 \end{array}$
 \end{defi}
-On peut définir le polynôme caractéristique de cet endomorphisme par $\phi_p^2 - t \phi_p + p = 0$, cette relation reste en particulier vrai sur les points de $l$-torsion, ce qui nous sera utile par la suite. Ainsi nous avons : 
+On peut définir le polynôme caractéristique de cet endomorphisme par $\phi_p^2 - t \phi_p + p = 0$.
+On peut déjà faire une première remarque, connaissant $t$ la trace de l'endomorphisme de Frobenius, $E$ une courbe elliptique sur $\mathbb{F}_p$, il est facile de déterminer le cardinal de $E(\mathbb{F}_{p^n}$) pour tout $n >1$. En effet on a :
+\begin{equation*}
+\#E(\mathbb{F}_{p^n}) = p^n + 1- (r_1^n + r_2^n)
+\end{equation*}
+où $r_1, r_2$ sont les racines de $x^2 - tx +p$ dans $E(\mathbb{F}_{p^n})$, le polynôme caractéristique du Frobenius.
+\begin{proof}
+Les racines de $x^2 - tx +p$ sont $r_1$ et $r_2$, on a donc $Tr(\phi_p) = t = r_1 + r_2$. 
+\newline
+On remarque de plus que l'on a $\phi_p^n = (\phi_p)^n$ (car $\phi_{p^n} (x,y) = (x^{p^n}, y^{p^n}) = \phi_p  (x^{p^{n-1}}, y^{p^{n-1}})$, et par récurrence on trouve le résultat).
+\newline
+Ainsi : 
+\begin{align*}
+Tr(\phi_{p^n} (x,y)) &= Tr(\phi_{p} (x,y)^n) \\
+					 &= Tr(\phi_{p} (x,y))^n  \quad \text{,par linéarité de la trace}\\
+					 &= t ^ n \\
+					 &= (r_1 + r_2)^n \\
+					 &= r_1^n + r_2^n		\quad \text{,$r_1$ et $r_2$ sont dans  $\mathbb{F}_{p^n}$}	 
+\end{align*}
+On peut maintenant appliquer le théorème de Hasse-Weil pour trouver le résultat attendu.
+\end{proof}
+
+L'équation du polynôme caractéristique du Frobenius reste en particulier vrai sur les points de $l$-torsion, ce qui nous sera utile par la suite. Ainsi nous avons : 
 \begin{equation}
 \label{eqnfrobenius}
  \phi_p^2(P)  + [p_l]P = [t_{l}] \phi_p(P) \quad \forall P \in E[l]
 \end{equation} 
 Avec $t_l \equiv t \pmod l$, $p_l \equiv p \pmod l$ et $0 \leq t_l, p_l \leq l$. 
 \newline
-Il faut aussi introduire les polynôme de division d'une courbe elliptiques $E$.
+Il nous faut maintenant introduire les polynôme de division d'une courbe elliptiques $E$.
 
 \begin{defi}
 Soit une courbe elliptique $E : y^2 = x^3 + ax+b$ défini sur $\mathbb{K}$. On appelle $f_n(X)$ le n-ième polynôme de divisons définit sur $\mathbb{Z}[x]$ de manière récursive par : 
@@ -258,7 +284,7 @@ Ces polynômes sont de degrés au plus $\frac{(n^2 -1)}{2}$ si $n$ est pair, ou 
 
 \begin{proof}
 Preuve du degré de $f_n$ ? 
-Avec $n$ premier on a $E[n] \simeq \frac{\mathbb{Z}}{n\mathbb{Z}} \times \frac{\mathbb{Z}}{n\mathbb{Z}}$, soit $n^2 - 1$ points de n-torsion ? on doit les compter 2 fois donc j'imagine. Sinon la démo doit découler toute seule en utilisant les formules de recurrence mais un peu plus pénible a écrire
+Avec $n$ premier on a $E[n] \simeq \frac{\mathbb{Z}}{n\mathbb{Z}} \times \frac{\mathbb{Z}}{n\mathbb{Z}}$, soit $n^2 - 1$ points de n-torsion ? on doit les compter 2 fois donc j'imagine. Sinon la démo doit découler toute seule en utilisant les formules de récurrence mais un peu plus pénible a écrire
 \end{proof}
 
 On peut utiliser les polynôme de division pour calculer la multiplication scalaire d'un point de la courbe $E$.
@@ -297,7 +323,7 @@ On peut aussi réécrire $[m]P$ sous cette forme :
 [m]P = \left\lbrace
 \begin{array}{lll}
 O_E & \mbox{si} & P \in E[m]  \\
-\left(  X -   \frac{\psi_{m-1}(x,y)\psi_{m+1}(x,y)}{\psi^2_m(x,y)}, \frac{\psi_{2m}(x,y)}{\psi^4_m(x,y)}\right) & \mbox{sinon}  & 
+\left(  x -   \frac{\psi_{m-1}(x,y)\psi_{m+1}(x,y)}{\psi^2_m(x,y)}, \frac{\psi_{2m}(x,y)}{\psi^4_m(x,y)}\right) & \mbox{sinon}  & 
 \end{array}\right.
 \end{equation}
 \end{thm}
@@ -310,7 +336,7 @@ On a alors :
 
 \begin{align*}
 y_1 &= \frac{\omega_m}{\psi^3_m} = \frac{\psi_{2m}}{\psi_m} \frac{1}{\psi_m^3} = \frac{\psi_{2m}}{\psi_m^4} \\
-x_1 &= \frac{\phi_m}{\psi^2_m} =  \frac{X \psi^2_m - \psi_{m-1}\psi_{m+1}}{\psi_m^2} = X - \frac{\psi_{m-1}\psi_{m+1}}{\psi_m^2}	
+x_1 &= \frac{\phi_m}{\psi^2_m} =  \frac{x \psi^2_m - \psi_{m-1}\psi_{m+1}}{\psi_m^2} = x - \frac{\psi_{m-1}\psi_{m+1}}{\psi_m^2}	
 \end{align*}
 
 
@@ -318,7 +344,7 @@ x_1 &= \frac{\phi_m}{\psi^2_m} =  \frac{X \psi^2_m - \psi_{m-1}\psi_{m+1}}{\psi_
 
 \end{proof}
 On remarque que $[m]P = (x_1, y_1)$ avec $x_1$ uniquement fonction de $x$. En effet en utilisant les formules de récurrence, si $m$ est pair $\psi_m^2 = 4y^2f_m$, mais en utilisant l'équation de $E$ on peut remplacer $y^2$ par une fonction de $x$, et les polynômes de division sont en fonction de $x$. De plus comme $m$ est pair les polynômes $\psi_{m+1} et \psi_{m-1}$ sont uniquement en fonction de $x$. Dans le cas où $m$ est impair on à l'inverse, le numérateur fait apparaître un $y^2$ qu'on peut remplacer par une fonction de $x$ comme précédemment et le dénominateur est une fonction de $x$. Quand à $y_1$, son degré en $y$ est au plus $1$. Si $m$ est pair $\psi_m^4$ fait apparaître un $y^4$ qui s'exprime en fonction de $x$, et $\psi_{2m}$ amène un $y$. On montre la même chose quelque soit la parité de $m$ et $2m$.
-On peut ainsi exprimer $[m]P$ comme un polynôme en $X,Y$. Mais ce n'est pas la seule particularité de ces polynôme utile pour notre algorithme. En effet $P = (x_1, y_1)$ est un point de l-torsion si et seulement si $x_1$ est une racine du l-ième polynôme de division $f_l$. De plus $P$ est sur la courbe $E$. Les points de l-torsion sont donc solution du système d'équation : 
+On peut ainsi exprimer $[m]P$ comme un polynôme en $x,y$. Mais ce n'est pas la seule particularité de ces polynôme utile pour notre algorithme. En effet $P = (x_1, y_1)$ est un point de l-torsion si et seulement si $x_1$ est une racine du l-ième polynôme de division $f_l$. De plus $P$ est sur la courbe $E$. Les points de l-torsion sont donc solution du système d'équation : 
 \begin{equation}
 E(x,y) = y^2 - x^3 - ax - b = 0, \quad f_l(x) = 0
 \end{equation}
@@ -339,7 +365,7 @@ L'idée de Schoof est de calculer la trace de l'endomorphisme de Frobenius modul
 
 
 \subsubsection{Cas $l=2$}
-Ce cas est particulier et doit être traiter à part car on suppose nos premiers impairs. 0n a $t_2 \equiv 0 \pmod 2$ si et seulement si $E(\mathbb{F_p})$ à un élément d'ordre $2$, c'est à dire un point de $2$-torsion. Or les points de $2$ torsions sont de la forme $(x, 0)$. En effet, si $2P = 0$, pour $P \in E(\mathbb{F_p})$ alors $P = -P$, et cela correspond aux points de l'axe des abscisses. Ainsi $t_2$ est congru à $0$ si et seulement si $x^3 +ax +b$ à une racine dans $\mathbb{F_p}$. Mais les racines de $\mathbb{F_p}$ sont entièrement déterminé par le polynôme $x^p - x$, nos deux polynômes partageraient alors une racine commune. La façon utilisé ici pour décider si $t_2 \equiv 0 \pmod 2$ est donc de calculer si $\gcd(x^p - x, x^3 +ax +b) \ne 1$.
+Ce cas est particulier et doit être traiter à part car on suppose nos premiers impairs. 0n a $t_2 \equiv 0 \pmod 2$ si et seulement si $E(\mathbb{F}_p)$ à un élément d'ordre $2$, c'est à dire un point de $2$-torsion. Or les points de $2$ torsions sont de la forme $(x, 0)$. En effet, si $2P = 0$, pour $P \in E(\mathbb{F_p})$ alors $P = -P$, et cela correspond aux points de l'axe des abscisses. Ainsi $t_2$ est congru à $0$ si et seulement si $x^3 +ax +b$ à une racine dans $\mathbb{F_p}$. Mais les racines de $\mathbb{F_p}$ sont entièrement déterminé par le polynôme $x^p - x$, nos deux polynômes partageraient alors une racine commune. La façon utilisé ici pour décider si $t_2 \equiv 0 \pmod 2$ est donc de calculer si $\gcd(x^p - x, x^3 +ax +b) \ne 1$.
 
 \subsubsection{Calcul des polynômes de division}
 Il existe dans SAGE une fonction permettant de calculer les polynôme de division, \path{polynomial_polynomial(n)} renvoyant le n-ième polynôme de division. Mais comme au cours de l'algorithme on doit souvent utiliser différents polynôme de division et de plus ils sont calculé via des formules de récurrence. Il ne me paraissait pas forcement très judicieux d'utiliser la fonction de sage qui allait de toute façon très certainement à chaque appel devoir recalculer via les formules de récurrence le polynôme souhaité. L'idée étant de stocker tous ces polynômes dans un dictionnaire, une fois la phase de pré calcul faite on peut donc accéder à tous les polynômes de division que l'on souhaite en temps constant au cours de l’exécution de l'algorithme de Schoof. Et en utilisant la fonction de SAGE j'ai tout de même vérifié via une fonction de test que je trouvais bien les même polynômes qu'avec ma fonction.
@@ -375,10 +401,11 @@ Ainsi $p_l$ est un carré modulo $l$. On pose $p_l = \omega^2 \pmod{l}$. On va m
 \medskip
 Si $p_l$ n'est pas un carré modulo $l$ on est dans le cas $(x^{p^2}, y^{p^2}) = - [p_l](x,y)$ et on on a alors $t_l = 0$ d'après l'équation caractéristique. 
 
-
+\paragraph*{Implémentation}
+Il a fallut commencer par implémenter des fonctions de base sur les courbes elliptique pour additionner, calculer une multiplication scalaire, 
 
 \newpage
-\paragraph{Algorithme}
+\subsubsection{Algorithme}
 On donne une version complète en langage naturel de l'algorithme de schoof : 
 
 \begin{algorithm}
@@ -460,9 +487,17 @@ y_3 &= \frac{y(4x^2+9x+16) - y}{3x^2 +2x +5 - x} (4x^2+9x+16 -  16x^2 - 16x - 6)
 	&= y(4x^2+9x+15)(x^2+15x+6)( -12x^2 - 7x +10 ) - y(4x^2+9x+16)\\
 	&= y(13x^2 + 13x + 14)
 \end{align*}
-(reprendre le calcul de $y_3$, le resultat final est juste mais erreur dans les calcules intermédiaire !
+(reprendre le calcul de $y_3$, le résultat final est juste mais erreur dans les calcules intermédiaire !
 
-Maintenant nous devons calculer pour $\tau$ variant de $0$ à $2$ si $(x_3, y_3) = \tau (x^p, y^p)$.
+Maintenant nous devons calculer pour $\tau$ variant de $0$ à $2$ si $(x_3, y_3) = \tau (x^p, y^p)=(x_{\tau}^p, y_{\tau}^p)$  (.Pour $\tau = 1$ on trouve $x_3 = x_{\tau}^p$ et $y^p= - y_{\tau}^p$. Ainsi $t_3 = -\tau = -1 = 2 \pmod 3$. 
+
+
+\subsubsection{Expérimentations}
+
+Faire les test de l'algo + comparaison avec brute force/methode native sage
+Inserer les graphiques + commenter 
 \subsubsection{Complexité}
-La complexité de l'algorithme de Schoof est en $O(\log{q}^8)$. L'algorithme est plus efficace qu'une version naive quand la taille de $p$ augmente mais reste néanmoins limité pour $p$ trop grand. En effet le degré des polynômes de division en $O(l^2)$ empêche une performance optimale pour des tailles de $p$ trop importante.Une solution est donc de travailler avec des polynômes plus adapté, de plus petit degré. 
+La complexité de l'algorithme de Schoof est en $O(\log{q}^8)$. La partie conteuse de l'algorithme réside dans les calculs dans l'anneau $R = \frac{\mathbb{F_p}[x,y]}{(f_l(x), y^2 -x^3 -ax -b)}$. Les éléments de R sont de degré $O(l^2)$ 
+\newline
+ L'algorithme est plus efficace qu'une version naïve quand la taille de $p$ augmente mais reste néanmoins limité pour $p$ trop grand. En effet le degré des polynômes de division en $O(l^2)$ empêche une performance optimale pour des tailles de $p$ trop importante. Une amélioration de cet algorithme a été proposé par Elkies-Atkin pour produire un algorithme plus performant, le SEA. 
 \end{document}

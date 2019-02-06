@@ -1,15 +1,17 @@
 \select@language {french}
-\contentsline {section}{\numberline {1}Introduction aux courbes elliptiques}{3}
-\contentsline {section}{\numberline {2}Compter les points sur une courbe}{4}
-\contentsline {subsection}{\numberline {2.1}Algorithme naif}{4}
-\contentsline {subsection}{\numberline {2.2}Shanks}{5}
-\contentsline {subsection}{\numberline {2.3}Schoof}{5}
-\contentsline {subsubsection}{\numberline {2.3.1}Choix de l'ensemble de premiers}{7}
-\contentsline {subsubsection}{\numberline {2.3.2}Cas $l=2$}{7}
-\contentsline {subsubsection}{\numberline {2.3.3}Calcul des polyn\IeC {\^o}mes de division}{7}
-\contentsline {subsubsection}{\numberline {2.3.4}Calcul de $(x^{p^2}, y^{p^2}) + [p_l](x,y)$}{7}
-\contentsline {paragraph}{Algorithme}{9}
-\contentsline {subsubsection}{\numberline {2.3.5}Exemple}{9}
+\contentsline {section}{\numberline {1}Introduction}{3}
+\contentsline {section}{\numberline {2}Introduction aux courbes elliptiques}{3}
+\contentsline {section}{\numberline {3}Compter les points sur une courbe}{4}
+\contentsline {subsection}{\numberline {3.1}Algorithme naif}{4}
+\contentsline {subsection}{\numberline {3.2}Shanks}{5}
+\contentsline {subsection}{\numberline {3.3}Schoof}{5}
+\contentsline {subsubsection}{\numberline {3.3.1}Choix de l'ensemble de premiers}{7}
+\contentsline {subsubsection}{\numberline {3.3.2}Cas $l=2$}{8}
+\contentsline {subsubsection}{\numberline {3.3.3}Calcul des polyn\IeC {\^o}mes de division}{8}
+\contentsline {subsubsection}{\numberline {3.3.4}Calcul de $(x^{p^2}, y^{p^2}) + [p_l](x,y)$}{8}
+\contentsline {subsubsection}{\numberline {3.3.5}Algorithme}{9}
+\contentsline {subsubsection}{\numberline {3.3.6}Exemple}{9}
 \contentsline {paragraph}{$\textbf {l=2}$}{9}
 \contentsline {paragraph}{$\textbf {l=3}$}{9}
-\contentsline {subsubsection}{\numberline {2.3.6}Complexit\IeC {\'e}}{10}
+\contentsline {subsubsection}{\numberline {3.3.7}Exp\IeC {\'e}rimentations}{10}
+\contentsline {subsubsection}{\numberline {3.3.8}Complexit\IeC {\'e}}{10}
