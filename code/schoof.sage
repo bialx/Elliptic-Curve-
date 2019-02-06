@@ -54,7 +54,6 @@ def schoof2(E):
 
         phi = (W(x**p), W(y**p))           #(x^p, y^p)
         phi2 = (W(x**(p**2)), W(y**(p**2)))  #(x^(p^2), y^(p^2))
-        print "phi2: ", phi2
         phi2_x, phi2_y = phi2
         prod = nP_double_and_add(p%l,(W(x),W(y)),a)    #[p mod l]*(x,y)
         prod_x, prod_y = prod
@@ -95,7 +94,7 @@ def schoof2(E):
             list_t.append(0)
 
     """ return t using chinese remainder theorem"""
-    print list_t, list_l
+    print (list_t, list_l)
     t = crt(list_t, list_l)
     if t > (N-1)/2:
         return t-N
@@ -110,4 +109,4 @@ K = GF(p)
 E = EllipticCurve(K,[2,1])
 a,b = E.a4(), E.a6()
 schoof2(E)
-print E.trace_of_frobenius()
+print (E.trace_of_frobenius())

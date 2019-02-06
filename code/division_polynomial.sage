@@ -36,7 +36,7 @@ def reccurence_poly(n, dict):
 #compute nP using division polynomial,  args : n, param = carac, [a,b] to construct E, l the division polynomial used in the modulus of the ring
 #                                               dict with divsion polynomial, P = (x,y)
 def nP(n, param_E, dict, P):
-    print "entering nP computation", P
+    print ("entering nP computation", P)
     n = RR(n)
     K, a, b, l = param_E
     P_x, P_y = P
@@ -63,10 +63,10 @@ def nP(n, param_E, dict, P):
     inter_n_minus_1 =S(dict.get(n-1))
     inter_n_plus_1 = S(dict.get(n+1))
     inter_2n = S(dict.get(2*n))
-    print inter_n.parent(),inter_n_minus_1.parent(),inter_n_plus_1.parent(),inter_2n.parent(), inter_n,inter_n_minus_1,inter_n_plus_1,inter_2n, type(inter_n)
+    print( inter_n.parent(),inter_n_minus_1.parent(),inter_n_plus_1.parent(),inter_2n.parent(), inter_n,inter_n_minus_1,inter_n_plus_1,inter_2n, type(inter_n))
 
     if n % 2 == 0:
-        print "n = ",n
+        print ("n = ",n)
    #      print "n",inter_n, type(inter_n), type(5), type(inter_n) != type(5)
         if type(inter_n) != type(5):
             psi_n = (2*y1*inter_n)(x1=P_x,y1=P_y)
@@ -95,7 +95,7 @@ def nP(n, param_E, dict, P):
             psi_n_minus_1 = W(psi_n_minus_1)
         if type(inter_n_plus_1) != type(5):
             psi_n_plus_1 = (2*y1*inter_n_plus_1)(x1=P_x, y1=P_y)
-            print "->", psi_n_plus_1, psi_n_plus_1.parent()
+            print ("->", psi_n_plus_1, psi_n_plus_1.parent())
             psi_n_plus_1 = W(psi_n_plus_1)
         # if type(inter_n) == type(5):
 #             psi_n = W(inter)

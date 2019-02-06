@@ -10,13 +10,14 @@ def brute_force_graph(bound):
     return
 
 def schoof_graph(bound):
-   time = []
-   for p in prime_range(bound):
+    time = []
+    for p in prime_range(bound):
         E = EllipticCurve(GF(p), 2,1)
         time.append((p, cputime(schoof2(E))))
     g = plot(line(time, legend_label ='schoof #E, with E : y^2 = x^3 + 2*x + 1 ', rgbcolor = 'red'))
     g.save("../rapport/pictures/schoof_cputime.png")
-    
+    return
+
 def brute_force_vs_schoof(bound):
     time2 = []
     time1 = [(p, cputime(brute_force(p, 2,1))) for p in prime_range(bound)]
@@ -27,3 +28,4 @@ def brute_force_vs_schoof(bound):
     g2 = plot(line(time2, legend_label ='schoof', rgbcolor = 'blue'))
     g = g1 + g2
     g.save("../rapport/pictures/schoof_vs_bruteforce.png")
+    return
