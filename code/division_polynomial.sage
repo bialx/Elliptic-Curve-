@@ -1,5 +1,6 @@
 
 def division_polynomial(K,a,b,l):
+    """ return a dictionnary with all the polynomial division between 1 and l"""
     R.<x,y> = PolynomialRing(GF(K))
     E = EllipticCurve(GF(K), [a,b])
     dict = {}
@@ -13,8 +14,8 @@ def division_polynomial(K,a,b,l):
         n += 1
     return dict
 
-
 def reccurence_poly(n, dict):
+    """ reccurence formulae used to compute the l-th division polynomial"""
     if n%2 != 0:
         m = floor(n/2)
         if m%2 == 0:
@@ -27,6 +28,9 @@ def reccurence_poly(n, dict):
     return dict
 
 
+
+### THE FOLLOWING ALGO IS CURRENTLY NOT WORKING NEED TO CHANGE IT ###
+### USE nP_double_and_add() is EC_basic_computation.sage instead  ###
 #compute nP using division polynomial,  args : n, param = carac, [a,b] to construct E, l the division polynomial used in the modulus of the ring
 #                                               dict with divsion polynomial
 #compute nP using division polynomial,  args : n, param = carac, [a,b] to construct E, l the division polynomial used in the modulus of the ring
