@@ -16,4 +16,6 @@
 \contentsline {subsubsection}{\numberline {3.3.7}Exp\IeC {\'e}rimentations}{12}
 \contentsline {subsubsection}{\numberline {3.3.8}Complexit\IeC {\'e}}{13}
 \contentsline {subsection}{\numberline {3.4}Algorithme SEA}{13}
-\contentsline {subsubsection}{\numberline {3.4.1}Isog\IeC {\'e}nie}{13}
+\contentsline {subsubsection}{\numberline {3.4.1}Analyse complexe}{13}
+\contentsline {subsubsection}{\numberline {3.4.2}Isog\IeC {\'e}nie}{14}
+\contentsline {subsubsection}{\numberline {3.4.3}Polyn\IeC {\^o}me modulaire}{14}

@@ -24,6 +24,8 @@
   \usepackage{algorithm}
   \usepackage{appendix}
   \usepackage{stmaryrd}
+  \usepackage{calrsfs}
+%  \usepackage{boondox-cal}
   \usepackage{tikz}  
   \usetikzlibrary{decorations.pathmorphing}
   \usetikzlibrary{decorations.pathreplacing}
@@ -555,11 +557,12 @@ Inserer les graphiques + commenter
 \caption{Comparaison temps exécution entre les algorithme de Schoof et de brute force}
 \includegraphics[scale=0.6]{pictures/schoof_vs_bruteforce.png} 
 \end{figure}
+On peut tirer deux informations intéressantes de ce graphique. D'une part on a confirmation que l'algorithme de Schoof est bien plus efficace que la méthode naïve dès que $p$ devient grand, mais on voit graphiquement que pour $p<2500$ il est plus efficace d'utiliser l'algorithme naïf.
 \newpage
 \subsubsection{Complexité}
 La complexité de l'algorithme de Schoof est en $O(\log{q}^8)$. La partie conteuse de l'algorithme réside dans les calculs dans l'anneau $R = \frac{\mathbb{F_p}[x,y]}{(f_l(x), y^2 -x^3 -ax -b)}$. Les éléments de R sont de degré $O(l^2)$ 
 \newline
- L'algorithme est plus efficace qu'une version naïve quand la taille de $p$ augmente mais reste néanmoins limité pour $p$ trop grand. En effet le degré des polynômes de division en $O(l^2)$ empêche une performance optimale pour des tailles de $p$ trop importante. Une amélioration de cet algorithme a été proposé par Elkies-Atkin pour produire un algorithme plus performant, le SEA. 
+ L'algorithme est plus efficace qu'une version naïve quand la taille de $p$ augmente mais reste néanmoins limité pour $p$ trop grand. En effet le degré des polynômes de division en $O(l^2)$ empêche une performance optimale pour des tailles de $p$ trop importante. Les polynômes de division deviennent rapidement très grand, ce qui pose un problème de mémoire. Une amélioration de cet algorithme a été proposé par Elkies-Atkin pour produire un algorithme plus performant, le SEA. 
  
 \subsection{Algorithme SEA}
 Il va être nécessaire d'introduire plus de théorie avant de s'attaquer à l'algorithme en lui même. L'idée finale est d'utiliser un polynôme de degré plus petit que les polynômes de division utilisés dans l'algorithme de Schoof, les polynômes modulaire. Pour les définir il va être nécessaire d'introduire un peu de théorie d'analyse complexe.
@@ -575,9 +578,64 @@ En d'autres termes, dire que deux courbes sont isomorphe signifie qu'il existe u
 Soit $E_1$/$K$ et $E_2$/$K$ deux courbes elliptiques isomorphe. On a alors un morphisme de groupe entre $E_1(K)$ et $E_2(K)$.
 \end{prop}
 
+
+\subsubsection{Analyse complexe}
+La théorie des courbes elliptiques est importe sur le corps des complexes mais nous allons uniquement donner des définitions et formules utiles sans rentrer dans le détails de preuve et résultats non pertinent pour la compréhension de l'algorithme SEA. On peut légitimement se demander le rapport entre courbe elliptique et analyse complexe, dans un premier temps il est nécessaire d'introduire un peu de théorie d'analyse complexe et rappeler quelques définitions avant de faire le lien entre les deux.
+
+\begin{defi}
+Une fonction holomorphe est une fonction à valeur complexes, définies et dérivable en tout points d'un sous ensemble ouvert du plan complexe $\mathbb{C}$. Une fonction est dite méromorphe si elle est holomorphe dans tout le plan complexe $\mathbb{C}$, sauf éventuellement sur un ensemble de points isolés dont chacun est un pôle pour la fonction.
+\end{defi}
+
+
+\begin{prop}
+Soit $n \in \mathbb{N}$, $r \in \mathbb{R}$, $(w_i)_{1 \leq i \leq r}$ une partie libre du $\mathbb{R}$-espace vectoriel $\mathbb{R}^n$. Tout sous groupe discret non nul $\Gamma$ de $\mathbb{R}^n$ peut s'écrire sous la forme :
+\begin{equation*}
+\Gamma = \mathbb{Z}_{\omega_1} + \ldots + \mathbb{Z}_{\omega_r}
+\end{equation*}
+Un tel groupe $\Gamma$ est un réseau de $\mathbb{R}^n$ de rang $r$.
+\end{prop}
+Dans le cas particulier de $\mathbb{C}$, ses sous-groupes discrets non nuls et non isomorphe à $\mathbb{Z}$ sont de la forme $\mathbb{Z}\omega_1 + \mathbb{Z}w_2$ avec $\omega_1, \omega_2 \in \mathbb{C}$ et $Im(\frac{w_2}{w_1}) \ne 0$ = .
+
+\begin{defi}
+On appelle tore le quotient $T = \mathbb{C}$/$\Gamma$. Cest le quotient du groupe $(\mathbb{C}, +)$ par le réseau $\Gamma = \mathbb{Z}\omega_1 + \mathbb{Z}w_2$
+\newline
+Une fonction elliptique de période $\Gamma$ est une fonction méromorphe $f$ sur $\mathbb{C}$ telle que $f(z + \omega) = f(z) ,\ \forall \omega \in \Gamma$.
+\end{defi}
+
+\begin{defi}
+Soit $\Gamma$ un réseau de $\mathbb{C}$, on introduit la série :
+\begin{equation*}
+\rho(z) = \frac{1}{z^2} + \sum_{w \in \Gamma, \omega \ne 0} \frac{1}{(z-\omega)^2} - \frac{1}{\omega^2}
+\end{equation*}
+On a une convergence absolue uniforme sur tout compact disjoint de $\Gamma$ de cette série. De plus cette fonction est elliptique. On peut aussi définir sa dérivée $\rho$' qui de même est elliptique :
+\begin{equation*}
+\rho' = -2 \sum_{\omega \in \Gamma} \frac{1}{(z-\omega)^3}
+\end{equation*}
+On peut montrer qu'avec $\Gamma = \omega_1 \mathbb{Z} + \omega_2 \mathbb{Z}$ cette fonction $\rho$ est double périodique de période $\omega_1, \omega_2$.
+\end{defi}
+
+Le théorème suivant permet de faire le lien entre ces fonctions d'analyse complexe et les courbes elliptique.
+
+\begin{thm}
+Soit $E$/$\mathbb{C}$ une courbe elliptique sous forme réduite sur le corps des complexes. Il existe alors un réseau $\Gamma$ tel que l'application suivante soit une bijection:
+\newline
+\medskip
+
+
+$\begin{array}{cccc}
+& E\text{/ }\mathbb{C} & \to & E \\
+& z + \Gamma & \mapsto & \left\lbrace
+\begin{array}{cc}
+ (\rho(z), \frac{\rho'(z)}{2})  & z \notin \Gamma \\
+ O & z \in \Gamma
+\end{array}\right.\\
+\end{array}$
+
+\end{thm}
+
 \subsubsection{Isogénie}
 
-
+\subsubsection{Polynôme modulaire}
 
 
 
