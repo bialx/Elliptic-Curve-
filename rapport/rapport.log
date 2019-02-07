@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015/Debian) (preloaded format=pdflatex 2018.11.18)  7 FEB 2019 16:29
+This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015/Debian) (preloaded format=pdflatex 2018.11.18)  7 FEB 2019 19:26
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1246,47 +1246,47 @@ Package caption Info: End \AtBeginDocument code.
 \c@prop=\count185
 \c@defi=\count186
 \c@thm=\count187
-LaTeX Font Info:    Try loading font information for OT1+lmr on input line 88.
+LaTeX Font Info:    Try loading font information for OT1+lmr on input line 89.
 (/usr/share/texmf/tex/latex/lm/ot1lmr.fd
 File: ot1lmr.fd 2009/10/30 v1.6 Font defs for Latin Modern
 )
-LaTeX Font Info:    Try loading font information for OML+lmm on input line 88.
+LaTeX Font Info:    Try loading font information for OML+lmm on input line 89.
 
 (/usr/share/texmf/tex/latex/lm/omllmm.fd
 File: omllmm.fd 2009/10/30 v1.6 Font defs for Latin Modern
 )
-LaTeX Font Info:    Try loading font information for OMS+lmsy on input line 88.
+LaTeX Font Info:    Try loading font information for OMS+lmsy on input line 89.
 
 
 (/usr/share/texmf/tex/latex/lm/omslmsy.fd
 File: omslmsy.fd 2009/10/30 v1.6 Font defs for Latin Modern
 )
-LaTeX Font Info:    Try loading font information for OMX+lmex on input line 88.
+LaTeX Font Info:    Try loading font information for OMX+lmex on input line 89.
 
 
 (/usr/share/texmf/tex/latex/lm/omxlmex.fd
 File: omxlmex.fd 2009/10/30 v1.6 Font defs for Latin Modern
 )
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <12> on input line 88.
+(Font)              <12> on input line 89.
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <8> on input line 88.
+(Font)              <8> on input line 89.
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <6> on input line 88.
-LaTeX Font Info:    Try loading font information for U+msa on input line 88.
+(Font)              <6> on input line 89.
+LaTeX Font Info:    Try loading font information for U+msa on input line 89.
 
 (/usr/share/texlive/texmf-dist/tex/latex/amsfonts/umsa.fd
 File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 )
-LaTeX Font Info:    Try loading font information for U+msb on input line 88.
+LaTeX Font Info:    Try loading font information for U+msb on input line 89.
 
 (/usr/share/texlive/texmf-dist/tex/latex/amsfonts/umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 )
-LaTeX Font Info:    Try loading font information for U+stmry on input line 88.
+LaTeX Font Info:    Try loading font information for U+stmry on input line 89.
 
 (/usr/share/texlive/texmf-dist/tex/latex/stmaryrd/Ustmry.fd)
-LaTeX Font Info:    Try loading font information for OMS+rsfs on input line 88.
+LaTeX Font Info:    Try loading font information for OMS+rsfs on input line 89.
 
 
 (/usr/share/texlive/texmf-dist/tex/latex/calrsfs/OMSrsfs.fd) [1
@@ -1311,7 +1311,7 @@ LaTeX Font Info:    External font `lmex10' loaded for size
 \openout4 = `rapport.toc'.
 
  [2]
-LaTeX Font Info:    Try loading font information for T1+lmtt on input line 94.
+LaTeX Font Info:    Try loading font information for T1+lmtt on input line 95.
  (/usr/share/texmf/tex/latex/lm/t1lmtt.fd
 File: t1lmtt.fd 2009/10/30 v1.6 Font defs for Latin Modern
 ) [3]
@@ -1319,31 +1319,31 @@ File: t1lmtt.fd 2009/10/30 v1.6 Font defs for Latin Modern
 File: pictures/hqdefault.jpg Graphic file (type jpg)
 
 <use pictures/hqdefault.jpg>
-Package pdftex.def Info: pictures/hqdefault.jpg used on input line 153.
+Package pdftex.def Info: pictures/hqdefault.jpg used on input line 154.
 (pdftex.def)             Requested size: 337.25769pt x 252.94327pt.
 
-Underfull \hbox (badness 10000) in paragraph at lines 159--161
+Underfull \hbox (badness 10000) in paragraph at lines 160--162
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 167--169
+Underfull \hbox (badness 10000) in paragraph at lines 168--170
 
  []
 
 [4 <./pictures/hqdefault.jpg>]
 LaTeX Font Info:    Font shape `T1/lmtt/bx/n' in size <10> not available
-(Font)              Font shape `T1/lmtt/b/n' tried instead on input line 193.
+(Font)              Font shape `T1/lmtt/b/n' tried instead on input line 194.
 
 <pictures/brute_force_cputime.png, id=39, 565.8741pt x 419.8887pt>
 File: pictures/brute_force_cputime.png Graphic file (type png)
 
 <use pictures/brute_force_cputime.png>
 Package pdftex.def Info: pictures/brute_force_cputime.png used on input line 20
-4.
+5.
 (pdftex.def)             Requested size: 282.93636pt x 209.94383pt.
  [5 <./pictures/brute_force_cputime.png>] [6] [7]
-Overfull \hbox (19.45425pt too wide) in paragraph at lines 377--378
+Overfull \hbox (19.45425pt too wide) in paragraph at lines 378--379
 []\T1/lmr/m/n/10 Il existe dans SAGE une fonc-tion per-met-tant de cal-cu-ler l
 es po-ly-nôme de di-vi-sion, $\T1/lmtt/m/n/10 polynomial _ polynomial(n)$
  []
@@ -1353,7 +1353,7 @@ es po-ly-nôme de di-vi-sion, $\T1/lmtt/m/n/10 polynomial _ polynomial(n)$
 File: pictures/schoof_cputime.png Graphic file (type png)
 
 <use pictures/schoof_cputime.png>
-Package pdftex.def Info: pictures/schoof_cputime.png used on input line 552.
+Package pdftex.def Info: pictures/schoof_cputime.png used on input line 553.
 (pdftex.def)             Requested size: 339.9607pt x 252.8024pt.
 
 <pictures/schoof_vs_bruteforce.png, id=68, 565.8741pt x 419.8887pt>
@@ -1361,15 +1361,15 @@ File: pictures/schoof_vs_bruteforce.png Graphic file (type png)
 
 <use pictures/schoof_vs_bruteforce.png>
 Package pdftex.def Info: pictures/schoof_vs_bruteforce.png used on input line 5
-58.
+59.
 (pdftex.def)             Requested size: 339.52707pt x 251.93517pt.
  [12 <./pictures/schoof_cputime.png> <./pictures/schoof_vs_bruteforce.png>] [13
 ] [14] (./rapport.aux) ) 
 Here is how much of TeX's memory you used:
- 21126 strings out of 493029
- 390967 string characters out of 6136233
+ 21127 strings out of 493029
+ 390969 string characters out of 6136233
  488171 words of memory out of 5000000
- 24143 multiletter control sequences out of 15000+600000
+ 24144 multiletter control sequences out of 15000+600000
  80086 words of font info for 75 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  54i,19n,97p,1106b,1211s stack positions out of 5000i,500n,10000p,200000b,80000s
@@ -1391,7 +1391,7 @@ s/type1/public/lm/lmsy10.pfb></usr/share/texmf/fonts/type1/public/lm/lmsy5.pfb>
 share/texlive/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb></usr/s
 hare/texlive/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm5.pfb></usr/sha
 re/texlive/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm7.pfb>
-Output written on rapport.pdf (14 pages, 501149 bytes).
+Output written on rapport.pdf (14 pages, 505306 bytes).
 PDF statistics:
  155 PDF objects out of 1000 (max. 8388607)
  109 compressed objects within 2 object streams

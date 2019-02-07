@@ -80,8 +80,9 @@
 %\usepackage{sagetex}
 
 \graphicspath{{../pictures/}}
-
+\DeclareMathOperator{\e}{e}
 \begin{document}
+
 \newtheorem{prop}{Proposition}
 \newtheorem{defi}{Définition}
 \newtheorem{thm}{Théorème}
@@ -566,17 +567,6 @@ La complexité de l'algorithme de Schoof est en $O(\log{q}^8)$. La partie conteu
  
 \subsection{Algorithme SEA}
 Il va être nécessaire d'introduire plus de théorie avant de s'attaquer à l'algorithme en lui même. L'idée finale est d'utiliser un polynôme de degré plus petit que les polynômes de division utilisés dans l'algorithme de Schoof, les polynômes modulaire. Pour les définir il va être nécessaire d'introduire un peu de théorie d'analyse complexe.
-\newline
-Soit $K$ un corps fini, on va noter dans la suite $E$/$K$ la courbe elliptique définie sur ce corps et on ne travaillera uniquement avec des courbes sous forme réduite.
-
-\begin{defi}
-Soit $E_1$/$K$ et $E_2$/$K$ deux courbes elliptiques. Si $E_1$ et $E_2$ ont le même $j$-invariant alors elles sont isomorphiques sur $\bar{K}$. 
-\end{defi}
-En d'autres termes, dire que deux courbes sont isomorphe signifie qu'il existe un changement de variable permettant de passer de l'une à l'autre. Avec un isomorphisme entre nos courbes on peut s'intéresser à la structure des groupes des points rationnelles de nos courbes, et à leurs relations.
-
-\begin{prop}
-Soit $E_1$/$K$ et $E_2$/$K$ deux courbes elliptiques isomorphe. On a alors un morphisme de groupe entre $E_1(K)$ et $E_2(K)$.
-\end{prop}
 
 
 \subsubsection{Analyse complexe}
@@ -594,7 +584,7 @@ Soit $n \in \mathbb{N}$, $r \in \mathbb{R}$, $(w_i)_{1 \leq i \leq r}$ une parti
 \end{equation*}
 Un tel groupe $\Gamma$ est un réseau de $\mathbb{R}^n$ de rang $r$.
 \end{prop}
-Dans le cas particulier de $\mathbb{C}$, ses sous-groupes discrets non nuls et non isomorphe à $\mathbb{Z}$ sont de la forme $\mathbb{Z}\omega_1 + \mathbb{Z}w_2$ avec $\omega_1, \omega_2 \in \mathbb{C}$ et $Im(\frac{w_2}{w_1}) \ne 0$ = .
+Dans le cas particulier de $\mathbb{C}$, ses sous-groupes discrets non nuls et non isomorphe à $\mathbb{Z}$ sont de la forme $\mathbb{Z}\omega_1 + \mathbb{Z}w_2$ avec $\omega_1, \omega_2 \in \mathbb{C}$ et $Im(\frac{w_2}{w_1}) \ne 0$. En pratique on va souvent considérer $\tau = \frac{\omega_2}{\omega_1}$ pour avoir $\Gamma = \mathbb{Z} + \tau \mathbb{Z}$.
 
 \begin{defi}
 On appelle tore le quotient $T = \mathbb{C}$/$\Gamma$. Cest le quotient du groupe $(\mathbb{C}, +)$ par le réseau $\Gamma = \mathbb{Z}\omega_1 + \mathbb{Z}w_2$
@@ -614,7 +604,7 @@ On a une convergence absolue uniforme sur tout compact disjoint de $\Gamma$ de c
 On peut montrer qu'avec $\Gamma = \omega_1 \mathbb{Z} + \omega_2 \mathbb{Z}$ cette fonction $\rho$ est double périodique de période $\omega_1, \omega_2$.
 \end{defi}
 
-Le théorème suivant permet de faire le lien entre ces fonctions d'analyse complexe et les courbes elliptique.
+Les théorèmes suivants permettent de faire le lien entre ces fonctions d'analyse complexe et les courbes elliptique.
 
 \begin{thm}
 Soit $E$/$\mathbb{C}$ une courbe elliptique sous forme réduite sur le corps des complexes. Il existe alors un réseau $\Gamma$ tel que l'application suivante soit une bijection:
@@ -630,15 +620,42 @@ $\begin{array}{cccc}
  O & z \in \Gamma
 \end{array}\right.\\
 \end{array}$
+\end{thm}
 
+\begin{thm}
+La fonction $\rho$ satisfait l'équation différentielle suivante : 
+\begin{equation*}
+\rho'(z)^2 = 4\rho^3(z) + A \rho(z) + B
+\end{equation*}
+Où les coefficient $A,B$ sont totalement déterminés en analysant les développement limités en $0$ de $\rho, \rho'$ et $\rho'^2$ 
 \end{thm}
 
 \subsubsection{Isogénie}
+Soit $K$ un corps fini, on va noter dans la suite $E$/$K$ la courbe elliptique définie sur ce corps et on ne travaillera uniquement avec des courbes sous forme réduite.
+
+\begin{defi}
+Soit $E_1$/$K$ et $E_2$/$K$ deux courbes elliptiques. Si $E_1$ et $E_2$ ont le même $j$-invariant alors elles sont isomorphiques sur $\bar{K}$. 
+\end{defi}
+En d'autres termes, dire que deux courbes sont isomorphe signifie qu'il existe un changement de variable permettant de passer de l'une à l'autre. Avec un isomorphisme entre nos courbes on peut s'intéresser à la structure des groupes des points rationnelles de nos courbes, et à leurs relations.
+
+\begin{prop}
+Soit $E_1$/$K$ et $E_2$/$K$ deux courbes elliptiques isomorphe. On a alors un morphisme de groupe entre $E_1(K)$ et $E_2(K)$.
+\end{prop}
+
+\begin{defi}
+Soit deux courbes elliptiques $E_1$ et $E_2$, $T_1=\mathbb{C}$/ $\Gamma_1$ et $T_2 = \mathbb{C}$/ $\Gamma_2$ les deux tores associés. Un morphisme de $E_1$ vers $E_2$ est une application holomorphe $\mu$ de $T_1$ vers $T_2$ qui soit un morphisme de groupe. Si ce morphisme est non constant alors on dit que c'est une isogénie.
+\end{defi}
+
+Deux courbes elliptique $E_1$/$K$ et $E_2$/$K$ sont isogène s'il existe une isogénie $\psi : E_1 \mapsto E_2$. Une Le degré de l’isogénie est le degré du noyau de $\psi$.
+
 
 \subsubsection{Polynôme modulaire}
+Ce sont les polynôme que l'on va utiliser dans l'algorithme SEA. Comme vu dans les parties précédentes on peut associer à chaque courbe elliptique $E$/$\mathbb{C}$ un invariant $\tau$ (on définissait un réseau $\Gamma = \mathbb{Z}+\tau \mathbb{Z}$), on a aussi $p=\e^{2\pi i \tau}$. De plus on a exprimé le $j$-invariant de $E$ comme une série entière $j(p)$. Dans la suite on va noter $j(\tau) = j_E$.
 
+\begin{defi}
+Soit $E_1$/$\mathbb{C}$ et $E_2$/$\mathbb{C}$ deux courbes elliptiques de $j$-invariant respectivement $j_{E_1}$ et $j_{E_2}$. Le $l$-ième polynôme modulaire vérifie $\Phi_l(j_{E_1},j_{E_2}$ = 0 si et seulement si il existe une isogénie entre $E_1$ et $E_2$ dont le noyau est cyclique de degré $l$.
+\end{defi}
 
-
-
+Ce théorème nous donne une méthode pour trouver toute les isogénies à une courbe elliptique $E$/$\mathbb{F}_p$. On va chercher les racines de $\Phi(j_E, y) \in \mathbb{F}_p[y]$ dans $\mathbb{F}_n$. Quand on trouve une racine on trouve un j-invariant d'une courbe $E_2$ isogène avec $E$.
 
 \end{document}
