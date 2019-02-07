@@ -15,7 +15,7 @@ def test_brute_force(nbr_test):
         try :
             E = EllipticCurve(GF(p), [a,b])
         except ArithmeticError as e:
-            print(e, f"with parameters : a,b,p = {a}, {b}, {p}")
+            print(e)
             continue
         error = E.cardinality() - brute_force(p,a,b)
     if error == 0:
@@ -79,13 +79,13 @@ def nP_classical(nbr_test):
         else:
             return ("failure")
 
-        
+
 def test_schoof2(nbr_test):
     error = 0
     i = 0
     while i < nbr_test:
         i += 1
-        param = (random_prime(5,500), randint(4,10), randint(4,10))
+        param = (random_prime(11,500), randint(4,10), randint(4,10))
         p, a, b = param
         try :
             E = EllipticCurve(GF(p), [a,b])
@@ -93,13 +93,13 @@ def test_schoof2(nbr_test):
             print(e)
             continue
         R.<x> = PolynomialRing(GF(p))
-        error = error + schoof2(E) - E.trace_of_frobenius()
+        print ("1")
+        print E
+        print schoof2(E), E.trace_of_frobenius()
+        if schoof2(E) != E.trace_of_frobenius():
+            error = 1
+            break
     if error == 0:
         return ("succes")
     else:
         return ("failure")
-     
-
-
-
-

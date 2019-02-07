@@ -44,16 +44,15 @@ def schoof2(E):
         """ Create the ring where our computation w'll take place"""
         poly_divi_l = R(dict.get(l))
         if not  poly_divi_l.is_irreducible():                         #to ensure the ring is a field, f_l might not be irreducible
-            for poly, deg in list(reversed(factor(poly_divi_l))):
+            for poly, deg in list((factor(poly_divi_l))):
                 if poly.degree() > 1:
                     poly_divi_l  = poly
                     break
         B.<x2> = R.quotient(ideal(poly_divi_l))
         C.<y> = PolynomialRing(B)
         W = C.quotient(y**2 - f)
-
-        phi = (W(x**p), W(y**p))           #(x^p, y^p)
-        phi2 = (W(x**(p**2)), W(y**(p**2)))  #(x^(p^2), y^(p^2))
+        phi = (W(x)**p, W(y)**p)           #(x^p, y^p)
+        phi2 = (W(x)**(p**2), W(y)**(p**2))  #(x^(p^2), y^(p^2))
         phi2_x, phi2_y = phi2
         prod = nP_double_and_add(p%l,(W(x),W(y)),a)    #[p mod l]*(x,y)
         prod_x, prod_y = prod
@@ -61,7 +60,7 @@ def schoof2(E):
         if phi2_x != prod_x:
             sum_x, sum_y = add(phi2, prod, a)      #(x^(p^2), y^(p^2)) + [p mod l]*(x,y)
             S = (sum_x, sum_y)
-            for tau in range(1, l):
+            for tau in range(1, (l-1)/2 + 1):
                 tau_prod = nP_double_and_add(ZZ(tau),phi,a)
                 tau_prod_x, tau_prod_y = tau_prod
                 if sum_x == tau_prod_x:
@@ -79,7 +78,7 @@ def schoof2(E):
                 w = Mod(p,l).sqrt()
                 w_times_phi_x, w_times_phi_y = nP_double_and_add(w,phi,a)    #[w](x^p, y^p)
                 w_times_phi = (w_times_phi_x, w_times_phi_y)
-                if w_times_phi == phi_2:               #  if [w](x^p, y^p) =  (x^(p^2), y^(p^2))
+                if w_times_phi == phi2:               #  if [w](x^p, y^p) =  (x^(p^2), y^(p^2))
                     list_t.append(2*w)
                     anwser = 1
                 elif w_times_phi_x == phi2_x and w_times_phi_y == -phi2_y:      #  if [w](x^p, y^p) =  (x^(p^2), -y^(p^2))
@@ -108,5 +107,5 @@ l = 3
 K = GF(p)
 E = EllipticCurve(K,[2,1])
 a,b = E.a4(), E.a6()
-schoof2(E)
-print (E.trace_of_frobenius())
+# print (schoof2(E))
+# print (E.trace_of_frobenius())

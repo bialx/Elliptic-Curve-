@@ -44,7 +44,7 @@ def nP_double_and_add(n,P,a):
     """ compute the scalar multiple nP using double and add"""
     if not n:
       return ()
-    nbits = n.digits(2)
+    nbits = ZZ(n).digits(2)
     i = len(nbits)-2
     Q = P
     while i >= 0:
