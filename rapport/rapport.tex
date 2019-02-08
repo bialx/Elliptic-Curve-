@@ -646,16 +646,25 @@ Soit $E_1$/$K$ et $E_2$/$K$ deux courbes elliptiques isomorphe. On a alors un mo
 Soit deux courbes elliptiques $E_1$ et $E_2$, $T_1=\mathbb{C}$/ $\Gamma_1$ et $T_2 = \mathbb{C}$/ $\Gamma_2$ les deux tores associés. Un morphisme de $E_1$ vers $E_2$ est une application holomorphe $\mu$ de $T_1$ vers $T_2$ qui soit un morphisme de groupe. Si ce morphisme est non constant alors on dit que c'est une isogénie.
 \end{defi}
 
-Deux courbes elliptique $E_1$/$K$ et $E_2$/$K$ sont isogène s'il existe une isogénie $\psi : E_1 \mapsto E_2$. Une Le degré de l’isogénie est le degré du noyau de $\psi$.
+Deux courbes elliptique $E_1$/$K$ et $E_2$/$K$ sont isogène s'il existe une isogénie $\psi : E_1 \mapsto E_2$. Le degré de l’isogénie est le degré du noyau de $\psi$.
 
 
 \subsubsection{Polynôme modulaire}
 Ce sont les polynôme que l'on va utiliser dans l'algorithme SEA. Comme vu dans les parties précédentes on peut associer à chaque courbe elliptique $E$/$\mathbb{C}$ un invariant $\tau$ (on définissait un réseau $\Gamma = \mathbb{Z}+\tau \mathbb{Z}$), on a aussi $p=\e^{2\pi i \tau}$. De plus on a exprimé le $j$-invariant de $E$ comme une série entière $j(p)$. Dans la suite on va noter $j(\tau) = j_E$.
 
+La définition des polynomes modulaire est un peu plus compliqué qu'une simple formule, il nous faut définir, pour tout entier $n$, l'ensemble suivant : 
+\begin{equation*}
+S_n = \left\{ \begin{pmatrix}
+a & b\\
+0 & d
+\end{pmatrix}
+\, | \, a,b,d \in \mathbb{Z}, 0 \leq b \leq d, \gcd(a,b,d) = 1
+ \right\} 
+\end{equation*}
 \begin{defi}
-Soit $E_1$/$\mathbb{C}$ et $E_2$/$\mathbb{C}$ deux courbes elliptiques de $j$-invariant respectivement $j_{E_1}$ et $j_{E_2}$. Le $l$-ième polynôme modulaire vérifie $\Phi_l(j_{E_1},j_{E_2}$ = 0 si et seulement si il existe une isogénie entre $E_1$ et $E_2$ dont le noyau est cyclique de degré $l$.
+Soit $E_1$/$\mathbb{C}$ et $E_2$/$\mathbb{C}$ deux courbes elliptiques de $j$-invariant respectivement $j_{E_1}$ et $j_{E_2}$. Le $l$-ième polynôme modulaire vérifie $\Phi_l(j_{E_1},j_{E_2}) = 0$ si et seulement si il existe une isogénie entre $E_1$ et $E_2$ dont le noyau est cyclique de degré $l$.
 \end{defi}
 
-Ce théorème nous donne une méthode pour trouver toute les isogénies à une courbe elliptique $E$/$\mathbb{F}_p$. On va chercher les racines de $\Phi(j_E, y) \in \mathbb{F}_p[y]$ dans $\mathbb{F}_n$. Quand on trouve une racine on trouve un j-invariant d'une courbe $E_2$ isogène avec $E$.
+Ce théorème nous donne une méthode pour trouver toute les isogénies à une courbe elliptique $E$/$\mathbb{F}_p$. On va chercher les racines de $\Phi(j_E, y) \in \mathbb{F}_p[y]$ dans $\mathbb{F}_p$. Quand on trouve une racine on trouve un j-invariant d'une courbe $E_2$ isogène avec $E$.
 
 \end{document}
