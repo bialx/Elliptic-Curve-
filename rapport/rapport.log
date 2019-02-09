@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015/Debian) (preloaded format=pdflatex 2018.11.18)  9 FEB 2019 17:39
+This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015/Debian) (preloaded format=pdflatex 2018.11.18)  9 FEB 2019 19:58
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1072,29 +1072,123 @@ File: pgfmodulematrix.code.tex 2013/09/17  (rcs-revision 1.8)
 zlibrarytopaths.code.tex
 File: tikzlibrarytopaths.code.tex 2008/06/17 v3.0.1a (rcs-revision 1.2)
 )))
-(/usr/share/texlive/texmf-dist/tex/generic/pgf/frontendlayer/tikz/libraries/tik
-zlibrarydecorations.pathmorphing.code.tex
+(/usr/share/texlive/texmf-dist/tex/latex/pgfplots/pgfplots.sty
+(/usr/share/texlive/texmf-dist/tex/generic/pgfplots/pgfplots.revision.tex)
+Package: pgfplots 2016/01/06 v1.13 Data Visualization (1.13)
+
+(/usr/share/texlive/texmf-dist/tex/generic/pgfplots/pgfplots.code.tex
+(/usr/share/texlive/texmf-dist/tex/generic/pgfplots/pgfplotscore.code.tex
+\t@pgfplots@toka=\toks53
+\t@pgfplots@tokb=\toks54
+\t@pgfplots@tokc=\toks55
+\pgfplots@tmpa=\dimen270
+\c@pgfplots@coordindex=\count165
+\c@pgfplots@scanlineindex=\count166
+
+(/usr/share/texlive/texmf-dist/tex/generic/pgfplots/sys/pgfplotssysgeneric.code
+.tex))
+(/usr/share/texlive/texmf-dist/tex/generic/pgfplots/libs/pgfplotslibrary.code.t
+ex)
+(/usr/share/texlive/texmf-dist/tex/generic/pgfplots/oldpgfcompatib/pgfplotsoldp
+gfsupp_loader.code.tex
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/libraries/pgflibraryfpu.code.tex
+)
+Package pgfplots: loading complementary arithmetics for your pgf version...
+
+(/usr/share/texlive/texmf-dist/tex/generic/pgfplots/oldpgfcompatib/pgfplotsoldp
+gfsupp_pgflibraryfpu.code.tex)
+(/usr/share/texlive/texmf-dist/tex/generic/pgfplots/oldpgfcompatib/pgfplotsoldp
+gfsupp_pgfmathfloat.code.tex
+\c@pgfmathroundto@lastzeros=\count167
+))
+(/usr/share/texlive/texmf-dist/tex/generic/pgfplots/util/pgfplotsutil.code.tex
+(/usr/share/texlive/texmf-dist/tex/generic/pgfplots/liststructure/pgfplotslists
+tructure.code.tex)
+(/usr/share/texlive/texmf-dist/tex/generic/pgfplots/liststructure/pgfplotslists
+tructureext.code.tex)
+(/usr/share/texlive/texmf-dist/tex/generic/pgfplots/liststructure/pgfplotsarray
+.code.tex
+\c@pgfplotsarray@tmp=\count168
+)
+(/usr/share/texlive/texmf-dist/tex/generic/pgfplots/liststructure/pgfplotsmatri
+x.code.tex)
+(/usr/share/texlive/texmf-dist/tex/generic/pgfplots/numtable/pgfplotstableshare
+d.code.tex
+\c@pgfplotstable@counta=\count169
+\t@pgfplotstable@a=\toks56
+)
+(/usr/share/texlive/texmf-dist/tex/generic/pgfplots/liststructure/pgfplotsdeque
+.code.tex)
+(/usr/share/texlive/texmf-dist/tex/generic/pgfplots/util/pgfplotsbinary.code.te
+x
+(/usr/share/texlive/texmf-dist/tex/generic/pgfplots/util/pgfplotsbinary.data.co
+de.tex))
+(/usr/share/texlive/texmf-dist/tex/generic/pgfplots/util/pgfplotsutil.verb.code
+.tex)
+(/usr/share/texlive/texmf-dist/tex/generic/pgfplots/libs/pgflibrarypgfplots.sur
+fshading.code.tex
+\c@pgfplotslibrarysurf@no=\count170
+
+(/usr/share/texlive/texmf-dist/tex/generic/pgfplots/sys/pgflibrarypgfplots.surf
+shading.pgfsys-pdftex.def)))
+(/usr/share/texlive/texmf-dist/tex/generic/pgfplots/util/pgfplotscolormap.code.
+tex
+(/usr/share/texlive/texmf-dist/tex/generic/pgfplots/util/pgfplotscolor.code.tex
+))
+(/usr/share/texlive/texmf-dist/tex/generic/pgfplots/pgfplotsstackedplots.code.t
+ex)
+(/usr/share/texlive/texmf-dist/tex/generic/pgfplots/pgfplotsplothandlers.code.t
+ex
+(/usr/share/texlive/texmf-dist/tex/generic/pgfplots/pgfplotsmeshplothandler.cod
+e.tex
+(/usr/share/texlive/texmf-dist/tex/generic/pgfplots/pgfplotsmeshplotimage.code.
+tex)))
+(/usr/share/texlive/texmf-dist/tex/generic/pgfplots/pgfplots.scaling.code.tex)
+(/usr/share/texlive/texmf-dist/tex/generic/pgfplots/pgfplotscoordprocessing.cod
+e.tex)
+(/usr/share/texlive/texmf-dist/tex/generic/pgfplots/pgfplots.errorbars.code.tex
+) (/usr/share/texlive/texmf-dist/tex/generic/pgfplots/pgfplots.markers.code.tex
+) (/usr/share/texlive/texmf-dist/tex/generic/pgfplots/pgfplotsticks.code.tex)
+(/usr/share/texlive/texmf-dist/tex/generic/pgfplots/pgfplots.paths.code.tex)
 (/usr/share/texlive/texmf-dist/tex/generic/pgf/frontendlayer/tikz/libraries/tik
 zlibrarydecorations.code.tex
 (/usr/share/texlive/texmf-dist/tex/generic/pgf/modules/pgfmoduledecorations.cod
 e.tex
-\pgfdecoratedcompleteddistance=\dimen270
-\pgfdecoratedremainingdistance=\dimen271
-\pgfdecoratedinputsegmentcompleteddistance=\dimen272
-\pgfdecoratedinputsegmentremainingdistance=\dimen273
-\pgf@decorate@distancetomove=\dimen274
-\pgf@decorate@repeatstate=\count165
-\pgfdecorationsegmentamplitude=\dimen275
-\pgfdecorationsegmentlength=\dimen276
+\pgfdecoratedcompleteddistance=\dimen271
+\pgfdecoratedremainingdistance=\dimen272
+\pgfdecoratedinputsegmentcompleteddistance=\dimen273
+\pgfdecoratedinputsegmentremainingdistance=\dimen274
+\pgf@decorate@distancetomove=\dimen275
+\pgf@decorate@repeatstate=\count171
+\pgfdecorationsegmentamplitude=\dimen276
+\pgfdecorationsegmentlength=\dimen277
 )
 \tikz@lib@dec@box=\box44
 )
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/frontendlayer/tikz/libraries/tik
+zlibrarydecorations.pathmorphing.code.tex
 (/usr/share/texlive/texmf-dist/tex/generic/pgf/libraries/decorations/pgflibrary
 decorations.pathmorphing.code.tex))
 (/usr/share/texlive/texmf-dist/tex/generic/pgf/frontendlayer/tikz/libraries/tik
 zlibrarydecorations.pathreplacing.code.tex
 (/usr/share/texlive/texmf-dist/tex/generic/pgf/libraries/decorations/pgflibrary
 decorations.pathreplacing.code.tex))
+\pgfplots@numplots=\count172
+\pgfplots@xmin@reg=\dimen278
+\pgfplots@xmax@reg=\dimen279
+\pgfplots@ymin@reg=\dimen280
+\pgfplots@ymax@reg=\dimen281
+\pgfplots@zmin@reg=\dimen282
+\pgfplots@zmax@reg=\dimen283
+)
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/frontendlayer/tikz/libraries/tik
+zlibraryplotmarks.code.tex
+File: tikzlibraryplotmarks.code.tex 2008/01/09 v3.0.1a (rcs-revision 1.1)
+
+(/usr/share/texlive/texmf-dist/tex/generic/pgf/libraries/pgflibraryplotmarks.co
+de.tex
+File: pgflibraryplotmarks.code.tex 2015/08/03 v3.0.1a (rcs-revision 1.14)
+)))
 (/usr/share/texlive/texmf-dist/tex/generic/pgf/frontendlayer/tikz/libraries/tik
 zlibrarydecorations.shapes.code.tex
 (/usr/share/texlive/texmf-dist/tex/generic/pgf/libraries/decorations/pgflibrary
@@ -1122,41 +1216,41 @@ Package: geometry 2010/09/12 v5.6 Page Geometry
 Package: ifvtex 2010/03/01 v1.5 Detect VTeX and its facilities (HO)
 Package ifvtex Info: VTeX not detected.
 )
-\Gm@cnth=\count166
-\Gm@cntv=\count167
-\c@Gm@tempcnt=\count168
-\Gm@bindingoffset=\dimen277
-\Gm@wd@mp=\dimen278
-\Gm@odd@mp=\dimen279
-\Gm@even@mp=\dimen280
-\Gm@layoutwidth=\dimen281
-\Gm@layoutheight=\dimen282
-\Gm@layouthoffset=\dimen283
-\Gm@layoutvoffset=\dimen284
-\Gm@dimlist=\toks53
+\Gm@cnth=\count173
+\Gm@cntv=\count174
+\c@Gm@tempcnt=\count175
+\Gm@bindingoffset=\dimen284
+\Gm@wd@mp=\dimen285
+\Gm@odd@mp=\dimen286
+\Gm@even@mp=\dimen287
+\Gm@layoutwidth=\dimen288
+\Gm@layoutheight=\dimen289
+\Gm@layouthoffset=\dimen290
+\Gm@layoutvoffset=\dimen291
+\Gm@dimlist=\toks57
 )
 (/usr/share/texlive/texmf-dist/tex/latex/tools/varioref.sty
 Package: varioref 2015/09/22 v1.5b package for extended references (FMi)
-\c@vrcnt=\count169
+\c@vrcnt=\count176
 )
 (/usr/share/texlive/texmf-dist/tex/latex/listings/listings.sty
-\lst@mode=\count170
+\lst@mode=\count177
 \lst@gtempboxa=\box47
-\lst@token=\toks54
-\lst@length=\count171
-\lst@currlwidth=\dimen285
-\lst@column=\count172
-\lst@pos=\count173
-\lst@lostspace=\dimen286
-\lst@width=\dimen287
-\lst@newlines=\count174
-\lst@lineno=\count175
-\lst@maxwidth=\dimen288
+\lst@token=\toks58
+\lst@length=\count178
+\lst@currlwidth=\dimen292
+\lst@column=\count179
+\lst@pos=\count180
+\lst@lostspace=\dimen293
+\lst@width=\dimen294
+\lst@newlines=\count181
+\lst@lineno=\count182
+\lst@maxwidth=\dimen295
 
 (/usr/share/texlive/texmf-dist/tex/latex/listings/lstmisc.sty
 File: lstmisc.sty 2015/06/04 1.6 (Carsten Heinz)
-\c@lstnumber=\count176
-\lst@skipnumbers=\count177
+\c@lstnumber=\count183
+\lst@skipnumbers=\count184
 \lst@framebox=\box48
 )
 (/usr/share/texlive/texmf-dist/tex/latex/listings/listings.cfg
@@ -1169,45 +1263,51 @@ File: lstlang1.sty 2015/06/04 1.6 listings language file
 ) (./rapport.aux)
 \openout1 = `rapport.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 84.
-LaTeX Font Info:    ... okay on input line 84.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 84.
-LaTeX Font Info:    ... okay on input line 84.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 84.
-LaTeX Font Info:    ... okay on input line 84.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 84.
-LaTeX Font Info:    ... okay on input line 84.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 84.
-LaTeX Font Info:    ... okay on input line 84.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 84.
-LaTeX Font Info:    ... okay on input line 84.
-LaTeX Font Info:    Try loading font information for T1+lmr on input line 84.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 86.
+LaTeX Font Info:    ... okay on input line 86.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 86.
+LaTeX Font Info:    ... okay on input line 86.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 86.
+LaTeX Font Info:    ... okay on input line 86.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 86.
+LaTeX Font Info:    ... okay on input line 86.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 86.
+LaTeX Font Info:    ... okay on input line 86.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 86.
+LaTeX Font Info:    ... okay on input line 86.
+LaTeX Font Info:    Try loading font information for T1+lmr on input line 86.
 (/usr/share/texmf/tex/latex/lm/t1lmr.fd
 File: t1lmr.fd 2009/10/30 v1.6 Font defs for Latin Modern
 )
-LaTeX Info: Redefining \degres on input line 84.
-LaTeX Info: Redefining \dots on input line 84.
-LaTeX Info: Redefining \up on input line 84.
+LaTeX Info: Redefining \degres on input line 86.
+LaTeX Info: Redefining \dots on input line 86.
+LaTeX Info: Redefining \up on input line 86.
 
 (/usr/share/texlive/texmf-dist/tex/context/base/supp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
-\scratchcounter=\count178
-\scratchdimen=\dimen289
+\scratchcounter=\count185
+\scratchdimen=\dimen296
 \scratchbox=\box49
-\nofMPsegments=\count179
-\nofMParguments=\count180
-\everyMPshowfont=\toks55
-\MPscratchCnt=\count181
-\MPscratchDim=\dimen290
-\MPnumerator=\count182
-\makeMPintoPDFobject=\count183
-\everyMPtoPDFconversion=\toks56
+\nofMPsegments=\count186
+\nofMParguments=\count187
+\everyMPshowfont=\toks59
+\MPscratchCnt=\count188
+\MPscratchDim=\dimen297
+\MPnumerator=\count189
+\makeMPintoPDFobject=\count190
+\everyMPtoPDFconversion=\toks60
 )
 Package caption Info: Begin \AtBeginDocument code.
 Package caption Info: float package is loaded.
 Package caption Info: listings package is loaded.
 Package caption Info: End \AtBeginDocument code.
  ABD: EveryShipout initializing macros
+
+Package pgfplots Warning: running in backwards compatibility mode (unsuitable t
+ick labels; missing features). Consider writing \pgfplotsset{compat=1.13} into 
+your preamble.
+ on input line 86.
+
 *geometry* driver: auto-detecting
 *geometry* detected driver: pdftex
 *geometry* verbose mode - [ preamble ] result:
@@ -1242,51 +1342,51 @@ Package caption Info: End \AtBeginDocument code.
 * \@reversemarginfalse
 * (1in=72.27pt=25.4mm, 1cm=28.453pt)
 
-\c@lstlisting=\count184
-\c@prop=\count185
-\c@defi=\count186
-\c@thm=\count187
-LaTeX Font Info:    Try loading font information for OT1+lmr on input line 89.
+\c@lstlisting=\count191
+\c@prop=\count192
+\c@defi=\count193
+\c@thm=\count194
+LaTeX Font Info:    Try loading font information for OT1+lmr on input line 91.
 (/usr/share/texmf/tex/latex/lm/ot1lmr.fd
 File: ot1lmr.fd 2009/10/30 v1.6 Font defs for Latin Modern
 )
-LaTeX Font Info:    Try loading font information for OML+lmm on input line 89.
+LaTeX Font Info:    Try loading font information for OML+lmm on input line 91.
 
 (/usr/share/texmf/tex/latex/lm/omllmm.fd
 File: omllmm.fd 2009/10/30 v1.6 Font defs for Latin Modern
 )
-LaTeX Font Info:    Try loading font information for OMS+lmsy on input line 89.
+LaTeX Font Info:    Try loading font information for OMS+lmsy on input line 91.
 
 
 (/usr/share/texmf/tex/latex/lm/omslmsy.fd
 File: omslmsy.fd 2009/10/30 v1.6 Font defs for Latin Modern
 )
-LaTeX Font Info:    Try loading font information for OMX+lmex on input line 89.
+LaTeX Font Info:    Try loading font information for OMX+lmex on input line 91.
 
 
 (/usr/share/texmf/tex/latex/lm/omxlmex.fd
 File: omxlmex.fd 2009/10/30 v1.6 Font defs for Latin Modern
 )
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <12> on input line 89.
+(Font)              <12> on input line 91.
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <8> on input line 89.
+(Font)              <8> on input line 91.
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <6> on input line 89.
-LaTeX Font Info:    Try loading font information for U+msa on input line 89.
+(Font)              <6> on input line 91.
+LaTeX Font Info:    Try loading font information for U+msa on input line 91.
 
 (/usr/share/texlive/texmf-dist/tex/latex/amsfonts/umsa.fd
 File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 )
-LaTeX Font Info:    Try loading font information for U+msb on input line 89.
+LaTeX Font Info:    Try loading font information for U+msb on input line 91.
 
 (/usr/share/texlive/texmf-dist/tex/latex/amsfonts/umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 )
-LaTeX Font Info:    Try loading font information for U+stmry on input line 89.
+LaTeX Font Info:    Try loading font information for U+stmry on input line 91.
 
 (/usr/share/texlive/texmf-dist/tex/latex/stmaryrd/Ustmry.fd)
-LaTeX Font Info:    Try loading font information for OMS+rsfs on input line 89.
+LaTeX Font Info:    Try loading font information for OMS+rsfs on input line 91.
 
 
 (/usr/share/texlive/texmf-dist/tex/latex/calrsfs/OMSrsfs.fd) [1
@@ -1311,7 +1411,7 @@ LaTeX Font Info:    External font `lmex10' loaded for size
 \openout4 = `rapport.toc'.
 
  [2]
-LaTeX Font Info:    Try loading font information for T1+lmtt on input line 95.
+LaTeX Font Info:    Try loading font information for T1+lmtt on input line 97.
  (/usr/share/texmf/tex/latex/lm/t1lmtt.fd
 File: t1lmtt.fd 2009/10/30 v1.6 Font defs for Latin Modern
 ) [3]
@@ -1319,31 +1419,31 @@ File: t1lmtt.fd 2009/10/30 v1.6 Font defs for Latin Modern
 File: pictures/hqdefault.jpg Graphic file (type jpg)
 
 <use pictures/hqdefault.jpg>
-Package pdftex.def Info: pictures/hqdefault.jpg used on input line 154.
+Package pdftex.def Info: pictures/hqdefault.jpg used on input line 156.
 (pdftex.def)             Requested size: 337.25769pt x 252.94327pt.
 
-Underfull \hbox (badness 10000) in paragraph at lines 160--162
+Underfull \hbox (badness 10000) in paragraph at lines 162--164
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 168--170
+Underfull \hbox (badness 10000) in paragraph at lines 170--172
 
  []
 
 [4 <./pictures/hqdefault.jpg>]
 LaTeX Font Info:    Font shape `T1/lmtt/bx/n' in size <10> not available
-(Font)              Font shape `T1/lmtt/b/n' tried instead on input line 194.
+(Font)              Font shape `T1/lmtt/b/n' tried instead on input line 196.
 
 <pictures/brute_force_cputime.png, id=39, 565.8741pt x 419.8887pt>
 File: pictures/brute_force_cputime.png Graphic file (type png)
 
 <use pictures/brute_force_cputime.png>
 Package pdftex.def Info: pictures/brute_force_cputime.png used on input line 20
-5.
+7.
 (pdftex.def)             Requested size: 282.93636pt x 209.94383pt.
  [5 <./pictures/brute_force_cputime.png>] [6] [7]
-Overfull \hbox (19.45425pt too wide) in paragraph at lines 378--379
+Overfull \hbox (19.45425pt too wide) in paragraph at lines 380--381
 []\T1/lmr/m/n/10 Il existe dans SAGE une fonc-tion per-met-tant de cal-cu-ler l
 es po-ly-nôme de di-vi-sion, $\T1/lmtt/m/n/10 polynomial _ polynomial(n)$
  []
@@ -1353,7 +1453,7 @@ es po-ly-nôme de di-vi-sion, $\T1/lmtt/m/n/10 polynomial _ polynomial(n)$
 File: pictures/schoof_cputime.png Graphic file (type png)
 
 <use pictures/schoof_cputime.png>
-Package pdftex.def Info: pictures/schoof_cputime.png used on input line 551.
+Package pdftex.def Info: pictures/schoof_cputime.png used on input line 553.
 (pdftex.def)             Requested size: 339.9607pt x 252.8024pt.
 
 <pictures/schoof_vs_bruteforce.png, id=68, 565.8741pt x 419.8887pt>
@@ -1361,40 +1461,40 @@ File: pictures/schoof_vs_bruteforce.png Graphic file (type png)
 
 <use pictures/schoof_vs_bruteforce.png>
 Package pdftex.def Info: pictures/schoof_vs_bruteforce.png used on input line 5
-57.
+59.
 (pdftex.def)             Requested size: 339.52707pt x 251.93517pt.
  [12 <./pictures/schoof_cputime.png> <./pictures/schoof_vs_bruteforce.png>] [13
-] [14] [15] (./rapport.aux) ) 
+] [14] [15] [16] (./rapport.aux) ) 
 Here is how much of TeX's memory you used:
- 21126 strings out of 493029
- 390958 string characters out of 6136233
- 488171 words of memory out of 5000000
- 24143 multiletter control sequences out of 15000+600000
+ 30344 strings out of 493029
+ 698848 string characters out of 6136233
+ 870904 words of memory out of 5000000
+ 33244 multiletter control sequences out of 15000+600000
  80086 words of font info for 75 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 54i,19n,97p,1106b,1211s stack positions out of 5000i,500n,10000p,200000b,80000s
-{/usr/share/texmf/fonts/enc/dvips/lm/lm-mathsy.enc
-}{/usr/share/texmf/fonts/enc/dvips/lm/lm-ec.enc}{/usr/share/texmf/fonts/enc/dvi
-ps/lm/lm-mathit.enc}{/usr/share/texmf/fonts/enc/dvips/lm/lm-mathex.enc}{/usr/sh
-are/texmf/fonts/enc/dvips/lm/lm-rm.enc}</usr/share/texmf/fonts/type1/public/lm/
-lmbx10.pfb></usr/share/texmf/fonts/type1/public/lm/lmbx12.pfb></usr/share/texmf
-/fonts/type1/public/lm/lmcsc10.pfb></usr/share/texmf/fonts/type1/public/lm/lmex
-10.pfb></usr/share/texmf/fonts/type1/public/lm/lmmi10.pfb></usr/share/texmf/fon
-ts/type1/public/lm/lmmi5.pfb></usr/share/texmf/fonts/type1/public/lm/lmmi7.pfb>
-</usr/share/texmf/fonts/type1/public/lm/lmr10.pfb></usr/share/texmf/fonts/type1
-/public/lm/lmr12.pfb></usr/share/texmf/fonts/type1/public/lm/lmr17.pfb></usr/sh
-are/texmf/fonts/type1/public/lm/lmr5.pfb></usr/share/texmf/fonts/type1/public/l
-m/lmr7.pfb></usr/share/texmf/fonts/type1/public/lm/lmri10.pfb></usr/share/texmf
-/fonts/type1/public/lm/lmsy10.pfb></usr/share/texmf/fonts/type1/public/lm/lmsy5
-.pfb></usr/share/texmf/fonts/type1/public/lm/lmsy7.pfb></usr/share/texmf/fonts/
-type1/public/lm/lmtk10.pfb></usr/share/texmf/fonts/type1/public/lm/lmtt10.pfb><
-/usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb></
-usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm5.pfb></us
-r/share/texlive/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm7.pfb>
-Output written on rapport.pdf (15 pages, 508713 bytes).
+ 62i,19n,97p,1106b,1891s stack positions out of 5000i,500n,10000p,200000b,80000s
+{/usr/share/texmf/fonts/enc/dvips/lm/lm-maths
+y.enc}{/usr/share/texmf/fonts/enc/dvips/lm/lm-ec.enc}{/usr/share/texmf/fonts/en
+c/dvips/lm/lm-mathit.enc}{/usr/share/texmf/fonts/enc/dvips/lm/lm-mathex.enc}{/u
+sr/share/texmf/fonts/enc/dvips/lm/lm-rm.enc}</usr/share/texmf/fonts/type1/publi
+c/lm/lmbx10.pfb></usr/share/texmf/fonts/type1/public/lm/lmbx12.pfb></usr/share/
+texmf/fonts/type1/public/lm/lmcsc10.pfb></usr/share/texmf/fonts/type1/public/lm
+/lmex10.pfb></usr/share/texmf/fonts/type1/public/lm/lmmi10.pfb></usr/share/texm
+f/fonts/type1/public/lm/lmmi5.pfb></usr/share/texmf/fonts/type1/public/lm/lmmi7
+.pfb></usr/share/texmf/fonts/type1/public/lm/lmr10.pfb></usr/share/texmf/fonts/
+type1/public/lm/lmr12.pfb></usr/share/texmf/fonts/type1/public/lm/lmr17.pfb></u
+sr/share/texmf/fonts/type1/public/lm/lmr5.pfb></usr/share/texmf/fonts/type1/pub
+lic/lm/lmr7.pfb></usr/share/texmf/fonts/type1/public/lm/lmri10.pfb></usr/share/
+texmf/fonts/type1/public/lm/lmsy10.pfb></usr/share/texmf/fonts/type1/public/lm/
+lmsy5.pfb></usr/share/texmf/fonts/type1/public/lm/lmsy7.pfb></usr/share/texmf/f
+onts/type1/public/lm/lmtk10.pfb></usr/share/texmf/fonts/type1/public/lm/lmtt10.
+pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.p
+fb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm5.pfb
+></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm7.pfb>
+Output written on rapport.pdf (16 pages, 520388 bytes).
 PDF statistics:
- 158 PDF objects out of 1000 (max. 8388607)
- 111 compressed objects within 2 object streams
+ 161 PDF objects out of 1000 (max. 8388607)
+ 113 compressed objects within 2 object streams
  0 named destinations out of 1000 (max. 500000)
  33 words of extra memory for PDF output out of 10000 (max. 10000000)
 
