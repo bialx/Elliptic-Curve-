@@ -94,19 +94,19 @@
 \newpage
 
 \section{Introduction}
-Le but de ce rapport est de présenter des algorithmes pour compter les points sur une courbe elliptique et de les implémenter pour tester leur efficacité. L'ensemble des codes sont disponible sur le github \url{https://github.com/bialx/Elliptic-Curve-}. Le langage choisi est SAGE, basé sur Python il contient un large éventail de fonctions mathématiques prédéfinies, notamment pour les courbes elliptiques ce qui permet de se concentrer sur les algorithmes et non sur une implémentation d'objet mathématiques.
+Le but de ce rapport est de présenter des algorithmes pour compter les points sur une courbe elliptique et de les implémenter pour tester leur efficacité. L'ensemble des codes est disponible sur le github \url{https://github.com/bialx/Elliptic-Curve-}. Le langage choisi est SAGE, basé sur Python. Il contient un large éventail de fonctions mathématiques prédéfinies, notamment pour les courbes elliptiques ce qui permet de se concentrer sur les algorithmes et non sur une implémentation d'objets mathématiques.
 \section{Introduction aux courbes elliptiques}
-La cryptographie sur courbe elliptique introduite en 1985 a révolutionné la cryptographie à clé publique permettant une alternative efficace aux classique RSA et Diffie Hellman. Les courbes elliptiques sont énormément utilisées pour les signatures (ECDSA), notamment pour le Bitcoin, et supportées dans la majorité des applications TLS, SSH. On se contentera de donner une explication succincte de ce qu'est une courbe elliptique ainsi que différents propriétés associées.
+La cryptographie sur courbe elliptique introduite en 1985 a révolutionné la cryptographie à clé publique permettant une alternative efficace aux classique RSA et Diffie Hellman. Les courbes elliptiques sont énormément utilisées pour les signatures (ECDSA), notamment pour le Bitcoin, et supportées dans la majorité des applications TLS, SSH. On se contentera de donner une explication succincte de ce qu'est une courbe elliptique ainsi que différentes propriétés associées.
 
 \begin{defi}
 On définit une courbe elliptique sur un corps $K$ dans un plan par une équation de Weierstrass de la forme : 
 \begin{equation*}
 y^2 + a_1xy + a_3y  = x^3 + a_2x^2 + a_4x + a_6
 \end{equation*}
-Les coefficient $a_{1 \leq i \leq 6}$ sont des éléments du corps $K$.
+Les coefficients $a_{1 \leq i \leq 6}$ sont des éléments du corps $K$.
 \end{defi}
 
-Dans le cas ou le corps $K$ a une caractéristique différent de $2$ ou $3$ on peut via des changements de variable se ramener à l'équation courte suivante : 
+Dans le cas où le corps $K$ a une caractéristique différente de $2$ ou $3$ on peut, via des changements de variable se ramener à l'équation courte suivante : 
 \begin{equation*}
 y^2 = x^3 + ax +b
 \end{equation*}
@@ -158,8 +158,7 @@ En posant :
 \end{figure}
 
 
-
-Maintenant que l'on dispose de formule d'addition pour deux points sur une courbe elliptique on peut donner un sens à la multiplication scalaire d'un point comme $lP = \underbrace{P + \ldots + P}_{l \text{ fois}}$. On va noter cette multiplication scalaire par :
+On dispose de formule d'addition pour deux points sur une courbe elliptique on peut donner un sens à la multiplication scalaire d'un point comme $lP = \underbrace{P + \ldots + P}_{l \text{ fois}}$. On va noter cette multiplication scalaire par :
 \newline
 
 $\begin{array}{ccccc}
@@ -174,7 +173,7 @@ $$E[l] = \left\{ P \in E(\overline{\mathbb{K}}) \, | \, [l]P = 0_E \right\} $$
 \section{Compter les points sur une courbe}
 On va considérer dans la suite que la caractéristique du corps utilisé pour définir nos courbes elliptiques est plus grande que $3$. On peut donc écrire notre courbe elliptique sur $\mathbb{F}_p$ sous sa forme réduite $y^2 = x^3 + ax+b$
 
-\subsection{Algorithme naif}
+\subsection{Algorithme naïf}
 On note $E: y^2 = f(x)$, compter les points de $E$ revient donc pour chaque valeur de $x \in \mathbb{F}_p$ à regarder si $f(x)$ est un carré modulo $p$. On calcule donc le symbole de Legendre de $f(x)$, on a les cas suivants : 
 \begin{itemize}
 \item  $\genfrac(){}{0}{f(x)}{p} = -1$, $f(x)$ n'est pas un carré modulo $p$, on ne trouve aucun point appartenant à la courbe.
@@ -190,7 +189,7 @@ Soit :
 \begin{equation}
 \#E(\mathbb{F}_p) = 1 + p +\sum_{x \in \mathbb{F}_p}\genfrac(){}{0}{f(x)}{p}
 \end{equation}
-On peut implémenter cette fonction brute force tres simplement sous sage en utilisant \path{kronecker(a,p)} qui calcule le symbole de Legendre de $a$ modulo $p$.
+On peut implémenter cette fonction brute force très simplement sous sage en utilisant \path{kronecker(a,p)} qui calcule le symbole de Legendre de $a$ modulo $p$.
 \medskip
 \begin{lstlisting}
 def brute_force(p, a,b):
@@ -240,7 +239,7 @@ où $r_1, r_2$ sont les racines de $x^2 - tx +p$ dans $E(\mathbb{F}_{p^n})$, le 
 \begin{proof}
 Les racines de $x^2 - tx +p$ sont $r_1$ et $r_2$, on a donc $Tr(\phi_p) = t = r_1 + r_2$. 
 \newline
-On remarque de plus que l'on a $\phi_{p^n} = (\phi_p)^n$ (car $\phi_{p^n} (x,y) = (x^{p^n}, y^{p^n}) = \phi_p  (x^{p^{n-1}}, y^{p^{n-1}})$, et par récurrence on trouve le résultat).
+On remarque de plus que l'on a $\phi_{p^n} = (\phi_p)^n$. Car $\phi_{p^n} (x,y) = (x^{p^n}, y^{p^n}) = \phi_p  (x^{p^{n-1}}, y^{p^{n-1}})$, et par récurrence on trouve le résultat).
 \newline
 Ainsi : 
 \begin{align*}
@@ -257,7 +256,7 @@ L'équation du polynôme caractéristique du Frobenius reste en particulier vrai
 \end{equation} 
 Avec $t_l \equiv t \pmod l$, $p_l \equiv p \pmod l$ et $0 \leq t_l, p_l < l$. 
 \newline
-Il nous faut maintenant introduire les polynôme de division d'une courbe elliptiques $E$.
+Il nous faut maintenant introduire les polynômes de division d'une courbe elliptiques $E$.
 
 \begin{defi}
 Soit une courbe elliptique $E : y^2 = x^3 + ax+b$ défini sur $\mathbb{K}$. On appelle $f_n(X)$ le n-ième polynôme de divisons définit sur $\mathbb{Z}[x]$ de manière récursive par : 
@@ -329,7 +328,7 @@ O_E & \mbox{si} & P \in E[m]  \\
 \end{thm}
 
 \begin{proof}
-On veut démontrer \ref{mP}. 
+On veut démontrer l'équation \ref{mP}. 
 \newline
 On note $[m]P = (x_1, y_1)$ 
 On a alors : 
@@ -343,12 +342,12 @@ x_1 &= \frac{\phi_m}{\psi^2_m} =  \frac{x \psi^2_m - \psi_{m-1}\psi_{m+1}}{\psi_
 
 
 \end{proof}
-On remarque que $[m]P = (x_1, y_1)$ avec $x_1$ uniquement fonction de $x$. En effet en utilisant les formules de récurrence, si $m$ est pair $\psi_m^2 = 4y^2f_m$, mais en utilisant l'équation de $E$ on peut remplacer $y^2$ par une fonction de $x$, et les polynômes de division sont en fonction de $x$. De plus comme $m$ est pair les polynômes $\psi_{m+1} et \psi_{m-1}$ sont uniquement en fonction de $x$. Dans le cas où $m$ est impair on à l'inverse, le numérateur fait apparaître un $y^2$ qu'on peut remplacer par une fonction de $x$ comme précédemment et le dénominateur est une fonction de $x$. Quand à $y_1$, son degré en $y$ est au plus $1$. Si $m$ est pair $\psi_m^4$ fait apparaître un $y^4$ qui s'exprime en fonction de $x$, et $\psi_{2m}$ amène un $y$. On montre la même chose quelque soit la parité de $m$ et $2m$.
-On peut ainsi exprimer $[m]P$ comme un polynôme en $x,y$. Mais ce n'est pas la seule particularité de ces polynôme utile pour notre algorithme. En effet $P = (x_1, y_1)$ est un point de l-torsion si et seulement si $x_1$ est une racine du l-ième polynôme de division $f_l$. De plus $P$ est sur la courbe $E$. Les points de $l$-torsion sont donc solutions du système d'équation : 
+On remarque que $[m]P = (x_1, y_1)$ avec $x_1$ uniquement fonction de $x$. En effet en utilisant les formules de récurrence, si $m$ est pair $\psi_m^2 = 4y^2f_m$, mais en utilisant l'équation de $E$ on peut remplacer $y^2$ par une fonction de $x$, et les polynômes de division sont en fonction de $x$. De plus comme $m$ est pair les polynômes $\psi_{m+1} et \psi_{m-1}$ sont uniquement en fonction de $x$. Dans le cas où $m$ est impair on a l'inverse, le numérateur fait apparaître un $y^2$ qu'on peut remplacer par une fonction de $x$ comme précédemment et le dénominateur est une fonction de $x$. Quand à $y_1$, son degré en $y$ est au plus $1$. Si $m$ est pair $\psi_m^4$ fait apparaître un $y^4$ qui s'exprime en fonction de $x$, et $\psi_{2m}$ amène un $y$. On montre la même chose quelque soit la parité de $m$ et $2m$.
+On peut ainsi exprimer $[m]P$ comme un polynôme en $x,y$. Mais ce n'est pas la seule particularité de ces polynômes utiles pour notre algorithme. En effet $P = (x_1, y_1)$ est un point de l-torsion si et seulement si $x_1$ est une racine du l-ième polynôme de division $f_l$. De plus $P$ est sur la courbe $E$. Les points de $l$-torsion sont donc solutions du système d'équation : 
 \begin{equation}
 E(x,y) = y^2 - x^3 - ax - b = 0, \quad f_l(x) = 0
 \end{equation}
-L'équation \ref{eqnfrobenius} peut donc se récrire en utilisant les points de $l$-torsion. On va maintenant faire des calculs dans l'anneau $\mathbb{W}= \frac{\mathbb{F_p}[x,y]}{(f_l(x), E(x,y))}$. L'idée de l'algorithme de Schoof est donc de tester pour des valeurs $\tau_l \in \lbrace 0, \ldots, l-1 \rbrace$ si l'équation suivante est vrai dans cet anneau :
+L'équation \ref{eqnfrobenius} peut donc se récrire en utilisant les points de $l$-torsion. On va maintenant faire des calculs dans l'anneau $\mathbb{W}= \frac{\mathbb{F_p}[x,y]}{(f_l(x), E(x,y))}$. L'idée de l'algorithme de Schoof est donc de tester pour des valeurs $\tau_l \in \lbrace 0, \ldots, l-1 \rbrace$ si l'équation suivante est vraie dans cet anneau :
 
 \begin{equation}
 (x^{p^2}, y^{p^2}) + [p_l](x,y) = [\tau_l](x^{p}, y^{p}),  \quad P=(x,y)
@@ -374,15 +373,15 @@ while N <= 4*sqrt(p):
 
 
 \subsubsection{Cas $l=2$}
-Ce cas est particulier et doit être traité à part car on suppose nos premiers impairs. On a $t_2 \equiv 0 \pmod 2$ si et seulement si $E(\mathbb{F}_p)$ à un élément d'ordre $2$, c'est à dire un point de $2$-torsion. Or les points de $2$ torsions sont de la forme $(x, 0)$. En effet, si $2P = 0$, pour $P \in E(\mathbb{F_p})$ alors $P = -P$, et cela correspond aux points de l'axe des abscisses. Ainsi $t_2$ est congru à $0$ si et seulement si $x^3 +ax +b$ à une racine dans $\mathbb{F}_p$. Mais les racines de $\mathbb{F}_p$ sont entièrement déterminée par le polynôme $x^p - x$, nos deux polynômes partageraient alors une racine commune. La façon utilisé ici pour décider si $t_2 \equiv 0 \pmod 2$ est donc de calculer si $\gcd(x^p - x, x^3 +ax +b) \ne 1$ (qu'on calcule par exponentiation rapide).
+Ce cas est particulier et doit être traité à part car on suppose nos premiers impairs. On a $t_2 \equiv 0 \pmod 2$ si et seulement si $E(\mathbb{F}_p)$ a un élément d'ordre $2$, c'est à dire un point de $2$-torsion. Or les points de $2$ torsions sont de la forme $(x, 0)$. En effet, si $2P = 0$, pour $P \in E(\mathbb{F_p})$ alors $P = -P$, et cela correspond aux points de l'axe des abscisses. Ainsi $t_2$ est congru à $0$ si et seulement si $x^3 +ax +b$ à une racine dans $\mathbb{F}_p$. Mais les racines de $\mathbb{F}_p$ sont entièrement déterminées par le polynôme $x^p - x$, nos deux polynômes partageraient alors une racine commune. La façon utilisée ici pour décider si $t_2 \equiv 0 \pmod 2$ est donc de calculer si $\gcd(x^p - x, x^3 +ax +b) \ne 1$ (qu'on calcule par exponentiation rapide).
 
 \subsubsection{Calcul des polynômes de division}
-Il existe dans SAGE une fonction permettant de calculer les polynôme de division, \path{polynomial_polynomial(n)} renvoyant le n-ième polynôme de division. Mais comme au cours de l'algorithme on doit souvent utiliser différents polynôme de division et de plus ils sont calculé via des formules de récurrence. Il ne me paraissait pas forcement très judicieux d'utiliser la fonction de sage qui allait de toute façon très certainement à chaque appel devoir recalculer via les formules de récurrence le polynôme souhaité. L'idée étant de stocker tous ces polynômes dans un dictionnaire, une fois la phase de pré calcul faite on peut donc accéder à tous les polynômes de division que l'on souhaite en temps constant au cours de l'exécution de l'algorithme de Schoof. Et en utilisant la fonction de SAGE j'ai tout de même vérifié via une fonction de test que je trouvais bien les même polynômes qu'avec ma fonction.
+Il existe dans SAGE une fonction permettant de calculer les polynômes de division, \path{polynomial_polynomial(n)} renvoyant le n-ième polynôme de division. Mais comme au cours de l'algorithme on doit souvent utiliser différents polynôme de division et de plus ils sont calculés via des formules de récurrence. Il ne me paraissait pas forcement très judicieux d'utiliser la fonction de sage qui allait de toute façon très certainement à chaque appel devoir recalculer via les formules de récurrence le polynôme souhaité. L'idée étant de stocker tous ces polynômes dans un dictionnaire, une fois la phase de pré calcul faite on peut donc accéder à tous les polynômes de division que l'on souhaite en temps constant au cours de l'exécution de l'algorithme de Schoof. Et en utilisant la fonction de SAGE j'ai tout de même vérifié via une fonction de test que je trouvais bien les même polynômes qu'avec ma fonction.
 
 
 \subsubsection{Calcul de $(x^{p^2}, y^{p^2}) + [p_l](x,y)$}
 
-Comme vu en introduction aux courbes elliptiques la somme de deux points appartenant à la courbe dépend de plusieurs cas. Est ce que nos points sont distincts où ont la même coordonnée en $x$. En effet les formules à appliquer seront différentes selon que l'on soit dans un cas ou l'autre. Il est plus probable d'avoir des coordonnées différentes, on va donc travailler dans ce cas la. Si l'algorithme trouve un $t_l$ vérifiant l'équation on est dans le bon cas, s'il n'en trouve aucun cela veut dire que l'on se trouve dans l'autre cas.
+Comme vu en introduction aux courbes elliptiques la somme de deux points appartenant à la courbe dépend de plusieurs cas. Est-ce que nos points sont distincts ou ont la même coordonnée en $x$. En effet les formules à appliquer seront différentes selon que l'on soit dans un cas ou l'autre. Il est plus probable d'avoir des coordonnées différentes, on va donc travailler dans ce cas là. Si l'algorithme trouve un $t_l$ vérifiant l'équation on est dans le bon cas, s'il n'en trouve aucun, cela veut dire que l'on se trouve dans l'autre cas.
 \paragraph*{Cas : $(x^{p^2}, y^{p^2}) \ne \pm [p_l](x,y)$}
 
 On peut utiliser notre formule usuelle d'addition sur courbe elliptique pour calculer $(x_1, y_1) = (x^{p^2}, y^{p^2}) + (x_{\bar{p_l}}, Y_{\bar{p_l}})$ en notant $(x_{\bar{p_l}}, y_{\bar{p_l}}) =  [p_l](x,y)$. 
@@ -394,7 +393,7 @@ Soit $\lambda = \frac{y_{\bar{p_l}} - y^{p^2}}{x_{\bar{p_l} - x^{p^2}}}$, on a a
 On va aussi noter $(x_{\tau}, y_{\tau}) =  [\tau](x,y)$. On doit maintenant tester en faisant varier la valeur de $\tau$ entre $0$ et $l -1$ si $x_1 = x_{\tau}$. Si c'est le cas on se retrouve avec deux possibilités comme valeur de $y_1$, soit on a le point soit on a son opposé. On regarde donc si $y_1 = y_{\tau}$, on a alors $t_l = \tau$, sinon on a $t_l = - \tau$
 
 \paragraph*{Cas : $(x^{p^2}, y^{p^2}) = \pm [p_l](x,y)$}
-La encore deux cas possible. On va d'abord regarder lorsque $(x^{p^2}, y^{p^2}) = [p_l](x,y)$. 
+Là encore deux cas possibles. On va d'abord regarder lorsque $(x^{p^2}, y^{p^2}) = [p_l](x,y)$. 
 \newline
 Soit $P=(x,y)$, on rappelle l’équation caractéristique de l'endomorphisme Frobenius restreinte aux points de $l$-torsion: 
 \begin{equation}
@@ -408,7 +407,7 @@ On a alors dans notre cas $2[p_l]P = [t_{l}] \phi_p(P) \, \pmod{l}$. De plus on 
 Ainsi $p_l$ est un carré modulo $l$. On pose $p_l = \omega^2 \pmod{l}$. On va maintenant calculer $\omega \phi P$, si $[p_l]P = \omega \phi P$ alors $t_l = 2\omega$ sinon $t_l = -2\omega$.
 \newline
 \medskip
-Si $p_l$ n'est pas un carré modulo $l$ on est dans le cas $(x^{p^2}, y^{p^2}) = - [p_l](x,y)$ et on on a alors $t_l = 0$ d'après l'équation caractéristique. 
+Si $p_l$ n'est pas un carré modulo $l$ on est dans le cas $(x^{p^2}, y^{p^2}) = - [p_l](x,y)$ et on a alors $t_l = 0$ d'après l'équation caractéristique. 
 
 \newpage
 \subsubsection{Algorithme}
@@ -465,7 +464,7 @@ On donne une version complète en pseudo-code de l'algorithme de schoof :
 
 
 \paragraph*{Implémentation}
-Il a fallut commencer par implémenter des fonctions de base sur les courbes elliptique pour additionner, calculer une multiplication scalaire. Les algorithmes d'additions ne nécessite pas d'explications, juste une application des formules. Pour la multiplication scalaire on avait deux choix, utiliser les polynômes de division ou de l'exponentiation rapide. La méthode utilisant les polynômes a amené des problème d'implémentation, donc je suis resté avec un version plus simple d'exponentiation. L'idée de cet algorithme est d'utilisation la décomposition binaire de $n$ pour calculer $nP$. Pour récupérer cette décomposition on utilise la fonction \path{digits(base)} qui retourne une liste avec les bits de poids faible à gauche de l'écriture binaire de $n$. On va à chaque itération doubler le point que l'on a, on calcule donc $2(2(\ldots2(P))$. Il est même nécessaire lorsque l'on rencontre un $1$ dans la décomposition binaire de $n$ de faire une addition en plus de doubler. Au final on obtient l'algorithme suivant avec comme entre $n$ et $P$: 
+Il a fallut commencer par implémenter des fonctions de base sur les courbes elliptiques pour additionner, calculer une multiplication scalaire. Les algorithmes d'additions ne nécessitent pas d'explications, juste une application des formules. Pour la multiplication scalaire on avait deux choix, utiliser les polynômes de division ou de l'exponentiation rapide. La méthode utilisant les polynômes a amené des problème d'implémentation, donc je suis resté avec une version plus simple d'exponentiation. L'idée de cet algorithme est d'utiliser la décomposition binaire de $n$ pour calculer $nP$. Pour récupérer cette décomposition on utilise la fonction \path{digits(base)} qui retourne une liste avec les bits de poids faible à gauche de l'écriture binaire de $n$. On va à chaque itération doubler le point que l'on a, on calcule donc $2(2(\ldots2(P))$. Il est même nécessaire lorsque l'on rencontre un $1$ dans la décomposition binaire de $n$ de faire une addition en plus de doubler. Au final on obtient l'algorithme suivant avec comme entre $n$ et $P$: 
 \bigskip
 \begin{lstlisting}
     nbits = n.digits(2)
@@ -480,7 +479,7 @@ Il a fallut commencer par implémenter des fonctions de base sur les courbes ell
 \end{lstlisting}
 \bigskip
 
-Sans donner ici le détails complet de l'algorithme sous SAGE il est intéressant de détailler certains points de l'implémentation. Le premier soucis rencontré fut la construction de l'anneau dans lequel on doit travailler. On crée tout simplement un anneau de polynôme dans le corps $K$ pour commencer :
+Sans donner ici le détail complet de l'algorithme sous SAGE il est intéressant de détailler certains points de l'implémentation. Le premier soucis rencontré fut la construction de l'anneau dans lequel on doit travailler. On crée tout simplement un anneau de polynôme dans le corps $K$ pour commencer :
 \bigskip
 \begin{lstlisting}
 R.<x> = PolynomialRing(K)
@@ -493,16 +492,17 @@ En notant \path{poly_divi_l} le l-ième polynome de division on peut construire 
 B.<x2> = R.quotient(ideal(poly_divi_l))
 \end{lstlisting}
 \bigskip
-Cependant on est pas certains que ce polynôme soit divisible, et ainsi créer un corps fini, si ce n'est pas le cas et que l'on doit calculer l'inverse d'un élément non inversible on rencontrera une erreur. Il est donc nécessaire de tester si le polynôme de division est irréductible et s'il ne l'est pas le remplacer par un de ses diviseurs. Ce qu'on illustre avec la condition suivante :
+Cependant on n'est pas certain que ce polynôme soit divisible, et ainsi créer un corps fini. Si ce n'est pas le cas et que l'on doit calculer l'inverse d'un élément non inversible, on rencontrera une erreur. Il est donc nécessaire de tester si le polynôme de division est irréductible et s'il ne l'est pas de le remplacer par un de ses diviseurs. Ce qu'on illustre avec la condition suivante :
 \bigskip
 \begin{lstlisting}
 if not poly_divi_l.is_irreducible():      
 	for poly, deg in list(factor(poly_divi_l)):
-		if deg() > 1:
+		if deg > 1:
 		poly_divi_l  = poly
 		break
 \end{lstlisting}
 \bigskip
+
 Une fois que cela est fait on peut, en notant $f=x^3 +ax+b$, créer l'anneau final :
 \bigskip
 \begin{lstlisting}
@@ -511,6 +511,7 @@ C.<y> = PolynomialRing(B)
 W = C.quotient(y**2 - f)
 \end{lstlisting}
 \bigskip
+Les calculs pour obtenir les différents $t_l$ modulo $l$ sont juste une succession de test comme décrit dans l'algorithme en pseudo-code. Il faut juste faire attention à bien faire les calculs dans le bon anneau.
 Une fois que l'on a calculé une liste \path{list_t} contenant tous les $t$ modulo $l$ calculés par l'algorithme on peut utiliser la fonction de sage \path{crt(list_t, list_l)} renvoyant la valeur de $t$ final en utilisant les restes chinois.
 \subsubsection{Exemple}
 On va travailler avec la courbe $E$ suivante, $E$ : $y^2 =x^3 +2x+1$ sur $\mathbb{F}_{19}$.
@@ -523,7 +524,7 @@ On a $p^2 = 361$ et $p_l \equiv 1 \pmod 3$, on pose ainsi $p_l = 1$. L'équation
 \begin{equation}
 (x^{361}, y^{361}) + (x,y) = [\tau_l](x^{19}, y^{19})  \quad (x,y) \in E[3], \, \tau_l = \pm 1
 \end{equation}
-Le troisième polynôme de division est $f_l = 3x^4 + 12x^2 +12x - 4$ mais ce polynôme n'est pas irréductible dans $\mathbb{F}_{19}$, on va plutôt travailler avec un de ces diviseurs : $x^3 + 8x^2+16$.
+Le troisième polynôme de division est $f_l = 3x^4 + 12x^2 +12x - 4$ mais ce polynôme n'est pas irréductible dans $\mathbb{F}_{19}$, on va plutôt travailler avec un de ses diviseurs : $x^3 + 8x^2+16$.
 \newline 
 Il nous faut maintenant calculer la partie gauche de cette équation.
 On a $x^{361} = 3x^2 +2x +5 \pmod f_{l}$ et $y^{361} = y(y^2)^{180} = y(4x^2+9x+16)$. On est dans le cas ou $x^{361} \ne x$. On doit maintenant utiliser nos formules de sommations pour calculer $(x_3, y_3) =(x^{361}, y^{361}) + (x,y)$ : 
@@ -541,9 +542,8 @@ y_3 &= \frac{y(4x^2+9x+16) - y}{3x^2 +2x +5 - x} (4x^2+9x+16 -  16x^2 - 16x - 6)
 	&= y(4x^2+9x+15)(x^2+15x+6)( -12x^2 - 7x +10 ) - y(4x^2+9x+16)\\
 	&= y(13x^2 + 13x + 14)
 \end{align*}
-(reprendre le calcul de $y_3$, le résultat final est juste mais erreur dans les calcules intermédiaire !
 
-Maintenant nous devons calculer pour $\tau$ variant de $0$ à $2$ si $(x_3, y_3) = \tau (x^p, y^p)=(x_{\tau}^p, y_{\tau}^p)$  (.Pour $\tau = 1$ on trouve $x_3 = x_{\tau}^p$ et $y^p= - y_{\tau}^p$. Ainsi $t_3 = -\tau = -1 = 2 \pmod 3$. 
+Maintenant nous devons calculer pour $\tau$ variant de $0$ à $2$ si $(x_3, y_3) = \tau (x^p, y^p)=(x_{\tau}^p, y_{\tau}^p)$. Pour $\tau = 1$ on trouve $x_3 = x_{\tau}^p$ et $y^p= - y_{\tau}^p$. Ainsi $t_3 = -\tau = -1 = 2 \pmod 3$. 
 
 \newpage
 \subsubsection{Expérimentations}
@@ -555,25 +555,27 @@ Maintenant nous devons calculer pour $\tau$ variant de $0$ à $2$ si $(x_3, y_3)
 \end{figure}
 
 \begin{figure}[h!]
-\caption{Comparaison temps exécution entre les algorithme de Schoof et de brute force}
+\caption{Comparaison temps exécution entre les algorithmes de Schoof et de brute force}
 \includegraphics[scale=0.6]{pictures/schoof_vs_bruteforce.png} 
 \end{figure}
 On peut tirer deux informations intéressantes de ce graphique. D'une part on a confirmation que l'algorithme de Schoof est bien plus efficace que la méthode naïve dès que $p$ devient grand, mais on voit graphiquement que pour $p<2500$ il est plus efficace d'utiliser l'algorithme naïf.
+\newline
+Il est intéressant de se demander l'espace mémoire utilisé lors de l’exécution de l'algorithme de schoof, et vers quel quel $p$ premier on commence à atteindre des limites.
 \newpage
 \subsubsection{Complexité}
 La complexité de l'algorithme de Schoof est en $O(\log{q}^8)$. La partie conteuse de l'algorithme réside dans les calculs dans l'anneau $R = \frac{\mathbb{F_p}[x,y]}{(f_l(x), y^2 -x^3 -ax -b)}$. Les éléments de R sont de degré $O(l^2)$ 
 \newline
- L'algorithme est plus efficace qu'une version naïve quand la taille de $p$ augmente mais reste néanmoins limité pour $p$ trop grand. En effet le degré des polynômes de division en $O(l^2)$ empêche une performance optimale pour des tailles de $p$ trop importante. Les polynômes de division deviennent rapidement très grand, ce qui pose un problème de mémoire. Une amélioration de cet algorithme a été proposé par Elkies-Atkin pour produire un algorithme plus performant, le SEA. 
+ L'algorithme est plus efficace qu'une version naïve quand la taille de $p$ augmente mais reste néanmoins limitée pour $p$ trop grand. En effet le degré des polynômes de division en $O(l^2)$ empêche une performance optimale pour des tailles de $p$ trop importante. Les polynômes de division deviennent rapidement très grands, ce qui pose un problème de mémoire. Une amélioration de cet algorithme a été proposée par Elkies-Atkin pour produire un algorithme plus performant, le SEA. 
  
 \subsection{Algorithme SEA}
-Il va être nécessaire d'introduire plus de théorie avant de s'attaquer à l'algorithme en lui même. L'idée finale est d'utiliser un polynôme de degré plus petit que les polynômes de division utilisés dans l'algorithme de Schoof, les polynômes modulaire. Pour les définir il va être nécessaire d'introduire un peu de théorie d'analyse complexe.
+Il va être nécessaire d'introduire plus de théorie avant de s'attaquer à l'algorithme en lui même. L'idée finale est d'utiliser un polynôme de degré plus petit que les polynômes de division utilisés dans l'algorithme de Schoof, les polynômes modulaires. Pour les définir il va être nécessaire d'introduire un peu de théorie d'analyse complexe.
 
 
 \subsubsection{Analyse complexe}
-La théorie des courbes elliptiques est importe sur le corps des complexes mais nous allons uniquement donner des définitions et formules utiles sans rentrer dans le détails de preuve et résultats non pertinent pour la compréhension de l'algorithme SEA. On peut légitimement se demander le rapport entre courbe elliptique et analyse complexe, dans un premier temps il est nécessaire d'introduire un peu de théorie d'analyse complexe et rappeler quelques définitions avant de faire le lien entre les deux.
+La théorie des courbes elliptiques est conséquente sur le corps des complexes mais nous allons uniquement donner des définitions et formules utiles sans rentrer dans le détail de preuves et résultats non pertinents pour la compréhension de l'algorithme SEA. On peut légitimement se demander le rapport entre courbe elliptique et analyse complexe, dans un premier temps il est nécessaire d'introduire un peu de théorie d'analyse complexe et rappeler quelques définitions avant de faire le lien entre les deux.
 
 \begin{defi}
-Une fonction holomorphe est une fonction à valeur complexes, définies et dérivable en tout points d'un sous ensemble ouvert du plan complexe $\mathbb{C}$. Une fonction est dite méromorphe si elle est holomorphe dans tout le plan complexe $\mathbb{C}$, sauf éventuellement sur un ensemble de points isolés dont chacun est un pôle pour la fonction.
+Une fonction holomorphe est une fonction à valeur complexe, définie et dérivable en tout point d'un sous ensemble ouvert du plan complexe $\mathbb{C}$. Une fonction est dite méromorphe si elle est holomorphe dans tout le plan complexe $\mathbb{C}$, sauf éventuellement sur un ensemble de points isolés dont chacun est un pôle pour la fonction.
 \end{defi}
 
 
@@ -584,7 +586,7 @@ Soit $n \in \mathbb{N}$, $r \in \mathbb{R}$, $(w_i)_{1 \leq i \leq r}$ une parti
 \end{equation*}
 Un tel groupe $\Gamma$ est un réseau de $\mathbb{R}^n$ de rang $r$.
 \end{prop}
-Dans le cas particulier de $\mathbb{C}$, ses sous-groupes discrets non nuls et non isomorphe à $\mathbb{Z}$ sont de la forme $\mathbb{Z}\omega_1 + \mathbb{Z}w_2$ avec $\omega_1, \omega_2 \in \mathbb{C}$ et $Im(\frac{w_2}{w_1}) \ne 0$. En pratique on va souvent considérer $\tau = \frac{\omega_2}{\omega_1}$ pour avoir $\Gamma = \mathbb{Z} + \tau \mathbb{Z}$.
+Dans le cas particulier de $\mathbb{C}$, ses sous-groupes discrets non nuls et non isomorphes à $\mathbb{Z}$ sont de la forme $\mathbb{Z}\omega_1 + \mathbb{Z}w_2$ avec $\omega_1, \omega_2 \in \mathbb{C}$ et $Im(\frac{w_2}{w_1}) \ne 0$. En pratique on va souvent considérer $\tau = \frac{\omega_2}{\omega_1}$ pour avoir $\Gamma = \mathbb{Z} + \tau \mathbb{Z}$.
 
 \begin{defi}
 On appelle tore le quotient $T = \mathbb{C}$/$\Gamma$. Cest le quotient du groupe $(\mathbb{C}, +)$ par le réseau $\Gamma = \mathbb{Z}\omega_1 + \mathbb{Z}w_2$
@@ -604,7 +606,7 @@ On a une convergence absolue uniforme sur tout compact disjoint de $\Gamma$ de c
 On peut montrer qu'avec $\Gamma = \omega_1 \mathbb{Z} + \omega_2 \mathbb{Z}$ cette fonction $\rho$ est double périodique de période $\omega_1, \omega_2$.
 \end{defi}
 
-Les théorèmes suivants permettent de faire le lien entre ces fonctions d'analyse complexe et les courbes elliptique.
+Les théorèmes suivants permettent de faire le lien entre ces fonctions d'analyse complexe et les courbes elliptiques.
 
 \begin{thm}
 Soit $E$/$\mathbb{C}$ une courbe elliptique sous forme réduite sur le corps des complexes. Il existe alors un réseau $\Gamma$ tel que l'application suivante soit une bijection:
@@ -627,32 +629,32 @@ La fonction $\rho$ satisfait l'équation différentielle suivante :
 \begin{equation*}
 \rho'(z)^2 = 4\rho^3(z) + A \rho(z) + B
 \end{equation*}
-Où les coefficient $A,B$ sont totalement déterminés en analysant les développement limités en $0$ de $\rho, \rho'$ et $\rho'^2$ 
+Où les coefficients $A,B$ sont totalement déterminés en analysant les développements limités en $0$ de $\rho, \rho'$ et $\rho'^2$ 
 \end{thm}
 
 \subsubsection{Isogénie}
-Soit $K$ un corps fini, on va noter dans la suite $E$/$K$ la courbe elliptique définie sur ce corps et on ne travaillera uniquement avec des courbes sous forme réduite.
+Soit $K$ un corps fini, on va noter dans la suite $E$/$K$ la courbe elliptique définie sur ce corps et on travaillera uniquement avec des courbes sous forme réduite.
 
 \begin{defi}
 Soit $E_1$/$K$ et $E_2$/$K$ deux courbes elliptiques. Si $E_1$ et $E_2$ ont le même $j$-invariant alors elles sont isomorphiques sur $\bar{K}$. 
 \end{defi}
-En d'autres termes, dire que deux courbes sont isomorphe signifie qu'il existe un changement de variable permettant de passer de l'une à l'autre. Avec un isomorphisme entre nos courbes on peut s'intéresser à la structure des groupes des points rationnelles de nos courbes, et à leurs relations.
+En d'autres termes, dire que deux courbes sont isomorphes signifie qu'il existe un changement de variable permettant de passer de l'une à l'autre. Avec un isomorphisme entre nos courbes, on peut s'intéresser à la structure des groupes des points rationnels de nos courbes, et à leurs relations.
 
 \begin{prop}
-Soit $E_1$/$K$ et $E_2$/$K$ deux courbes elliptiques isomorphe. On a alors un morphisme de groupe entre $E_1(K)$ et $E_2(K)$.
+Soit $E_1$/$K$ et $E_2$/$K$ deux courbes elliptiques isomorphes. On a alors un morphisme de groupe entre $E_1(K)$ et $E_2(K)$.
 \end{prop}
 
 \begin{defi}
 Soit deux courbes elliptiques $E_1$ et $E_2$, $T_1=\mathbb{C}$/ $\Gamma_1$ et $T_2 = \mathbb{C}$/ $\Gamma_2$ les deux tores associés. Un morphisme de $E_1$ vers $E_2$ est une application holomorphe $\mu$ de $T_1$ vers $T_2$ qui soit un morphisme de groupe. Si ce morphisme est non constant alors on dit que c'est une isogénie.
 \end{defi}
 
-Deux courbes elliptique $E_1$/$K$ et $E_2$/$K$ sont isogène s'il existe une isogénie $\psi : E_1 \mapsto E_2$. Le degré de l’isogénie est le degré du noyau de $\psi$.
+Deux courbes elliptiques $E_1$/$K$ et $E_2$/$K$ sont isogènes s'il existe une isogénie $\psi : E_1 \mapsto E_2$. Le degré de l’isogénie est le degré du noyau de $\psi$.
 
 
 \subsubsection{Polynôme modulaire}
-Ce sont les polynôme que l'on va utiliser dans l'algorithme SEA. Comme vu dans les parties précédentes on peut associer à chaque courbe elliptique $E$/$\mathbb{C}$ un invariant $\tau$ (on définissait un réseau $\Gamma = \mathbb{Z}+\tau \mathbb{Z}$), on a aussi $p=\e^{2\pi i \tau}$. De plus on a exprimé le $j$-invariant de $E$ comme une série entière $j(p)$. Dans la suite on va noter $j(\tau) = j_E$.
+Ce sont les polynômes que l'on va utiliser dans l'algorithme SEA. Comme vu dans les parties précédentes on peut associer à chaque courbe elliptique $E$/$\mathbb{C}$ un invariant $\tau$ (on définissait un réseau $\Gamma = \mathbb{Z}+\tau \mathbb{Z}$), on a aussi $p=\e^{2\pi i \tau}$. De plus on a exprimé le $j$-invariant de $E$ comme une série entière $j(p)$. Dans la suite on va noter $j(\tau) = j_E$.
 
-La définition des polynomes modulaire est un peu plus compliqué qu'une simple formule, il nous faut définir, pour tout entier $n$, l'ensemble suivant : 
+La définition des polynômes modulaires est un peu plus compliquée qu'une simple formule, il nous faut définir, pour tout entier $n$, l'ensemble suivant : 
 \begin{equation*}
 S_n^* = \left\{ \begin{pmatrix}
 a & b\\
@@ -662,7 +664,7 @@ a & b\\
  \right\} 
 \end{equation*}
 On peut définir la quantité suivante pour $\alpha \in S_n^* $:  $j \circ \alpha = j(\frac{a\tau +b}{d})$
-On peut maintenant donner une définitions des polynômes modulaire.
+On peut maintenant donner une définition des polynômes modulaires.
 
 \begin{defi}
 Soit $n$ un entier positif, le n-ième polynôme modulaire est :
@@ -676,7 +678,7 @@ Ce qui nous permet de faire le lien entre isogénie et polynôme modulaire avec 
 Soit $E_1$/$\mathbb{C}$ et $E_2$/$\mathbb{C}$ deux courbes elliptiques de $j$-invariant respectivement $j_{E_1}$ et $j_{E_2}$. Le $l$-ième polynôme modulaire vérifie $\Phi_l(j_{E_1},j_{E_2}) = 0$ si et seulement si il existe une isogénie entre $E_1$ et $E_2$ dont le noyau est cyclique de degré $l$.
 \end{defi}
 
-Ce théorème nous donne une méthode pour trouver toute les isogénies à une courbe elliptique $E$/$\mathbb{F}_p$. Soit $l$ un nombre premier différent de $p$, on va chercher les racines de $\Phi_l(j_E, y) \in \mathbb{F}_p[y]$ dans $\mathbb{F}_p$. Quand on trouve une racine on trouve un j-invariant d'une courbe $E_2$ isogène avec $E$. 
+Ce théorème nous donne une méthode pour trouver toutes les isogénies à une courbe elliptique $E$/$\mathbb{F}_p$. Soit $l$ un nombre premier différent de $p$, on va chercher les racines de $\Phi_l(j_E, y) \in \mathbb{F}_p[y]$ dans $\mathbb{F}_p$. Quand on trouve une racine on trouve un j-invariant d'une courbe $E_2$ isogène avec $E$. 
 
 On donne un exemple de polynôme modulaire, pour $ l =5$ on a :
 \begin{align*}
@@ -690,16 +692,16 @@ On donne un exemple de polynôme modulaire, pour $ l =5$ on a :
  -& 770845966336000000xy \\
  +& 1855000000000(x+y) 
 \end{align*}
-On peut noter que les coefficients augmentent très rapidement. Un algorithme efficace pour calculer ces polynome dans le cas ou $l$ est premier est le calcul via volcan d'isogénie (ref : https://arxiv.org/abs/1001.0402 a inserer).
+On peut noter que les coefficients augmentent très rapidement. Un algorithme efficace pour calculer ces polynômes dans le cas où $l$ est premier est le calcul via volcan d'isogénie (ref : https://arxiv.org/abs/1001.0402 a inserer).
 
 \subsubsection{Algorithme SEA}
-Avec ce bagage théorique en plus on va pouvoir commencer a détailler l'algorithme SEA (schoof-Elkies-Atkins), on suppose dans la suite que $E$ est une courbe elliptique sur $\mathbb{F}_p$, $p$ premier sous sa forme réduite $y^2 = x^3 + ax +b$. On rappelle que le polynôme caractéristique de l’endomorphisme de Frobenius $\phi$ sur $\mathbb{F}_l$ est $\chi_l(x) = x^2 - t_lx +p_l$ où $t_l$ est la trace du Frobenius modulo $l$, et $p_l$ la caractéristique du corps sur lequel on définit $E$ réduite modulo $l$. On va se demander si $\chi_l$ est séparable sur $\mathbb{F}_l$. Or ce polynome a une racine dans $\mathbb{F}_l$ si et seulement si sont déterminant $\Delta_{\chi} = t_l^2 - 4p_l$ est un carré dans $\mathbb{F}_l$, ce qui nous amène à la classification suivante :
+Avec ce bagage théorique en plus on va pouvoir commencer à détailler l'algorithme SEA (schoof-Elkies-Atkins), on suppose dans la suite que $E$ est une courbe elliptique sur $\mathbb{F}_p$, $p$ premier sous sa forme réduite $y^2 = x^3 + ax +b$. On rappelle que le polynôme caractéristique de l’endomorphisme de Frobenius $\phi$ sur $\mathbb{F}_l$ est $\chi_l(x) = x^2 - t_lx +p_l$ où $t_l$ est la trace du Frobenius modulo $l$, et $p_l$ la caractéristique du corps sur lequel on définit $E$ réduite modulo $l$. On va se demander si $\chi_l$ est séparable sur $\mathbb{F}_l$. Or ce polynome a une racine dans $\mathbb{F}_l$ si et seulement si sont déterminant $\Delta_{\chi} = t_l^2 - 4p_l$ est un carré dans $\mathbb{F}_l$, ce qui nous amène à la classification suivante :
 
 \begin{defi}
 Si $\Delta_{\chi} = t_l^2 - 4p_l$ est un carré dans $\mathbb{F}_l$ alors on dit que $l$ est un premier de Elkies, sinon c'est un premier de Atkins.
 \end{defi}
 \bigskip
-On peut représenter graphiquement l'ensemble des points de $l$-torsions. On sait que l'on a $l^2$ points et que l'on peut décrire $E[l]$ par son l-ième polynôme de division $f_l$ de degré en $O(l^2)$.
+On peut représenter graphiquement l'ensemble des points de $l$-torsions. On sait que l'on a $l^2$ points de $l$-torsion et que l'on peut décrire $E[l]$ par son l-ième polynôme de division $f_l$ de degré en $O(l^2)$.
 
 \begin{tikzpicture}[>=latex]
 \begin{axis}[
@@ -752,8 +754,8 @@ Soit $E$ une courbe elliptique définie sur $\mathbb{F}_p$ de $j$-invariant non 
 \begin{itemize}
 \item[(1)] $(1,l)$ ou $(1,\ldots,1)$, dans les deux cas $\Delta_{\chi} \equiv 0 \pmod l$, et on pose respectivement $r=l $ et $r=1$.
 \item[(2)] $(1,1,r,\ldots,r)$, dans ce cas $\Delta_{\chi}$ est un carré dans $\mathbb{F}_l$, $r$ divise $l-1$ et $\phi_l$ agit sur $E[l]$ comme la matrice diagonale $\begin{pmatrix}
-\lambda 0 \\
-0 mu
+\lambda & 0 \\
+0 & \mu
 \end{pmatrix}$ avec $\lambda,\mu \in \mathbb{F}_l^*$.
 \item[(3)] $(r, \ldots, r)$ pour $r>1$, dans ce cas $\Delta_{\chi}$ n'est pas un carré dans $\mathbb{F}_l$, $r$ divise $l+1$ et $\chi_l$ est irréductible sur $\mathbb{F}_l$.
 \end{itemize}

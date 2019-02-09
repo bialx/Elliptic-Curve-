@@ -2,7 +2,7 @@
 \contentsline {section}{\numberline {1}Introduction}{3}
 \contentsline {section}{\numberline {2}Introduction aux courbes elliptiques}{3}
 \contentsline {section}{\numberline {3}Compter les points sur une courbe}{4}
-\contentsline {subsection}{\numberline {3.1}Algorithme naif}{4}
+\contentsline {subsection}{\numberline {3.1}Algorithme na\IeC {\"\i }f}{4}
 \contentsline {subsection}{\numberline {3.2}Shanks}{5}
 \contentsline {subsection}{\numberline {3.3}Schoof}{5}
 \contentsline {subsubsection}{\numberline {3.3.1}Choix de l'ensemble de premiers}{7}
