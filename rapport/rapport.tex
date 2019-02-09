@@ -410,7 +410,7 @@ Si $p_l$ n'est pas un carré modulo $l$ on est dans le cas $(x^{p^2}, y^{p^2}) =
 
 \newpage
 \subsubsection{Algorithme}
-On donne une version complète en langage naturel de l'algorithme de schoof : 
+On donne une version complète en pseudo-code de l'algorithme de schoof : 
 
 \begin{algorithm}
 \caption{Schoof}
@@ -495,8 +495,8 @@ Cependant on est pas certains que ce polynôme soit divisible, et ainsi créer u
 \bigskip
 \begin{lstlisting}
 if not poly_divi_l.is_irreducible():      
-	for poly, deg in list(reversed(factor(poly_divi_l))):
-		if poly.degree() > 1:
+	for poly, deg in list(factor(poly_divi_l)):
+		if deg() > 1:
 		poly_divi_l  = poly
 		break
 \end{lstlisting}
@@ -546,8 +546,6 @@ Maintenant nous devons calculer pour $\tau$ variant de $0$ à $2$ si $(x_3, y_3)
 \newpage
 \subsubsection{Expérimentations}
 
-Faire les test de l'algo + comparaison avec brute force/methode native sage
-Inserer les graphiques + commenter 
 
 \begin{figure}[h!]
 \includegraphics[scale=0.6]{pictures/schoof_cputime.png} 
@@ -654,17 +652,46 @@ Ce sont les polynôme que l'on va utiliser dans l'algorithme SEA. Comme vu dans 
 
 La définition des polynomes modulaire est un peu plus compliqué qu'une simple formule, il nous faut définir, pour tout entier $n$, l'ensemble suivant : 
 \begin{equation*}
-S_n = \left\{ \begin{pmatrix}
+S_n^* = \left\{ \begin{pmatrix}
 a & b\\
 0 & d
 \end{pmatrix}
 \, | \, a,b,d \in \mathbb{Z}, 0 \leq b \leq d, \gcd(a,b,d) = 1
  \right\} 
 \end{equation*}
+On peut définir la quantité suivante pour $\alpha \in S_n^* $:  $j \circ \alpha = j(\frac{a\tau +b}{d})$
+On peut maintenant donner une définitions des polynômes modulaire.
+
+\begin{defi}
+Soit $n$ un entier positif, le n-ième polynôme modulaire est :
+\begin{equation*}
+\Phi_n(x,j) = \prod_{\alpha \in S_n^*} (x - j \circ \alpha)
+\end{equation*}
+\end{defi}
+On peut noter que ce polynôme est symétrique et de degré $n+1$.
+Ce qui nous permet de faire le lien entre isogénie et polynôme modulaire avec la définition suivante.
 \begin{defi}
 Soit $E_1$/$\mathbb{C}$ et $E_2$/$\mathbb{C}$ deux courbes elliptiques de $j$-invariant respectivement $j_{E_1}$ et $j_{E_2}$. Le $l$-ième polynôme modulaire vérifie $\Phi_l(j_{E_1},j_{E_2}) = 0$ si et seulement si il existe une isogénie entre $E_1$ et $E_2$ dont le noyau est cyclique de degré $l$.
 \end{defi}
 
-Ce théorème nous donne une méthode pour trouver toute les isogénies à une courbe elliptique $E$/$\mathbb{F}_p$. On va chercher les racines de $\Phi(j_E, y) \in \mathbb{F}_p[y]$ dans $\mathbb{F}_p$. Quand on trouve une racine on trouve un j-invariant d'une courbe $E_2$ isogène avec $E$.
+Ce théorème nous donne une méthode pour trouver toute les isogénies à une courbe elliptique $E$/$\mathbb{F}_p$. Soit $l$ un nombre premier différent de $p$, on va chercher les racines de $\Phi_l(j_E, y) \in \mathbb{F}_p[y]$ dans $\mathbb{F}_p$. Quand on trouve une racine on trouve un j-invariant d'une courbe $E_2$ isogène avec $E$. 
+
+On donne un exemple de polynôme modulaire, pour $ l =5$ on a :
+\begin{align*}
+\Phi_3(x,y) &= x^4 -x^3y^3 + y^4 \\
+ +& 2232(x^3y^2 + x^2y^3) \\
+ -& 1069956(x^3y^2 + x^2y^3 \\
+ +& 36864000(x^3 + y^3) \\
+ +& 2587918086x^2y^2 \\
+ +& 8900222976000(x^2y + xy^2) \\
+ +& 452984832000000(x^2 + y^2) \\
+ -& 770845966336000000xy \\
+ +& 1855000000000(x+y) 
+\end{align*}
+On peut noter que les coefficients augmentent très rapidement. Un algorithme efficace pour calculer ces polynome dans le cas ou $l$ est premier est le calcul via volcan d'isogénie (ref : https://arxiv.org/abs/1001.0402 a inserer).
+
+\subsubsection{Algorithme SEA}
+Avec ce bagage théorique en plus on va pouvoir commencer a détailler l'algorithme SEA (schoof-Elkins-Atkins), on suppose dans la suite que $E$ est une courbe elliptique sur $\mathbb{F}_p$, $p$ premier sous sa forme réduite $y^2 = x^3 + ax +b$.
+
 
 \end{document}
