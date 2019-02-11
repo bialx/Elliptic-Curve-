@@ -698,6 +698,7 @@ On peut noter que les coefficients augmentent très rapidement. Un algorithme ef
 Avec ce bagage théorique en plus on va pouvoir commencer à détailler l'algorithme SEA (schoof-Elkies-Atkins), on suppose dans la suite que $E$ est une courbe elliptique sur $\mathbb{F}_p$, $p$ premier sous sa forme réduite $y^2 = x^3 + ax +b$. On rappelle que le polynôme caractéristique de l’endomorphisme de Frobenius $\phi$ sur $\mathbb{F}_l$ est $\chi_l(x) = x^2 - t_lx +p_l$ où $t_l$ est la trace du Frobenius modulo $l$, et $p_l$ la caractéristique du corps sur lequel on définit $E$ réduite modulo $l$. On va se demander si $\chi_l$ est séparable sur $\mathbb{F}_l$. Or ce polynome a une racine dans $\mathbb{F}_l$ si et seulement si sont déterminant $\Delta_{\chi} = t_l^2 - 4p_l$ est un carré dans $\mathbb{F}_l$, ce qui nous amène à la classification suivante :
 
 \begin{defi}
+\label{Atkins's prime}
 Si $\Delta_{\chi} = t_l^2 - 4p_l$ est un carré dans $\mathbb{F}_l$ alors on dit que $l$ est un premier de Elkies, sinon c'est un premier de Atkins.
 \end{defi}
 \bigskip
@@ -745,9 +746,12 @@ L'idée de l'algorithme SEA est de ne plus travailler sur cet ensemble $E[l]$ ma
 \end{axis}
 \end{tikzpicture}
 
+On peut noter que $E[l]$ est l'union de $l+1$ sous groupe cyclique d'ordre $l$.
 La question est donc quel sous groupe prendre ? On va s’intéresser à un sous espace propre de la restriction de $\phi$ à $E[l]$ de dimension $1$ (comme visible sur le graphique précédent on prend une droite) qu'on note $C_{\lambda}$. La valeur propre associée à ce sous espace propre est bien sur $\lambda$ tel que $\phi(P) = \lambda P$ pour $P \in C_{\lambda}$. On décrit $C_{\lambda}$ par $g_l$.
 \newline
 On peut décrire $\phi_{|E[l]}$ par une matrice $2\times2$, la question de trouver des sous espace propre est liée a la question de diagonalisation de cette matrice.
+
+Atkins a montré qu'a partir des polynômes modulaire on peut déterminer si $\Delta_{\chi}$ est un carré. Il en résulte le théorème suivant:
 
 \begin{thm}
 Soit $E$ une courbe elliptique définie sur $\mathbb{F}_p$ de $j$-invariant non nul. On note $\Phi_l(j,y) = h_1(y) \ldots h_s(y)$ la factorisation du $l$-ième polynôme modulaire sur $\mathbb{F}_p[y]$ en produit de polynôme irréductible. On a alors les possibilités suivantes pour les degrés de $h_1, \ldots, h_s$:
@@ -760,12 +764,26 @@ Soit $E$ une courbe elliptique définie sur $\mathbb{F}_p$ de $j$-invariant non 
 \item[(3)] $(r, \ldots, r)$ pour $r>1$, dans ce cas $\Delta_{\chi}$ n'est pas un carré dans $\mathbb{F}_l$, $r$ divise $l+1$ et $\chi_l$ est irréductible sur $\mathbb{F}_l$.
 \end{itemize}
 
-
+Dans tous les cas $r$ est l'ordre de $\phi_p$ dans le groupe projectif linéaire $PGL(\mathbb{F}_l)$.
 
 \end{thm}
+ On rappelle que le $PGL(E)$ d'un espace vectoriel $E$ sur un corps $K$ est le groupe quotient $GL(E)$/$Z(E)$. Où $GL(E)$ est le groupe général linéaire de $E$, le groupe des automorphismes de $E$ muni de la composition des applications. Et $Z(E$ le centre de $GL(E)$, c'est a dire l'ensemble des éléments de $E$ qui commutent avec tous les autres.
+\newline
+On peut reformuler la classification énoncée dans la définition \ref{Atkins's prime}. Un nombre premier $l$ tel que $\phi_{|E[l]}$ est diagonalisable est un premier de Elkies, et un premier de Atkins sinon.
 
 
-
+\paragraph*{Premier d'Elkies}
+On se place dans le cas ou $l$ est un premier d'Elkies. Le Frobenius est diagonalisable, de valeur propre $\lambda, \mu$, car $\Delta_{\chi_l} =t_l^2 -4p$ est un carré modulo $l$ (on rappelle que $\chi_{l}(x) = x^2 - t_lx +p_l$). Ainsi on a :
+\begin{equation*}
+\chi_l(x) = (x - \lambda)(x- \mu)
+\end{equation*}
+Donc $t_l \equiv \lambda +\mu \equiv \lambda + \frac{p_l}{\lambda} \pmod l$ (car $p_l = \lambda\mu$). On peut la trace modulo $l$ en trouvant une valeur propre du Frobenius. La première question est de se demander si $\lambda \ne \mu$, si on est dans ce cas alors $t_l = 2 \lambda = 2 \sqrt{p_l}$ et on se ramène à un cas expliqué dans la partie sur l'algorithme de Schoof. Le cas le plus intéressant est donc quand $\lambda \ne \mu$. Par définition d'une valeur propre on sait qu'il existe deux points $P_1,P_2 \in E[l]$ non triviaux tel que $\phi_p(P_1) = [\lambda]P_1$ et $\phi_p(P_2) = [\lambda]P_2$. Soit $C_1$ et $C_2$ les deux sous groupes cyclique d'ordre $l$ générés par $P_1$ et $P_2$, ils sont stables par l'action du Frobenius, c'est à dire $\phi_p(C_1) = C_1$. On peut alors construire le polynôme $g_l$ de degré $\frac{(l-1)}{2}$ et divisant le $l$-ième polynôme de division : 
+\begin{equation}
+\label{poly g_l}
+g_l(x) = \prod_{\oplus P \in C_1^*} (x - x_p), \quad où P = (x_p, y_p)
+\end{equation}
+On peut à partir de ce polynôme utiliser l'algorithme de Schoof pour trouver la trace du Frobenius modulo $l$.
+Il faut maintenant montrer comment construire ce polynôme.
 
 
 
