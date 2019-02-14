@@ -815,7 +815,7 @@ x^p = x - \frac{\psi_{\lambda-1}\psi_{\lambda+1}}{\psi_{\lambda}^2}
 \end{equation*}
 On pose $h(x) = \psi_{\lambda}^2(x^p-x) + \psi_{\lambda-1}\psi_{\lambda+1}$, qu'on réduit modulo $g_l$. Il faut trouver une valeur propre $\lambda$ tel que $\gcd(h,g_l) \ne 1$. Une fois que l'on a trouvé une valeur qui correspond on peut calculer $t_l = \lambda + \frac{p_l}{\lambda} \pmod l$
 
-Il faut maintenant montrer comment construire ce polynôme $g_l$. L'idée va être de trouver dans un premier temps le premier coefficient de $g_l$ (qui est moins la somme des racines de $g_l$). On sait que le degré du polynôme $\gcd(\Phi(x,j),x^p-x)$ est plus grand que $0$ comme $l$ est un premier de Elkies et que ses racines sont dans $\mathbb{F}_p$. Notons par exemple $\tilde{j}$ l'une de ses racines. On sait donc qu'il existe une isogénie entre $E$ et la courbe elliptique de $j$-invariant $\tilde{j}$ qu'on note $\tilde{E}:y^2=x^3+\tilde{a_4}x+\tilde{a_6}$. Le noyau de cette isogénie est l'un des $l+1$ sous groupe cyclique de $E[l]$. On va utiliser cette isogénie pour retrouver le premier coefficient de $g_l$.
+Il faut maintenant montrer comment construire ce polynôme $g_l$. L'idée va être de trouver dans un premier temps le premier coefficient de $g_l$ (qui est moins la somme des racines de $g_l$). On sait que le degré du polynôme $\gcd(\Phi(x,j),x^p-x)$ est plus grand que $0$ comme $l$ est un premier de Elkies et que ses racines sont dans $\mathbb{F}_p$. Notons par exemple $\tilde{j}$ l'une de ses racines. On sait donc qu'il existe une isogénie entre $E$ et la courbe elliptique de $j$-invariant $\tilde{j}$ qu'on note $\tilde{E}:y^2=x^3+\tilde{a_4}x+\tilde{a_6}$. Le noyau de cette isogénie est l'un des $l+1$ sous groupe cyclique de $E[l]$. On va utiliser cette isogénie pour retrouver le premier coefficient de $g_l$. On ne détaillera pas les calculs permettant d'arriver a ce résultat, plus d'informations peuvent être trouver ici (inserer ref).
 
 
 
@@ -836,6 +836,9 @@ On donne une description en pseudo-code de l'algorithme SEA.
 \STATE Calculer $d$ tel que $(\frac{d}{l}) = -1$, et $0<d<l$
 \STATE Calculer $g$ tel que $g$ soit un générateur de $\mathbb{F}_l[\sqrt{d}]^*$
 \STATE Calculer $S_2 = \left\{g^{\frac{i(l^2-1)}{r}} \, | \, \gcd(i,r) = 1 \right\}$
+\FORALL{a}
+\STATE 1
+\ENDFOR
 \ELSE
 \STATE Calculer $g_l$ un diviseur de $f_l$
 \STATE Trouver $\lambda$ valeur propre du Frobenius tel que $\gcd(\psi_{\lambda}^2(x^p-x) + \psi_{\lambda-1}\psi_{\lambda+1}, g_l(x)) \ne 1$

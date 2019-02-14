@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015/Debian) (preloaded format=pdflatex 2018.11.18)  14 FEB 2019 00:43
+This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015/Debian) (preloaded format=pdflatex 2018.11.18)  14 FEB 2019 17:18
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1774,7 +1774,7 @@ Package pdftex.def Info: pictures/schoof_vs_bruteforce.png used on input line 5
 Here is how much of TeX's memory you used:
  30724 strings out of 493029
  702909 string characters out of 6136233
- 871629 words of memory out of 5000000
+ 871631 words of memory out of 5000000
  33604 multiletter control sequences out of 15000+600000
  86365 words of font info for 93 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
@@ -1797,7 +1797,7 @@ texlive/texmf-dist/fonts/type1/public/mathabx-type1/mathx10.pfb></usr/share/tex
 live/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb></usr/share/texl
 ive/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm5.pfb></usr/share/texliv
 e/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm7.pfb>
-Output written on rapport.pdf (18 pages, 528755 bytes).
+Output written on rapport.pdf (18 pages, 528905 bytes).
 PDF statistics:
  165 PDF objects out of 1000 (max. 8388607)
  115 compressed objects within 2 object streams
