@@ -27,6 +27,7 @@
   \usepackage{calrsfs}
   \usepackage{tikz}
   \usepackage{pgfplots}
+  \usepackage{mathabx}
 %  \usepackage{boondox-cal}
   \usepackage{tikz}  
   \usetikzlibrary{decorations.pathmorphing}
@@ -548,7 +549,6 @@ Maintenant nous devons calculer pour $\tau$ variant de $0$ à $2$ si $(x_3, y_3)
 \newpage
 \subsubsection{Expérimentations}
 
-
 \begin{figure}[h!]
 \includegraphics[scale=0.6]{pictures/schoof_cputime.png} 
 \caption{Temps d'exécution de l'algorithme de Schoof}
@@ -578,7 +578,6 @@ La théorie des courbes elliptiques est conséquente sur le corps des complexes 
 Une fonction holomorphe est une fonction à valeur complexe, définie et dérivable en tout point d'un sous ensemble ouvert du plan complexe $\mathbb{C}$. Une fonction est dite méromorphe si elle est holomorphe dans tout le plan complexe $\mathbb{C}$, sauf éventuellement sur un ensemble de points isolés dont chacun est un pôle pour la fonction.
 \end{defi}
 
-
 \begin{prop}
 Soit $n \in \mathbb{N}$, $r \in \mathbb{R}$, $(w_i)_{1 \leq i \leq r}$ une partie libre du $\mathbb{R}$-espace vectoriel $\mathbb{R}^n$. Tout sous groupe discret non nul $\Gamma$ de $\mathbb{R}^n$ peut s'écrire sous la forme :
 \begin{equation*}
@@ -589,13 +588,13 @@ Un tel groupe $\Gamma$ est un réseau de $\mathbb{R}^n$ de rang $r$.
 Dans le cas particulier de $\mathbb{C}$, ses sous-groupes discrets non nuls et non isomorphes à $\mathbb{Z}$ sont de la forme $\mathbb{Z}\omega_1 + \mathbb{Z}w_2$ avec $\omega_1, \omega_2 \in \mathbb{C}$ et $Im(\frac{w_2}{w_1}) \ne 0$. En pratique on va souvent considérer $\tau = \frac{\omega_2}{\omega_1}$ pour avoir $\Gamma = \mathbb{Z} + \tau \mathbb{Z}$.
 
 \begin{defi}
-On appelle tore le quotient $T = \mathbb{C}$/$\Gamma$. Cest le quotient du groupe $(\mathbb{C}, +)$ par le réseau $\Gamma = \mathbb{Z}\omega_1 + \mathbb{Z}w_2$
+On appelle tore le quotient $T = \mathbb{C}$/$\Gamma$. C'est le quotient du groupe $(\mathbb{C}, +)$ par le réseau $\Gamma = \mathbb{Z}\omega_1 + \mathbb{Z}w_2$
 \newline
 Une fonction elliptique de période $\Gamma$ est une fonction méromorphe $f$ sur $\mathbb{C}$ telle que $f(z + \omega) = f(z) ,\ \forall \omega \in \Gamma$.
 \end{defi}
 
 \begin{defi}
-Soit $\Gamma$ un réseau de $\mathbb{C}$, on introduit la série :
+Soit $\Gamma$ un réseau de $\mathbb{C}$, on introduit la $\rho$-fonction de Weierstrass par la série suivante :
 \begin{equation*}
 \rho(z) = \frac{1}{z^2} + \sum_{w \in \Gamma, \omega \ne 0} \frac{1}{(z-\omega)^2} - \frac{1}{\omega^2}
 \end{equation*}
@@ -615,7 +614,7 @@ Soit $E$/$\mathbb{C}$ une courbe elliptique sous forme réduite sur le corps des
 
 
 $\begin{array}{cccc}
-& E\text{/ }\mathbb{C} & \to & E \\
+& \mathbb{C}\text{/ }\Gamma & \to & E \\
 & z + \Gamma & \mapsto & \left\lbrace
 \begin{array}{cc}
  (\rho(z), \frac{\rho'(z)}{2})  & z \notin \Gamma \\
@@ -631,6 +630,29 @@ La fonction $\rho$ satisfait l'équation différentielle suivante :
 \end{equation*}
 Où les coefficients $A,B$ sont totalement déterminés en analysant les développements limités en $0$ de $\rho, \rho'$ et $\rho'^2$ 
 \end{thm}
+On donne les formules suivantes sans démonstrations et plus d'explications, plus de détails peuvent être trouver ici (inserer ref)
+
+\begin{prop}
+On définit dans $\mathbb{Z}\ldbrack p \rdbrack$ les séries:
+\begin{equation*}
+E_2(p)= 1 -24\sum_{n=1}^{\infty}\frac{np^n}{1-p^n}
+\end{equation*}
+\begin{equation*}
+E_4(p) = 1+240\sum_{n=1}^{\infty}\frac{n^3p^n}{1-p^n}
+\end{equation*}
+\begin{equation*}
+E_6(p) = 1-504\sum_{n=1}^{\infty}\frac{n^5p^n}{1-p^n} 
+\end{equation*}
+Et les égalités : 
+\begin{equation}
+\label{EC-function of series}
+y^2 = x^3 - \frac{E_4(p)}{48} + \frac{E_6(p)}{864}
+\end{equation}
+\begin{equation}
+\label{p1}
+p_1 = \frac{1}{12}l(E_2(p) -lE_2(p^l))
+\end{equation}
+\end{prop}
 
 \subsubsection{Isogénie}
 Soit $K$ un corps fini, on va noter dans la suite $E$/$K$ la courbe elliptique définie sur ce corps et on travaillera uniquement avec des courbes sous forme réduite.
@@ -652,7 +674,7 @@ Deux courbes elliptiques $E_1$/$K$ et $E_2$/$K$ sont isogènes s'il existe une i
 
 
 \subsubsection{Polynôme modulaire}
-Ce sont les polynômes que l'on va utiliser dans l'algorithme SEA. Comme vu dans les parties précédentes on peut associer à chaque courbe elliptique $E$/$\mathbb{C}$ un invariant $\tau$ (on définissait un réseau $\Gamma = \mathbb{Z}+\tau \mathbb{Z}$), on a aussi $p=\e^{2\pi i \tau}$. De plus on a exprimé le $j$-invariant de $E$ comme une série entière $j(p)$. Dans la suite on va noter $j(\tau) = j_E$.
+Ce sont les polynômes que l'on va utiliser dans l'algorithme SEA. Comme vu dans les parties précédentes on peut associer à chaque courbe elliptique $E$/$\mathbb{C}$ un invariant $\tau$ (on définissait un réseau $\Gamma = \mathbb{Z}+\tau \mathbb{Z}$), on a aussi $p=\e^{2\pi i \tau}$. De plus on peut exprimer le $j$-invariant de $E$ comme une série entière $j(p)$. Dans la suite on va noter $j(\tau) = j_E$.
 
 La définition des polynômes modulaires est un peu plus compliquée qu'une simple formule, il nous faut définir, pour tout entier $n$, l'ensemble suivant : 
 \begin{equation*}
@@ -754,6 +776,7 @@ On peut décrire $\phi_{|E[l]}$ par une matrice $2\times2$, la question de trouv
 Atkins a montré qu'a partir des polynômes modulaire on peut déterminer si $\Delta_{\chi}$ est un carré. Il en résulte le théorème suivant:
 
 \begin{thm}
+\label{thm calcul r}
 Soit $E$ une courbe elliptique définie sur $\mathbb{F}_p$ de $j$-invariant non nul. On note $\Phi_l(j,y) = h_1(y) \ldots h_s(y)$ la factorisation du $l$-ième polynôme modulaire sur $\mathbb{F}_p[y]$ en produit de polynôme irréductible. On a alors les possibilités suivantes pour les degrés de $h_1, \ldots, h_s$:
 \begin{itemize}
 \item[(1)] $(1,l)$ ou $(1,\ldots,1)$, dans les deux cas $\Delta_{\chi} \equiv 0 \pmod l$, et on pose respectivement $r=l $ et $r=1$.
@@ -769,7 +792,7 @@ Dans tous les cas $r$ est l'ordre de $\phi_p$ dans le groupe projectif linéaire
 \end{thm}
  On rappelle que le $PGL(E)$ d'un espace vectoriel $E$ sur un corps $K$ est le groupe quotient $GL(E)$/$Z(E)$. Où $GL(E)$ est le groupe général linéaire de $E$, le groupe des automorphismes de $E$ muni de la composition des applications. Et $Z(E$ le centre de $GL(E)$, c'est a dire l'ensemble des éléments de $E$ qui commutent avec tous les autres.
 \newline
-On peut reformuler la classification énoncée dans la définition \ref{Atkins's prime}. Un nombre premier $l$ tel que $\phi_{|E[l]}$ est diagonalisable est un premier de Elkies, et un premier de Atkins sinon.
+On peut reformuler la classification énoncée dans la définition \ref{Atkins's prime}. Un nombre premier $l$ tel que $\phi_{|E[l]}$ est diagonalisable est un premier de Elkies, et un premier de Atkins sinon. Pour déterminer dans quel cas on se trouve on va étudier la factorisation de $\Phi_l(x,j)$ ($j$ est le $j$-invariant de notre courbe elliptique $E$). Pour se faire on va calculer le degré de $\gcd(\Phi_l(x,j),x^p-x)$, d'après le théorème précédent si ce $\gcd$ est constant alors $l$ est un premier d'Atkins, sinon c'est un premier d'Elkies.
 
 
 \paragraph*{Premier d'Elkies}
@@ -780,14 +803,48 @@ On se place dans le cas ou $l$ est un premier d'Elkies. Le Frobenius est diagona
 Donc $t_l \equiv \lambda +\mu \equiv \lambda + \frac{p_l}{\lambda} \pmod l$ (car $p_l = \lambda\mu$). On peut la trace modulo $l$ en trouvant une valeur propre du Frobenius. La première question est de se demander si $\lambda \ne \mu$, si on est dans ce cas alors $t_l = 2 \lambda = 2 \sqrt{p_l}$ et on se ramène à un cas expliqué dans la partie sur l'algorithme de Schoof. Le cas le plus intéressant est donc quand $\lambda \ne \mu$. Par définition d'une valeur propre on sait qu'il existe deux points $P_1,P_2 \in E[l]$ non triviaux tel que $\phi_p(P_1) = [\lambda]P_1$ et $\phi_p(P_2) = [\lambda]P_2$. Soit $C_1$ et $C_2$ les deux sous groupes cyclique d'ordre $l$ générés par $P_1$ et $P_2$, ils sont stables par l'action du Frobenius, c'est à dire $\phi_p(C_1) = C_1$. On peut alors construire le polynôme $g_l$ de degré $\frac{(l-1)}{2}$ et divisant le $l$-ième polynôme de division : 
 \begin{equation}
 \label{poly g_l}
-g_l(x) = \prod_{\oplus P \in C_1^*} (x - x_p), \quad où P = (x_p, y_p)
+g_l(x) = \prod_{\pm P \in C_1^*} (x - x_p), \quad \text{où } P = (x_p, y_p)
 \end{equation}
-On peut à partir de ce polynôme utiliser l'algorithme de Schoof pour trouver la trace du Frobenius modulo $l$.
-Il faut maintenant montrer comment construire ce polynôme.
+On peut à partir de ce polynôme utiliser l'algorithme de Schoof pour trouver la trace du Frobenius modulo $l$. On commence par noter que vu que $\lambda$ est valeur propre, pour tout point de $C_1$  on a l'équation $\phi(P) = [\lambda]P$. On peut appliquer nos formules de multipication scalaire énoncé dans notre partie sur les polynomes de division. L'abscisse du point [$\lambda$]$P$ est : 
+\begin{equation*}
+x - \frac{\psi_{\lambda-1}\psi_{\lambda+1}}{\psi_{\lambda}^2}
+\end{equation*}
+Avec $\phi(P)=(x^p,y^p)$ on trouve :
+\begin{equation*}
+x^p = x - \frac{\psi_{\lambda-1}\psi_{\lambda+1}}{\psi_{\lambda}^2}
+\end{equation*}
+On pose $h(x) = \psi_{\lambda}^2(x^p-x) + \psi_{\lambda-1}\psi_{\lambda+1}$, qu'on réduit modulo $g_l$. Il faut trouver une valeur propre $\lambda$ tel que $\gcd(h,g_l) \ne 1$. Une fois que l'on a trouvé une valeur qui correspond on peut calculer $t_l = \lambda + \frac{p_l}{\lambda} \pmod l$
+
+Il faut maintenant montrer comment construire ce polynôme $g_l$. L'idée va être de trouver dans un premier temps le premier coefficient de $g_l$ (qui est moins la somme des racines de $g_l$). On sait que le degré du polynôme $\gcd(\Phi(x,j),x^p-x)$ est plus grand que $0$ comme $l$ est un premier de Elkies et que ses racines sont dans $\mathbb{F}_p$. Notons par exemple $\tilde{j}$ l'une de ses racines. On sait donc qu'il existe une isogénie entre $E$ et la courbe elliptique de $j$-invariant $\tilde{j}$ qu'on note $\tilde{E}:y^2=x^3+\tilde{a_4}x+\tilde{a_6}$. Le noyau de cette isogénie est l'un des $l+1$ sous groupe cyclique de $E[l]$. On va utiliser cette isogénie pour retrouver le premier coefficient de $g_l$.
 
 
 
 
+\newpage
+\paragraph*{Algorithme}
+On donne une description en pseudo-code de l'algorithme SEA.
+\begin{algorithm}
+\caption{Schoof-Elkies-Atkins}
+\begin{algorithmic}
+\REQUIRE $E$ une courbe elliptique de la forme $y^2 = x^3 + ax = b$ sur $\mathbb{F}_p$
+\ENSURE Le nombre de points de $E$
+\STATE Calculer le $j$-invariant de $E$
+\STATE Choisir un ensemble de premier S tel que $\prod_{l \in S}l \leq 4\sqrt{p}$
+\FORALL{$l \in S$}
+\IF{$deg(\gcd(\Phi_l(x,j),x^p-x)=0$)}
+\STATE Calculer $r$ avec le théorème \ref{thm calcul r}
+\STATE Calculer $d$ tel que $(\frac{d}{l}) = -1$, et $0<d<l$
+\STATE Calculer $g$ tel que $g$ soit un générateur de $\mathbb{F}_l[\sqrt{d}]^*$
+\STATE Calculer $S_2 = \left\{g^{\frac{i(l^2-1)}{r}} \, | \, \gcd(i,r) = 1 \right\}$
+\ELSE
+\STATE Calculer $g_l$ un diviseur de $f_l$
+\STATE Trouver $\lambda$ valeur propre du Frobenius tel que $\gcd(\psi_{\lambda}^2(x^p-x) + \psi_{\lambda-1}\psi_{\lambda+1}, g_l(x)) \ne 1$
+\STATE Calculer $t = \lambda + \frac{\lambda}{p} \pmod l$
+
+\ENDIF
+\ENDFOR
+\end{algorithmic}
+\end{algorithm}
 
 
 
