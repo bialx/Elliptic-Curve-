@@ -1,6 +1,6 @@
 load("division_polynomial.sage")
 load("EC_basic_computation.sage")
-import sys, getopt
+#import sys, getopt
 # The elliptic curve E is in Weierstrass form y^2=f(x)=x^3+ax+b
 
 
@@ -92,7 +92,6 @@ def schoof2(E):
                     anwser = 1
             else:
                 list_t.append(0)
-                anwser = 1
 
         """ In case we found no value to satisfy the equation"""
         if answer == 0:
