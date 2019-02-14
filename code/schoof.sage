@@ -9,7 +9,6 @@ load("EC_basic_computation.sage")
 #http://www-users.math.umn.edu/~musiker/schoof.pdf
 
 def schoof2(E):
-    print(E)
     K = E.base_ring()
     p = K.cardinality()
     a, b = E.a4(), E.a6()
@@ -36,8 +35,8 @@ def schoof2(E):
     print("Pre computation of division polynomial #DONE")
     for l in list_l:
         print("liste des premier: ",list_l)
-        print("premier considéré: ",l)
-        print("trace deja calculées: ", list_t)
+        print("premier considere: ",l)
+        print("trace deja calculees: ", list_t)
 
         if l == 2:
             if gcd(x**p - x, x**3 + a*x + b) != 1:
