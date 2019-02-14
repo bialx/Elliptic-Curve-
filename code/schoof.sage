@@ -1,6 +1,6 @@
 load("division_polynomial.sage")
 load("EC_basic_computation.sage")
-import sys, getopt
+#import sys, getopt
 # The elliptic curve E is in Weierstrass form y^2=f(x)=x^3+ax+b
 
 
@@ -9,7 +9,6 @@ import sys, getopt
 #http://www-users.math.umn.edu/~musiker/schoof.pdf
 
 def schoof2(E):
-    print(E)
     K = E.base_ring()
     p = K.cardinality()
     a, b = E.a4(), E.a6()
@@ -29,14 +28,15 @@ def schoof2(E):
         prime = next_prime(prime)
         N = N*prime
         list_l.append(prime)
-
+    print("Set of Prime : ",list_l)
+    print("Pre computation phase")
     """ Pre computation of division polynomial """
     dict = division_polynomial(p, a, b, 2*max(list_l)+1)
-
+    print("Pre computation of division polynomial #DONE")
     for l in list_l:
         print("liste des premier: ",list_l)
-        print("premier considéré: ",l)
-        print("trace deja calculées: ", list_t)
+        print("premier considere: ",l)
+        print("trace deja calculees: ", list_t)
 
         if l == 2:
             if gcd(x**p - x, x**3 + a*x + b) != 1:
@@ -91,7 +91,6 @@ def schoof2(E):
                     anwser = 1
             else:
                 list_t.append(0)
-                anwser = 1
 
         """ In case we found no value to satisfy the equation"""
         if answer == 0:
