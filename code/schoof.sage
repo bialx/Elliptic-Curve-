@@ -18,8 +18,8 @@ def schoof2(E):
     answer = 0
     list_l = []
     list_t = []
-    R.<x> = PolynomialRing(K)
-    S.<x1, y1> = PolynomialRing(K)
+    R.<x> = PolynomialRing(K, sparse=True )
+    S.<x1, y1> = PolynomialRing(K, sparse=True )
     f = x**3 + a*x + b
 
     """ Compute a set of small prime whose product is > 4* sqrt(p) """
@@ -54,7 +54,7 @@ def schoof2(E):
                     poly_divi_l  = poly
                     break
         B.<x2> = R.quotient(ideal(poly_divi_l))
-        C.<y> = PolynomialRing(B)
+        C.<y> = PolynomialRing(B,sparse=True )
         W = C.quotient(y**2 - f)
         phi = (W(x)**p, W(y)**p)           #(x^p, y^p)
         phi2 = (W(x)**(p**2), W(y)**(p**2))  #(x^(p^2), y^(p^2))

@@ -1,7 +1,7 @@
 
 def division_polynomial(K,a,b,l):
     """ return a dictionnary with all the polynomial division between 1 and l"""
-    R.<x,y> = PolynomialRing(GF(K))
+    R.<x,y> = PolynomialRing(GF(K),sparse=True )
     E = EllipticCurve(GF(K), [a,b])
     dict = {}
     dict[0], dict[1], dict[2] = 0,1,1
