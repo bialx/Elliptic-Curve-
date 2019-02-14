@@ -29,10 +29,11 @@ def schoof2(E):
         prime = next_prime(prime)
         N = N*prime
         list_l.append(prime)
-
+    print("Set of Prime : ",list_l)
+    print("Pre computation phase")
     """ Pre computation of division polynomial """
     dict = division_polynomial(p, a, b, 2*max(list_l)+1)
-
+    print("Pre computation of division polynomial #DONE")
     for l in list_l:
         print("liste des premier: ",list_l)
         print("premier considéré: ",l)
