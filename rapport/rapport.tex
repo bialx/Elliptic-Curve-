@@ -1,4 +1,4 @@
-\documentclass{article}
+\documentclass[12pt]{article}
 
 
 % https://www.google.com/url?sa=t&rct=j&q=&esrc=s&source=web&cd=2&cad=rja&uact=8&ved=2ahUKEwj9gfHZp6ngAhV3VxUIHf1ZBpYQFjABegQICBAC&url=http%3A%2F%2Fwww.bens.ws%2Fpapers%2FSchoofElkiesAtkinAlgorithm.pdf&usg=AOvVaw3YjeZq80997dE-o0TE0vNI
@@ -95,9 +95,12 @@
 \newpage
 
 \section{Introduction}
-Le but de ce rapport est de présenter des algorithmes pour compter les points sur une courbe elliptique et de les implémenter pour tester leur efficacité. L'ensemble des codes est disponible sur le github \url{https://github.com/bialx/Elliptic-Curve-}. Le langage choisi est SAGE, basé sur Python. Il contient un large éventail de fonctions mathématiques prédéfinies, notamment pour les courbes elliptiques ce qui permet de se concentrer sur les algorithmes et non sur une implémentation d'objets mathématiques.
+La cryptographie sur courbe elliptique introduite en 1985 a révolutionné la cryptographie à clé publique permettant une alternative efficace aux classique RSA et Diffie Hellman. Les courbes elliptiques sont énormément utilisées pour les signatures (ECDSA), notamment pour le Bitcoin, et supportées dans la majorité des applications TLS, SSH. La sécurité d'un cryptosystème basé sur les courbes elliptiques dépend du nombre de points rationnels de la courbe. Il est donc intéressant de trouver des algorithmes efficaces pour déterminer ce nombre dans le but de construire des courbes elliptiques utilisable en cryptographie.
+Le but de ce rapport est de présenter des algorithmes pour compter les points sur une courbe elliptique et de les implémenter pour tester leur efficacité. Après une brève introduction à la théorie de base des courbes elliptiques on va décrire l'algorithme de Schoof, qui est polynomial mais peu efficace en pratique. Dans la suite on va essayer de comprendre les amélioration faites à cet algorithme par Atkins et Elkies conduisant a un algorithme toujours polynomial mais beaucoup plus efficace.
+\newline
+L'ensemble des codes est disponible sur le github \url{https://github.com/bialx/Elliptic-Curve-}. Le langage choisi est SAGE, basé sur Python. Il contient un large éventail de fonctions mathématiques prédéfinies, notamment pour les courbes elliptiques ce qui permet de se concentrer sur les algorithmes et non sur une implémentation d'objets mathématiques.
 \section{Introduction aux courbes elliptiques}
-La cryptographie sur courbe elliptique introduite en 1985 a révolutionné la cryptographie à clé publique permettant une alternative efficace aux classique RSA et Diffie Hellman. Les courbes elliptiques sont énormément utilisées pour les signatures (ECDSA), notamment pour le Bitcoin, et supportées dans la majorité des applications TLS, SSH. On se contentera de donner une explication succincte de ce qu'est une courbe elliptique ainsi que différentes propriétés associées.
+ On se contentera de donner une explication succincte de ce qu'est une courbe elliptique ainsi que différentes propriétés associées.
 
 \begin{defi}
 On définit une courbe elliptique sur un corps $K$ dans un plan par une équation de Weierstrass de la forme : 
@@ -152,7 +155,7 @@ En posant :
 \end{array}\right.
 \end{equation}
 \end{prop}
-\newpage
+
 \begin{figure}[h!]
 \includegraphics[scale=0.7]{pictures/hqdefault.jpg} 
 \caption{vision graphique de l'addition de deux points sur la courbe}
@@ -208,7 +211,7 @@ On va illustrer la non efficacité de cet algorithme lorsque $p$ devient trop gr
 
 On retrouve bien l'aspect linéaire en $p$ évoqué précédemment.
 \subsection{Shanks}
-Il s'agit d'un algorithme Baby steps-giant steps de complexité exponentielle.
+Il s'agit d'un algorithme Baby steps-giant steps de complexité exponentielle qu'on ne traitera pas ici, mais plus d'informations peuvent être trouvées ici (inserer ref)
 
 \subsection{Schoof}
 Soit $E$ une courbe elliptique définie sur $\mathbb{F}_p$ avec $p$ premier $>3$ sous sa forme réduite 
@@ -462,7 +465,7 @@ On donne une version complète en pseudo-code de l'algorithme de schoof :
 \ENDFOR
 \end{algorithmic}
 \end{algorithm}
-
+\newpage
 
 \paragraph*{Implémentation}
 Il a fallut commencer par implémenter des fonctions de base sur les courbes elliptiques pour additionner, calculer une multiplication scalaire. Les algorithmes d'additions ne nécessitent pas d'explications, juste une application des formules. Pour la multiplication scalaire on avait deux choix, utiliser les polynômes de division ou de l'exponentiation rapide. La méthode utilisant les polynômes a amené des problème d'implémentation, donc je suis resté avec une version plus simple d'exponentiation. L'idée de cet algorithme est d'utiliser la décomposition binaire de $n$ pour calculer $nP$. Pour récupérer cette décomposition on utilise la fonction \path{digits(base)} qui retourne une liste avec les bits de poids faible à gauche de l'écriture binaire de $n$. On va à chaque itération doubler le point que l'on a, on calcule donc $2(2(\ldots2(P))$. Il est même nécessaire lorsque l'on rencontre un $1$ dans la décomposition binaire de $n$ de faire une addition en plus de doubler. Au final on obtient l'algorithme suivant avec comme entre $n$ et $P$: 
@@ -560,19 +563,26 @@ Maintenant nous devons calculer pour $\tau$ variant de $0$ à $2$ si $(x_3, y_3)
 \end{figure}
 On peut tirer deux informations intéressantes de ce graphique. D'une part on a confirmation que l'algorithme de Schoof est bien plus efficace que la méthode naïve dès que $p$ devient grand, mais on voit graphiquement que pour $p<2500$ il est plus efficace d'utiliser l'algorithme naïf.
 \newline
-Il est intéressant de se demander l'espace mémoire utilisé lors de l’exécution de l'algorithme de schoof, et vers quel quel $p$ premier on commence à atteindre des limites.
-\newpage
+Il est intéressant de se demander l'espace mémoire utilisé lors de l’exécution de l'algorithme de schoof, et vers quel quel $p$ premier on commence à atteindre des limites. Pour cela on va utiliser la plateforme Plafrim pour faire nos calcul....  (en attente des calculs). 
+\newline
+On a testé notre algorithme de Schoof sur une courbe du standard du NIST pour tester les limites de l'algorithme dans un cas réaliste. La courbe choisi est P-192 de paramètres :
+\begin{align*}
+p &= 6277101735386680763835789423207666416083908700390324961279\\
+a &= -3 \\
+b &= 1679885593
+\end{align*}
+......rajouter resultats des test ......
 \subsubsection{Complexité}
 La complexité de l'algorithme de Schoof est en $O(\log{q}^8)$. La partie conteuse de l'algorithme réside dans les calculs dans l'anneau $R = \frac{\mathbb{F_p}[x,y]}{(f_l(x), y^2 -x^3 -ax -b)}$. Les éléments de R sont de degré $O(l^2)$ 
 \newline
  L'algorithme est plus efficace qu'une version naïve quand la taille de $p$ augmente mais reste néanmoins limitée pour $p$ trop grand. En effet le degré des polynômes de division en $O(l^2)$ empêche une performance optimale pour des tailles de $p$ trop importante. Les polynômes de division deviennent rapidement très grands, ce qui pose un problème de mémoire. Une amélioration de cet algorithme a été proposée par Elkies-Atkin pour produire un algorithme plus performant, le SEA. 
  
 \subsection{Algorithme SEA}
-Il va être nécessaire d'introduire plus de théorie avant de s'attaquer à l'algorithme en lui même. L'idée finale est d'utiliser un polynôme de degré plus petit que les polynômes de division utilisés dans l'algorithme de Schoof, les polynômes modulaires. Pour les définir il va être nécessaire d'introduire un peu de théorie d'analyse complexe.
+Il va être nécessaire d'introduire plus de théorie avant de s'attaquer à l'algorithme en lui même. L'idée finale est d'utiliser un polynôme de degré plus petit que les polynômes de division utilisés dans l'algorithme de Schoof, les polynômes modulaires. De plus pour comprendre certaines partie de l'algorithme SEA il va être nécessaire d'introduire un peu de théorie d'analyse complexe.
 
 
 \subsubsection{Analyse complexe}
-La théorie des courbes elliptiques est conséquente sur le corps des complexes mais nous allons uniquement donner des définitions et formules utiles sans rentrer dans le détail de preuves et résultats non pertinents pour la compréhension de l'algorithme SEA. On peut légitimement se demander le rapport entre courbe elliptique et analyse complexe, dans un premier temps il est nécessaire d'introduire un peu de théorie d'analyse complexe et rappeler quelques définitions avant de faire le lien entre les deux.
+La théorie des courbes elliptiques est conséquente sur le corps des complexes mais nous allons uniquement donner des définitions et formules utiles sans rentrer dans le détail de preuves et résultats non pertinents pour la compréhension de l'algorithme SEA. On peut légitimement se demander le rapport entre courbe elliptique et analyse complexe mais on va donc donner quelques définitions avant d'expliciter ce lien.
 
 \begin{defi}
 Une fonction holomorphe est une fonction à valeur complexe, définie et dérivable en tout point d'un sous ensemble ouvert du plan complexe $\mathbb{C}$. Une fonction est dite méromorphe si elle est holomorphe dans tout le plan complexe $\mathbb{C}$, sauf éventuellement sur un ensemble de points isolés dont chacun est un pôle pour la fonction.
@@ -643,14 +653,10 @@ E_4(p) = 1+240\sum_{n=1}^{\infty}\frac{n^3p^n}{1-p^n}
 \begin{equation*}
 E_6(p) = 1-504\sum_{n=1}^{\infty}\frac{n^5p^n}{1-p^n} 
 \end{equation*}
-Et les égalités : 
+Et l’égalité : 
 \begin{equation}
 \label{EC-function of series}
 y^2 = x^3 - \frac{E_4(p)}{48} + \frac{E_6(p)}{864}
-\end{equation}
-\begin{equation}
-\label{p1}
-p_1 = \frac{1}{12}l(E_2(p) -lE_2(p^l))
 \end{equation}
 \end{prop}
 
@@ -787,8 +793,12 @@ Soit $E$ une courbe elliptique définie sur $\mathbb{F}_p$ de $j$-invariant non 
 \item[(3)] $(r, \ldots, r)$ pour $r>1$, dans ce cas $\Delta_{\chi}$ n'est pas un carré dans $\mathbb{F}_l$, $r$ divise $l+1$ et $\chi_l$ est irréductible sur $\mathbb{F}_l$.
 \end{itemize}
 
-Dans tous les cas $r$ est l'ordre de $\phi_p$ dans le groupe projectif linéaire $PGL(\mathbb{F}_l)$.
-
+Dans tous les cas $r$ est l'ordre de $\phi_p$ dans le groupe projectif linéaire $PGL(\mathbb{F}_l)$ et la trace du Frobenius satisfait : 
+\begin{equation}
+\label{trace with root of unity}
+t^2 \equiv p(\xi+\xi^{-1})^2 \pmod l
+\end{equation}
+Où $\xi$ est une $r$-ième racine primitive de l'unité dans $\bar{\mathbb{F}_l}$.
 \end{thm}
  On rappelle que le $PGL(E)$ d'un espace vectoriel $E$ sur un corps $K$ est le groupe quotient $GL(E)$/$Z(E)$. Où $GL(E)$ est le groupe général linéaire de $E$, le groupe des automorphismes de $E$ muni de la composition des applications. Et $Z(E$ le centre de $GL(E)$, c'est a dire l'ensemble des éléments de $E$ qui commutent avec tous les autres.
 \newline
@@ -815,13 +825,22 @@ x^p = x - \frac{\psi_{\lambda-1}\psi_{\lambda+1}}{\psi_{\lambda}^2}
 \end{equation*}
 On pose $h(x) = \psi_{\lambda}^2(x^p-x) + \psi_{\lambda-1}\psi_{\lambda+1}$, qu'on réduit modulo $g_l$. Il faut trouver une valeur propre $\lambda$ tel que $\gcd(h,g_l) \ne 1$. Une fois que l'on a trouvé une valeur qui correspond on peut calculer $t_l = \lambda + \frac{p_l}{\lambda} \pmod l$
 
-Il faut maintenant montrer comment construire ce polynôme $g_l$. L'idée va être de trouver dans un premier temps le premier coefficient de $g_l$ (qui est moins la somme des racines de $g_l$). On sait que le degré du polynôme $\gcd(\Phi(x,j),x^p-x)$ est plus grand que $0$ comme $l$ est un premier de Elkies et que ses racines sont dans $\mathbb{F}_p$. Notons par exemple $\tilde{j}$ l'une de ses racines. On sait donc qu'il existe une isogénie entre $E$ et la courbe elliptique de $j$-invariant $\tilde{j}$ qu'on note $\tilde{E}:y^2=x^3+\tilde{a_4}x+\tilde{a_6}$. Le noyau de cette isogénie est l'un des $l+1$ sous groupe cyclique de $E[l]$. On va utiliser cette isogénie pour retrouver le premier coefficient de $g_l$. On ne détaillera pas les calculs permettant d'arriver a ce résultat, plus d'informations peuvent être trouver ici (inserer ref).
+Il faut maintenant montrer comment construire ce polynôme $g_l$. L'idée va être de trouver dans un premier temps le premier coefficient de $g_l$ (qui est moins la somme des racines de $g_l$). On sait que le degré du polynôme $\gcd(\Phi(x,j),x^p-x)$ est plus grand que $0$ comme $l$ est un premier de Elkies et que ses racines sont dans $\mathbb{F}_p$. Notons par exemple $\tilde{j}$ l'une de ses racines. On sait donc qu'il existe une isogénie entre $E$ et la courbe elliptique de $j$-invariant $\tilde{j}$ qu'on note $\tilde{E}:y^2=x^3+\tilde{a_4}x+\tilde{a_6}$. Le noyau de cette isogénie est l'un des $l+1$ sous groupe cyclique de $E[l]$. On va utiliser cette isogénie pour retrouver le premier coefficient de $g_l$. On ne détaillera pas les calculs permettant d'arriver a ce résultat, ils s'appuient fortement sur l'analyse complexe évoqué plus haut. Plus d'informations peuvent être trouver ici (inserer ref).
 
 
+\paragraph*{Premier d'Atkin}
+On va étudier le degré $r$ de $\phi_p$ dans $PGL_2(\mathbb{F}_l)$. Il faut dans un premier temps déterminer le plus petit $i>1$ tel que : 
+\begin{equation}
+\gcd(\Phi_l(x,j), x^{p^i} - x) = \Phi_l(x,j)
+\end{equation}
+On recherche donc la plus petite extension $\mathbb{F}^{p^i}$ de $\mathbb{F}_p$ contenant toutes les racines de $\Phi_l(x,j)$. Ce $i$ est alors le degré de $\phi_p$, et on peut montrer qu'il suffit de tester les $i$ divisant $l+1$ et qui satisfont $(-1)^{\frac{l+1}{i}}= (\frac{p}{l})$. On rappelle qu'on a une relation entre les racines primitives de l'unité et la trace d’après l'équation \ref{trace with root of unity}. On va construire un ensemble de valeurs possibles pour la trace modulo $l$. Soit $\lambda$ et $\mu$ deux valeurs propre de $\phi_p$, alors $\gamma = \frac{\lambda}{\mu}$ est une $r$-ième racine primitive de l'unité et $\gamma \in \mathbb{F}_{l^2}$. On peut aussi écrire, pour $d$ qui n'est pas un carré de $\mathbb{F}_l$, $\mathbb{F}_{l^2} \cong \mathbb{F}_l[\sqrt{d}]$. On peut alors énumérer toute les valeurs de $\gamma$. Soit $g$ un générateur de $\mathbb{F}_{l^2}$ alors $\gamma = g^{\frac{l^2-1}{r}}$ est une $r$-ième racine de l'unité, pour trouver les autres on calcule $\gamma_i = \gamma^i$. Montrons maintenant comment utiliser ces $\gamma_i$ pour calculer notre ensemble de trace. Sans détailler, l'idée est d'écrire $\gamma_i$ sous la forme $\gamma_i = g_{i_1} + g_{i_2}\sqrt{d}$ avec $g_{i_1}, g_{i_2}$ dans $\mathbb{F}_l$, mais on peut aussi montrer que pour $x_1, x_2 \in \mathbb{F}_l$ on a $\lambda = x_1 + x_2\sqrt{d}$ et $\mu = x_1-x_2\sqrt{d}$. En utilisant la relation $\gamma_i = \frac{\lambda}{\mu}$. Les $x_i$ sont inconnu mais pas les $g_{i}$, au final on a la relation $x_1^2 = \frac{p(g_{i_1}+1)}{2}$. Si $x_i^2$ n'est pas un carré dans $\mathbb{F}_l$ on passe au $\gamma_i$ suivant, sinon sachant que $t \equiv \lambda + \mu = 2x_1$ on ajoute à notre ensemble de trace $2x_1$ et $-2x_1$.
 
+
+\paragraph*{Retrouver $t$}
+On ne peut pas simplement utiliser les restes chinois comme pour l'algorithme de Schoof. En effet la trace que l'on trouve en utilisant les premiers d'Atkins est un ensemble de traces possibles, on n'a pas unicité. Plusieurs possibilités sont possible, la plus simple mais peut etre moins efficace est de considérer plus d'entier $l$ pour calculer notre trace modulo $l$. L'autre idée est d'utiliser un algorithme baby-step/giant-step qui sera plus efficace.
 
 \newpage
-\paragraph*{Algorithme}
+\subsubsection{algorithme pseudo-code}
 On donne une description en pseudo-code de l'algorithme SEA.
 \begin{algorithm}
 \caption{Schoof-Elkies-Atkins}
@@ -836,19 +855,27 @@ On donne une description en pseudo-code de l'algorithme SEA.
 \STATE Calculer $d$ tel que $(\frac{d}{l}) = -1$, et $0<d<l$
 \STATE Calculer $g$ tel que $g$ soit un générateur de $\mathbb{F}_l[\sqrt{d}]^*$
 \STATE Calculer $S_2 = \left\{g^{\frac{i(l^2-1)}{r}} \, | \, \gcd(i,r) = 1 \right\}$
-\FORALL{a}
-\STATE 1
+\FORALL{$\gamma \in S_2$}
+\STATE écrit $\gamma_i = g_{i_1} + \sqrt{d}g_{i_2}$
+\STATE Calculer $z= \frac{p(g_{i_1} +1)}{2} \pmod l$
+\IF{$(\frac{z}{l})=1$}
+\STATE Calculer $x = \sqrt{z} \pmod l$
+\STATE $t_l = (2x,-2x)$
+\ENDIF
 \ENDFOR
 \ELSE
 \STATE Calculer $g_l$ un diviseur de $f_l$
 \STATE Trouver $\lambda$ valeur propre du Frobenius tel que $\gcd(\psi_{\lambda}^2(x^p-x) + \psi_{\lambda-1}\psi_{\lambda+1}, g_l(x)) \ne 1$
 \STATE Calculer $t = \lambda + \frac{\lambda}{p} \pmod l$
-
 \ENDIF
 \ENDFOR
+\STATE retrouver $t$ en utlisiant les $t_l$ 
+\STATE retourner $p+1-t$
 \end{algorithmic}
 \end{algorithm}
 
+\paragraph*{Complexité}
+L'algorithme SEA a une complexité heuristique de $O(\log^4 p)$ en temps, et $O(\log^2 p)$ en espace.
 
 
 
