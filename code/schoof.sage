@@ -1,6 +1,6 @@
 load("division_polynomial.sage")
 load("EC_basic_computation.sage")
-
+import sys, getopt
 # The elliptic curve E is in Weierstrass form y^2=f(x)=x^3+ax+b
 
 
@@ -9,6 +9,7 @@ load("EC_basic_computation.sage")
 #http://www-users.math.umn.edu/~musiker/schoof.pdf
 
 def schoof2(E):
+    print(E)
     K = E.base_ring()
     p = K.cardinality()
     a, b = E.a4(), E.a6()
@@ -33,6 +34,10 @@ def schoof2(E):
     dict = division_polynomial(p, a, b, 2*max(list_l)+1)
 
     for l in list_l:
+        print("liste des premier: ",list_l)
+        print("premier considéré: ",l)
+        print("trace deja calculées: ", list_t)
+
         if l == 2:
             if gcd(x**p - x, x**3 + a*x + b) != 1:
                 list_t.append(0)
@@ -100,12 +105,24 @@ def schoof2(E):
     else:
         return t
 
+#
+# argv = '-s -h -l'.split()
+# # try:
+# opts,args = getopt.getopt(argv,"hl:s")
+# # except getopt.GetoptError:
+# #     print("schoof.sage -option")
+# for opt, arg in opts:
+#     if opt == '-h':
+#         print("schoof.sage -option\n-l : long p CURVE P-224\n -s : short p CURVE P-192")
+#         sys.exit()
 
-
-p = 97
-l = 3
-K = GF(p)
-E = EllipticCurve(K,[2,1])
-a,b = E.a4(), E.a6()
-# print (schoof2(E))
+p192 = 6277101735386680763835789423207666416083908700390324961279
+p224 = 26959946667150639794667015087019630673557916260026308143510066298881
+K192 = GF(p192)
+K224 = GF(p224)
+b192 = 1679885593
+b224 = 3020229253
+E192 = EllipticCurve(K192,[-3,b192])
+E224 = EllipticCurve(K224,[-3,b224])
+print (schoof2(E192))
 # print (E.trace_of_frobenius())
