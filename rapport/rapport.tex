@@ -84,6 +84,9 @@
 
 \graphicspath{{../pictures/}}
 \DeclareMathOperator{\e}{e}
+\def\Tr{\mathop{\rm{Tr}}\nolimits}
+\def\bwp{{\bar \wp}}
+\def\bwp{{\bar {\wp'}}}
 \begin{document}
 
 \newtheorem{prop}{Proposition}
@@ -98,7 +101,7 @@
 La cryptographie sur courbe elliptique introduite en 1985 a révolutionné la cryptographie à clé publique permettant une alternative efficace aux classique RSA et Diffie Hellman. Les courbes elliptiques sont énormément utilisées pour les signatures (ECDSA), notamment pour le Bitcoin, et supportées dans la majorité des applications TLS, SSH. La sécurité d'un cryptosystème basé sur les courbes elliptiques dépend du nombre de points rationnels de la courbe. Il est donc intéressant de trouver des algorithmes efficaces pour déterminer ce nombre dans le but de construire des courbes elliptiques utilisable en cryptographie.
 Le but de ce rapport est de présenter des algorithmes pour compter les points sur une courbe elliptique et de les implémenter pour tester leur efficacité. Après une brève introduction à la théorie de base des courbes elliptiques on va décrire l'algorithme de Schoof, qui est polynomial mais peu efficace en pratique. Dans la suite on va essayer de comprendre les amélioration faites à cet algorithme par Atkins et Elkies conduisant a un algorithme toujours polynomial mais beaucoup plus efficace.
 \newline
-L'ensemble des codes est disponible sur le github \url{https://github.com/bialx/Elliptic-Curve-}. Le langage choisi est SAGE, basé sur Python. Il contient un large éventail de fonctions mathématiques prédéfinies, notamment pour les courbes elliptiques ce qui permet de se concentrer sur les algorithmes et non sur une implémentation d'objets mathématiques.
+L'ensemble des codes est disponible sur le github \url{https://github.com/bialx/Elliptic-Curve-} Le langage choisi est SAGE, basé sur Python. Il contient un large éventail de fonctions mathématiques prédéfinies, notamment pour les courbes elliptiques ce qui permet de se concentrer sur les algorithmes et non sur une implémentation d'objets mathématiques.
 \section{Introduction aux courbes elliptiques}
  On se contentera de donner une explication succincte de ce qu'est une courbe elliptique ainsi que différentes propriétés associées.
 
@@ -241,13 +244,13 @@ On peut déjà faire une première remarque, connaissant $t$ la trace de l'endom
 \end{equation*}
 où $r_1, r_2$ sont les racines de $x^2 - tx +p$ dans $E(\mathbb{F}_{p^n})$, le polynôme caractéristique du Frobenius.
 \begin{proof}
-Les racines de $x^2 - tx +p$ sont $r_1$ et $r_2$, on a donc $Tr(\phi_p) = t = r_1 + r_2$. 
+Les racines de $x^2 - tx +p$ sont $r_1$ et $r_2$, on a donc $\Tr(\phi_p) = t = r_1 + r_2$. 
 \newline
 On remarque de plus que l'on a $\phi_{p^n} = (\phi_p)^n$. Car $\phi_{p^n} (x,y) = (x^{p^n}, y^{p^n}) = \phi_p  (x^{p^{n-1}}, y^{p^{n-1}})$, et par récurrence on trouve le résultat).
 \newline
 Ainsi : 
 \begin{align*}
-Tr(\phi_{p^n} (x,y)) &= Tr(\phi_{p} (x,y)^n) \\
+\Tr(\phi_{p^n} (x,y)) &= \Tr(\phi_{p} (x,y)^n) \\
 					 &= r_1^n + r_2^n	 
 \end{align*}
 On peut maintenant appliquer le théorème de Hasse-Weil pour trouver le résultat attendu.
@@ -263,7 +266,7 @@ Avec $t_l \equiv t \pmod l$, $p_l \equiv p \pmod l$ et $0 \leq t_l, p_l < l$.
 Il nous faut maintenant introduire les polynômes de division d'une courbe elliptiques $E$.
 
 \begin{defi}
-Soit une courbe elliptique $E : y^2 = x^3 + ax+b$ défini sur $\mathbb{K}$. On appelle $f_n(X)$ le n-ième polynôme de divisons définit sur $\mathbb{Z}[x]$ de manière récursive par : 
+Soit une courbe elliptique $E : y^2 = x^3 + ax+b$ défini sur $\mathbb{K}$. On appelle $f_n(X)$ le n-ième polynôme de divisons défini sur $\mathbb{Z}[x]$ de manière récursive par : 
 
 
 \begin{align*}
@@ -347,11 +350,13 @@ x_1 &= \frac{\phi_m}{\psi^2_m} =  \frac{x \psi^2_m - \psi_{m-1}\psi_{m+1}}{\psi_
 
 \end{proof}
 On remarque que $[m]P = (x_1, y_1)$ avec $x_1$ uniquement fonction de $x$. En effet en utilisant les formules de récurrence, si $m$ est pair $\psi_m^2 = 4y^2f_m$, mais en utilisant l'équation de $E$ on peut remplacer $y^2$ par une fonction de $x$, et les polynômes de division sont en fonction de $x$. De plus comme $m$ est pair les polynômes $\psi_{m+1} et \psi_{m-1}$ sont uniquement en fonction de $x$. Dans le cas où $m$ est impair on a l'inverse, le numérateur fait apparaître un $y^2$ qu'on peut remplacer par une fonction de $x$ comme précédemment et le dénominateur est une fonction de $x$. Quand à $y_1$, son degré en $y$ est au plus $1$. Si $m$ est pair $\psi_m^4$ fait apparaître un $y^4$ qui s'exprime en fonction de $x$, et $\psi_{2m}$ amène un $y$. On montre la même chose quelque soit la parité de $m$ et $2m$.
-On peut ainsi exprimer $[m]P$ comme un polynôme en $x,y$. Mais ce n'est pas la seule particularité de ces polynômes utiles pour notre algorithme. En effet $P = (x_1, y_1)$ est un point de l-torsion si et seulement si $x_1$ est une racine du l-ième polynôme de division $f_l$. De plus $P$ est sur la courbe $E$. Les points de $l$-torsion sont donc solutions du système d'équation : 
+On peut ainsi exprimer $[m]P$ comme un polynôme en $x,y$. Mais ce n'est pas la seule particularité de ces polynômes utiles pour notre algorithme. En effet $P = (x_1, y_1)$ est un point de $l$-torsion si et seulement si $x_1$ est une racine du $l$-ième polynôme de division $f_l$. De plus $P$ est sur la courbe $E$. Les points de $l$-torsion sont donc solutions du système d'équation : 
 \begin{equation}
 E(x,y) = y^2 - x^3 - ax - b = 0, \quad f_l(x) = 0
 \end{equation}
-L'équation \ref{eqnfrobenius} peut donc se récrire en utilisant les points de $l$-torsion. On va maintenant faire des calculs dans l'anneau $\mathbb{W}= \frac{\mathbb{F}_p[x,y]}{(f_l(x), E(x,y))}$. L'idée de l'algorithme de Schoof est donc de tester pour des valeurs $\tau_l \in \lbrace 0, \ldots, l-1 \rbrace$ si l'équation suivante est vraie dans cet anneau :
+L'équation \ref{eqnfrobenius} peut donc se récrire en utilisant les points de $l$-torsion. On va maintenant faire des calculs dans l'anneau
+$$\mathbb{W}= \frac{\mathbb{F}_p[x,y]}{(f_l(x), E(x,y))}$$
+L'idée de l'algorithme de Schoof est donc de tester pour des valeurs $\tau_l \in \lbrace 0, \ldots, l-1 \rbrace$ si l'équation suivante est vraie dans cet anneau :
 
 \begin{equation}
 (x^{p^2}, y^{p^2}) + [p_l](x,y) = [\tau_l](x^{p}, y^{p}),  \quad P=(x,y)
@@ -380,7 +385,7 @@ while N <= 4*sqrt(p):
 Ce cas est particulier et doit être traité à part car on suppose nos premiers impairs. On a $t_2 \equiv 0 \pmod 2$ si et seulement si $E(\mathbb{F}_p)$ a un élément d'ordre $2$, c'est à dire un point de $2$-torsion. Or les points de $2$ torsions sont de la forme $(x, 0)$. En effet, si $2P = 0$, pour $P \in E(\mathbb{F_p})$ alors $P = -P$, et cela correspond aux points de l'axe des abscisses. Ainsi $t_2$ est congru à $0$ si et seulement si $x^3 +ax +b$ à une racine dans $\mathbb{F}_p$. Mais les racines de $\mathbb{F}_p$ sont entièrement déterminées par le polynôme $x^p - x$, nos deux polynômes partageraient alors une racine commune. La façon utilisée ici pour décider si $t_2 \equiv 0 \pmod 2$ est donc de calculer si $\gcd(x^p - x, x^3 +ax +b) \ne 1$ (qu'on calcule par exponentiation rapide).
 
 \subsubsection{Calcul des polynômes de division}
-Il existe dans SAGE une fonction permettant de calculer les polynômes de division, \path{polynomial_polynomial(n)} renvoyant le n-ième polynôme de division. Mais comme au cours de l'algorithme on doit souvent utiliser différents polynôme de division et de plus ils sont calculés via des formules de récurrence. Il ne me paraissait pas forcement très judicieux d'utiliser la fonction de sage qui allait de toute façon très certainement à chaque appel devoir recalculer via les formules de récurrence le polynôme souhaité. L'idée étant de stocker tous ces polynômes dans un dictionnaire, une fois la phase de pré calcul faite on peut donc accéder à tous les polynômes de division que l'on souhaite en temps constant au cours de l'exécution de l'algorithme de Schoof. Et en utilisant la fonction de SAGE j'ai tout de même vérifié via une fonction de test que je trouvais bien les même polynômes qu'avec ma fonction.
+Il existe dans SAGE une fonction permettant de calculer les polynômes de division, \path{polynomial_polynomial(n)} renvoyant le $n$-ième polynôme de division. Mais comme au cours de l'algorithme on doit souvent utiliser différents polynôme de division et de plus ils sont calculés via des formules de récurrence. Il ne me paraissait pas forcement très judicieux d'utiliser la fonction de sage qui allait de toute façon très certainement à chaque appel devoir recalculer via les formules de récurrence le polynôme souhaité. L'idée étant de stocker tous ces polynômes dans un dictionnaire, une fois la phase de pré calcul faite on peut donc accéder à tous les polynômes de division que l'on souhaite en temps constant au cours de l'exécution de l'algorithme de Schoof. Et en utilisant la fonction de SAGE j'ai tout de même vérifié via une fonction de test que je trouvais bien les même polynômes qu'avec ma fonction.
 
 
 \subsubsection{Calcul de $(x^{p^2}, y^{p^2}) + [p_l](x,y)$}
@@ -394,7 +399,7 @@ Soit $\lambda = \frac{y_{\bar{p_l}} - y^{p^2}}{x_{\bar{p_l} - x^{p^2}}}$, on a a
 \begin{equation}
 (x_1, y_1) = (\lambda^2 - x^{p^2} - x_{\bar{p_l}}, \, \lambda (x^{p^2} - x_1) -  y^{p^2})
 \end{equation}
-On va aussi noter $(x_{\tau}, y_{\tau}) =  [\tau](x,y)$. On doit maintenant tester en faisant varier la valeur de $\tau$ entre $0$ et $l -1$ si $x_1 = x_{\tau}$. Si c'est le cas on se retrouve avec deux possibilités comme valeur de $y_1$, soit on a le point soit on a son opposé. On regarde donc si $y_1 = y_{\tau}$, on a alors $t_l = \tau$, sinon on a $t_l = - \tau$
+On va aussi noter $(x_{\tau}, y_{\tau}) =  [\tau](x,y)$. On doit maintenant tester en faisant varier la valeur de $\tau$ entre $0$ et $\frac{l-1}{2}$ si $x_1 = x_{\tau}$. Si c'est le cas on se retrouve avec deux possibilités comme valeur de $y_1$, soit on a le point soit on a son opposé. On regarde donc si $y_1 = y_{\tau}$, on a alors $t_l = \tau$, sinon on a $t_l = - \tau$
 
 \paragraph*{Cas : $(x^{p^2}, y^{p^2}) = \pm [p_l](x,y)$}
 Là encore deux cas possibles. On va d'abord regarder lorsque $(x^{p^2}, y^{p^2}) = [p_l](x,y)$. 
@@ -468,7 +473,7 @@ On donne une version complète en pseudo-code de l'algorithme de schoof :
 \newpage
 
 \paragraph*{Implémentation}
-Il a fallut commencer par implémenter des fonctions de base sur les courbes elliptiques pour additionner, calculer une multiplication scalaire. Les algorithmes d'additions ne nécessitent pas d'explications, juste une application des formules. Pour la multiplication scalaire on avait deux choix, utiliser les polynômes de division ou de l'exponentiation rapide. La méthode utilisant les polynômes a amené des problème d'implémentation, donc je suis resté avec une version plus simple d'exponentiation. L'idée de cet algorithme est d'utiliser la décomposition binaire de $n$ pour calculer $nP$. Pour récupérer cette décomposition on utilise la fonction \path{digits(base)} qui retourne une liste avec les bits de poids faible à gauche de l'écriture binaire de $n$. On va à chaque itération doubler le point que l'on a, on calcule donc $2(2(\ldots2(P))$. Il est même nécessaire lorsque l'on rencontre un $1$ dans la décomposition binaire de $n$ de faire une addition en plus de doubler. Au final on obtient l'algorithme suivant avec comme entre $n$ et $P$: 
+Il a fallut commencer par implémenter des fonctions de base sur les courbes elliptiques pour additionner, calculer une multiplication scalaire. Les algorithmes d'additions ne nécessitent pas d'explications, juste une application des formules. Pour la multiplication scalaire on avait deux choix, utiliser les polynômes de division ou de l'exponentiation rapide. La méthode utilisant les polynômes a amené des problème d'implémentation, notamment pour faire les calculs dans les bons anneaux, donc je suis resté avec une version plus simple d'exponentiation. L'idée de cet algorithme est d'utiliser la décomposition binaire de $n$ pour calculer $nP$. Pour récupérer cette décomposition on utilise la fonction \path{digits(base)} qui retourne une liste avec les bits de poids faible à gauche de l'écriture binaire de $n$. On va à chaque itération doubler le point que l'on a, on calcule donc $2(2(\ldots2(P))$. Il est même nécessaire lorsque l'on rencontre un $1$ dans la décomposition binaire de $n$ de faire une addition en plus de doubler. Au final on obtient l'algorithme suivant avec comme entre $n$ et $P$: 
 \bigskip
 \begin{lstlisting}
     nbits = n.digits(2)
@@ -489,14 +494,14 @@ Sans donner ici le détail complet de l'algorithme sous SAGE il est intéressant
 R.<x> = PolynomialRing(K)
 \end{lstlisting}
 \bigskip
-En notant \path{poly_divi_l} le l-ième polynome de division on peut construire l'anneau quotient : 
+En notant \path{poly_divi_l} le $l$-ième polynome de division on peut construire l'anneau quotient : 
 \bigskip
 
 \begin{lstlisting}
 B.<x2> = R.quotient(ideal(poly_divi_l))
 \end{lstlisting}
 \bigskip
-Cependant on n'est pas certain que ce polynôme soit divisible, et ainsi créer un corps fini. Si ce n'est pas le cas et que l'on doit calculer l'inverse d'un élément non inversible, on rencontrera une erreur. Il est donc nécessaire de tester si le polynôme de division est irréductible et s'il ne l'est pas de le remplacer par un de ses diviseurs. Ce qu'on illustre avec la condition suivante :
+Cependant on n'est pas certain que ce polynôme soit irréductible, et ainsi créer un corps fini. Si ce n'est pas le cas et que l'on doit calculer l'inverse d'un élément non inversible, on rencontrera une erreur. Il est donc nécessaire de tester si le polynôme de division est irréductible et s'il ne l'est pas de le remplacer par un de ses diviseurs. Ce qu'on illustre avec la condition suivante :
 \bigskip
 \begin{lstlisting}
 if not poly_divi_l.is_irreducible():      
@@ -520,7 +525,7 @@ Une fois que l'on a calculé une liste \path{list_t} contenant tous les $t$ modu
 \subsubsection{Exemple}
 On va travailler avec la courbe $E$ suivante, $E$ : $y^2 =x^3 +2x+1$ sur $\mathbb{F}_{19}$.
 
-\paragraph{$\textbf{l=2}$}
+\paragraph{$\mathbf{l=2}$}
 On calcule $\gcd(x^{19} -x, x^3 + 2x+1)$ et on trouve $1$, donc $t \equiv 1 \pmod 2$
 
 \paragraph{$\textbf{l=3}$}
@@ -573,7 +578,7 @@ b &= 1679885593
 \end{align*}
 ......rajouter resultats des test ......
 \subsubsection{Complexité}
-La complexité de l'algorithme de Schoof est en $O(\log{q}^8)$. La partie conteuse de l'algorithme réside dans les calculs dans l'anneau $R = \frac{\mathbb{F_p}[x,y]}{(f_l(x), y^2 -x^3 -ax -b)}$. Les éléments de R sont de degré $O(l^2)$ 
+La complexité de l'algorithme de Schoof est en $O(\log{q}^8)$ opérations élémentaires. La partie conteuse de l'algorithme réside dans les calculs dans l'anneau $R = \frac{\mathbb{F_p}[x,y]}{(f_l(x), y^2 -x^3 -ax -b)}$. Les éléments de R sont de degré $O(l^2)$ 
 \newline
  L'algorithme est plus efficace qu'une version naïve quand la taille de $p$ augmente mais reste néanmoins limitée pour $p$ trop grand. En effet le degré des polynômes de division en $O(l^2)$ empêche une performance optimale pour des tailles de $p$ trop importante. Les polynômes de division deviennent rapidement très grands, ce qui pose un problème de mémoire. Une amélioration de cet algorithme a été proposée par Elkies-Atkin pour produire un algorithme plus performant, le SEA. 
  
@@ -598,19 +603,19 @@ Un tel groupe $\Gamma$ est un réseau de $\mathbb{R}^n$ de rang $r$.
 Dans le cas particulier de $\mathbb{C}$, ses sous-groupes discrets non nuls et non isomorphes à $\mathbb{Z}$ sont de la forme $\mathbb{Z}\omega_1 + \mathbb{Z}w_2$ avec $\omega_1, \omega_2 \in \mathbb{C}$ et $Im(\frac{w_2}{w_1}) \ne 0$. En pratique on va souvent considérer $\tau = \frac{\omega_2}{\omega_1}$ pour avoir $\Gamma = \mathbb{Z} + \tau \mathbb{Z}$.
 
 \begin{defi}
-On appelle tore le quotient $T = \mathbb{C}$/$\Gamma$. C'est le quotient du groupe $(\mathbb{C}, +)$ par le réseau $\Gamma = \mathbb{Z}\omega_1 + \mathbb{Z}w_2$
+On appelle tore le quotient $T = \mathbb{C}/ \Gamma$. C'est le quotient du groupe $(\mathbb{C}, +)$ par le réseau $\Gamma = \mathbb{Z}\omega_1 + \mathbb{Z}w_2$
 \newline
 Une fonction elliptique de période $\Gamma$ est une fonction méromorphe $f$ sur $\mathbb{C}$ telle que $f(z + \omega) = f(z) ,\ \forall \omega \in \Gamma$.
 \end{defi}
 
 \begin{defi}
-Soit $\Gamma$ un réseau de $\mathbb{C}$, on introduit la $\rho$-fonction de Weierstrass par la série suivante :
+Soit $\Gamma$ un réseau de $\mathbb{C}$, on introduit la $\wp$-fonction de Weierstrass par la série suivante :
 \begin{equation*}
-\rho(z) = \frac{1}{z^2} + \sum_{w \in \Gamma, \omega \ne 0} \frac{1}{(z-\omega)^2} - \frac{1}{\omega^2}
+\wp(z) = \frac{1}{z^2} + \sum_{w \in \Gamma, \omega \ne 0} \frac{1}{(z-\omega)^2} - \frac{1}{\omega^2}
 \end{equation*}
-On a une convergence absolue uniforme sur tout compact disjoint de $\Gamma$ de cette série. De plus cette fonction est elliptique. On peut aussi définir sa dérivée $\rho$' qui de même est elliptique :
+On a une convergence absolue donc uniforme sur tout compact disjoint de $\Gamma$ de cette série. De plus cette fonction est elliptique. On peut aussi définir sa dérivée ${\wp'}$ qui de même est elliptique :
 \begin{equation*}
-\rho' = -2 \sum_{\omega \in \Gamma} \frac{1}{(z-\omega)^3}
+{\wp'} = -2 \sum_{\omega \in \Gamma} \frac{1}{(z-\omega)^3}
 \end{equation*}
 On peut montrer qu'avec $\Gamma = \omega_1 \mathbb{Z} + \omega_2 \mathbb{Z}$ cette fonction $\rho$ est double périodique de période $\omega_1, \omega_2$.
 \end{defi}
@@ -627,18 +632,18 @@ $\begin{array}{cccc}
 & \mathbb{C}\text{/ }\Gamma & \to & E \\
 & z + \Gamma & \mapsto & \left\lbrace
 \begin{array}{cc}
- (\rho(z), \frac{\rho'(z)}{2})  & z \notin \Gamma \\
+ (\wp(z), \frac{{\wp'}(z)}{2})  & z \notin \Gamma \\
  O & z \in \Gamma
 \end{array}\right.\\
 \end{array}$
 \end{thm}
 
 \begin{thm}
-La fonction $\rho$ satisfait l'équation différentielle suivante : 
+La fonction $\wp$ satisfait l'équation différentielle suivante : 
 \begin{equation*}
-\rho'(z)^2 = 4\rho^3(z) + A \rho(z) + B
+{\wp'}(z)^2 = 4\rho^3(z) + A \wp + B
 \end{equation*}
-Où les coefficients $A,B$ sont totalement déterminés en analysant les développements limités en $0$ de $\rho, \rho'$ et $\rho'^2$ 
+où les coefficients $A,B$ sont totalement déterminés en analysant les développements limités en $0$ de $\wp, {\wp'}$ et ${\wp'}^2$ et dépendent du réseau $\Gamma$.
 \end{thm}
 On donne les formules suivantes sans démonstrations et plus d'explications, plus de détails peuvent être trouver ici (inserer ref)
 
@@ -656,7 +661,7 @@ E_6(p) = 1-504\sum_{n=1}^{\infty}\frac{n^5p^n}{1-p^n}
 Et l’égalité : 
 \begin{equation}
 \label{EC-function of series}
-y^2 = x^3 - \frac{E_4(p)}{48} + \frac{E_6(p)}{864}
+y^2 = x^3 - \frac{E_4(p)}{48}x + \frac{E_6(p)}{864}
 \end{equation}
 \end{prop}
 
@@ -695,12 +700,12 @@ On peut définir la quantité suivante pour $\alpha \in S_n^* $:  $j \circ \alph
 On peut maintenant donner une définition des polynômes modulaires.
 
 \begin{defi}
-Soit $n$ un entier positif, le n-ième polynôme modulaire est :
+Soit $n$ un nombre premier, le $n$-ième polynôme modulaire est :
 \begin{equation*}
 \Phi_n(x,j) = \prod_{\alpha \in S_n^*} (x - j \circ \alpha)
 \end{equation*}
 \end{defi}
-On peut noter que ce polynôme est symétrique et de degré $n+1$.
+On peut noter que ce polynôme est symétrique et de degré $n+1$ en chaque variable. De plus les coefficient de $x^{n+1}$ et $y^{n+1}$ sont $1$.
 Ce qui nous permet de faire le lien entre isogénie et polynôme modulaire avec la définition suivante.
 \begin{defi}
 Soit $E_1$/$\mathbb{C}$ et $E_2$/$\mathbb{C}$ deux courbes elliptiques de $j$-invariant respectivement $j_{E_1}$ et $j_{E_2}$. Le $l$-ième polynôme modulaire vérifie $\Phi_l(j_{E_1},j_{E_2}) = 0$ si et seulement si il existe une isogénie entre $E_1$ et $E_2$ dont le noyau est cyclique de degré $l$.
@@ -723,14 +728,14 @@ On donne un exemple de polynôme modulaire, pour $ l =5$ on a :
 On peut noter que les coefficients augmentent très rapidement. Un algorithme efficace pour calculer ces polynômes dans le cas où $l$ est premier est le calcul via volcan d'isogénie (ref : https://arxiv.org/abs/1001.0402 a inserer).
 
 \subsubsection{Algorithme SEA}
-Avec ce bagage théorique en plus on va pouvoir commencer à détailler l'algorithme SEA (schoof-Elkies-Atkins), on suppose dans la suite que $E$ est une courbe elliptique sur $\mathbb{F}_p$, $p$ premier sous sa forme réduite $y^2 = x^3 + ax +b$. On rappelle que le polynôme caractéristique de l’endomorphisme de Frobenius $\phi$ sur $\mathbb{F}_l$ est $\chi_l(x) = x^2 - t_lx +p_l$ où $t_l$ est la trace du Frobenius modulo $l$, et $p_l$ la caractéristique du corps sur lequel on définit $E$ réduite modulo $l$. On va se demander si $\chi_l$ est séparable sur $\mathbb{F}_l$. Or ce polynome a une racine dans $\mathbb{F}_l$ si et seulement si sont déterminant $\Delta_{\chi} = t_l^2 - 4p_l$ est un carré dans $\mathbb{F}_l$, ce qui nous amène à la classification suivante :
+Avec ce bagage théorique en plus on va pouvoir commencer à détailler l'algorithme SEA (schoof-Elkies-Atkins), on suppose dans la suite que $E$ est une courbe elliptique sur $\mathbb{F}_p$, $p$ premier sous sa forme réduite $y^2 = x^3 + ax +b$. On rappelle que le polynôme caractéristique de l’endomorphisme de Frobenius $\phi$ sur $\mathbb{F}_l$ est $\chi_l(x) = x^2 - t_lx +p_l$ où $t_l$ est la trace du Frobenius modulo $l$, et $p_l$ la caractéristique du corps sur lequel on définit $E$ réduite modulo $l$. On va se demander si $\chi_l$ est irréductible sur $\mathbb{F}_l$. Or ce polynome a une racine dans $\mathbb{F}_l$ si et seulement si sont déterminant $\Delta_{\chi} = t_l^2 - 4p_l$ est un carré dans $\mathbb{F}_l$, ce qui nous amène à la classification suivante :
 
 \begin{defi}
 \label{Atkins's prime}
-Si $\Delta_{\chi} = t_l^2 - 4p_l$ est un carré dans $\mathbb{F}_l$ alors on dit que $l$ est un premier de Elkies, sinon c'est un premier de Atkins.
+Si $\Delta_{\chi} = t_l^2 - 4p_l$ est un carré non nul dans $\mathbb{F}_l$ alors on dit que $l$ est un premier de Elkies, sinon c'est un premier de Atkins.
 \end{defi}
 \bigskip
-On peut représenter graphiquement l'ensemble des points de $l$-torsions. On sait que l'on a $l^2$ points de $l$-torsion et que l'on peut décrire $E[l]$ par son l-ième polynôme de division $f_l$ de degré en $O(l^2)$.
+On peut représenter graphiquement l'ensemble des points de $l$-torsions. On sait que l'on a $l^2$ points de $l$-torsion et que l'on peut décrire $E[l]$ par son $l$-ième polynôme de division $f_l$ de degré en $O(l^2)$.
 
 \begin{tikzpicture}[>=latex]
 \begin{axis}[
@@ -774,7 +779,7 @@ L'idée de l'algorithme SEA est de ne plus travailler sur cet ensemble $E[l]$ ma
 \end{axis}
 \end{tikzpicture}
 
-On peut noter que $E[l]$ est l'union de $l+1$ sous groupe cyclique d'ordre $l$.
+On peut noter que $E[l]$ contient $l+1$ sous groupe cyclique d'ordre $l$.
 La question est donc quel sous groupe prendre ? On va s’intéresser à un sous espace propre de la restriction de $\phi$ à $E[l]$ de dimension $1$ (comme visible sur le graphique précédent on prend une droite) qu'on note $C_{\lambda}$. La valeur propre associée à ce sous espace propre est bien sur $\lambda$ tel que $\phi(P) = \lambda P$ pour $P \in C_{\lambda}$. On décrit $C_{\lambda}$ par $g_l$.
 \newline
 On peut décrire $\phi_{|E[l]}$ par une matrice $2\times2$, la question de trouver des sous espace propre est liée a la question de diagonalisation de cette matrice.
@@ -800,13 +805,13 @@ t^2 \equiv p(\xi+\xi^{-1})^2 \pmod l
 \end{equation}
 Où $\xi$ est une $r$-ième racine primitive de l'unité dans $\bar{\mathbb{F}_l}$.
 \end{thm}
- On rappelle que le $PGL(E)$ d'un espace vectoriel $E$ sur un corps $K$ est le groupe quotient $GL(E)$/$Z(E)$. Où $GL(E)$ est le groupe général linéaire de $E$, le groupe des automorphismes de $E$ muni de la composition des applications. Et $Z(E$ le centre de $GL(E)$, c'est a dire l'ensemble des éléments de $E$ qui commutent avec tous les autres.
+ On rappelle que le $PGL(E)$ d'un espace vectoriel $E$ sur un corps $K$ est le groupe quotient $GL(E)$/$Z(E)$. Où $GL(E)$ est le groupe général linéaire de $E$, le groupe des automorphismes de $E$ muni de la composition des applications. Et $Z(E)$ le centre de $GL(E)$, c'est a dire l'ensemble des éléments de $E$ qui commutent avec tous les autres.
 \newline
 On peut reformuler la classification énoncée dans la définition \ref{Atkins's prime}. Un nombre premier $l$ tel que $\phi_{|E[l]}$ est diagonalisable est un premier de Elkies, et un premier de Atkins sinon. Pour déterminer dans quel cas on se trouve on va étudier la factorisation de $\Phi_l(x,j)$ ($j$ est le $j$-invariant de notre courbe elliptique $E$). Pour se faire on va calculer le degré de $\gcd(\Phi_l(x,j),x^p-x)$, d'après le théorème précédent si ce $\gcd$ est constant alors $l$ est un premier d'Atkins, sinon c'est un premier d'Elkies.
 
 
 \paragraph*{Premier d'Elkies}
-On se place dans le cas ou $l$ est un premier d'Elkies. Le Frobenius est diagonalisable, de valeur propre $\lambda, \mu$, car $\Delta_{\chi_l} =t_l^2 -4p$ est un carré modulo $l$ (on rappelle que $\chi_{l}(x) = x^2 - t_lx +p_l$). Ainsi on a :
+On se place dans le cas ou $l$ est un premier d'Elkies. Le Frobenius est diagonalisable, de valeurs propres $\lambda, \mu$, car $\Delta_{\chi_l} =t_l^2 -4p$ est un carré modulo $l$ (on rappelle que $\chi_{l}(x) = x^2 - t_lx +p_l$). Ainsi on a :
 \begin{equation*}
 \chi_l(x) = (x - \lambda)(x- \mu)
 \end{equation*}

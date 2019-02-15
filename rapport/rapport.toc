@@ -11,7 +11,7 @@
 \contentsline {subsubsection}{\numberline {3.3.4}Calcul de $(x^{p^2}, y^{p^2}) + [p_l](x,y)$}{9}
 \contentsline {subsubsection}{\numberline {3.3.5}Algorithme}{11}
 \contentsline {subsubsection}{\numberline {3.3.6}Exemple}{14}
-\contentsline {paragraph}{$\textbf {l=2}$}{14}
+\contentsline {paragraph}{$\mathbf {l=2}$}{14}
 \contentsline {paragraph}{$\textbf {l=3}$}{14}
 \contentsline {subsubsection}{\numberline {3.3.7}Exp\IeC {\'e}rimentations}{15}
 \contentsline {subsubsection}{\numberline {3.3.8}Complexit\IeC {\'e}}{16}
