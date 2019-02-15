@@ -104,9 +104,82 @@ $\begin{array}{ccccc}
 
 On lui associe son polynôme caractéristique :
 \begin{equation*}
-\phi_p^2 - t \phi_p + p = 0
+\chi_p = \phi_p^2 - t \phi_p + p 
 \end{equation*}
+1ère application : calcul de $\#E(\mathbb{F}_{p^n})$
+\begin{itemize}
+\item $r_1,r_2$ racines de $\chi_p(x)$
+\item $Tr(\phi_{p^n}(x,y)) = r_1^n + r_2^n$
+\item Hass-Weil : $\#E(\mathbb{F}_{p^n}) = p^n +1 - r_1^n -r_2^n$
+\end{itemize}
 \end{frame}
 
+\subsection{Polynômes de division}
+\begin{frame}
+\frametitle{Polynômes de division}
+On appelle $f_n(X)$ le n-ième polynôme de divisons définit sur $\mathbb{Z}[x]$par : 
+\begin{align*}
+f_0(x) &= 0 \\
+f_1(x) &= 1 \\
+f_2(x) &= 1 \\
+f_3(x) &= 3x^4 + 6ax^2 +12bx - a^2 \\
+f_4(x) &= 2x^6 + 10ax^4 +40bx^3 - 10a^2x^2 - 8abx - 2(a^3 + 8b^2)
+\end{align*}
+On pose $F(X)= 4x^3 + 4ax + 4b$, et on a:
+
+\begin{equation}
+\left\lbrace
+\begin{array}{ll}
+f_{2n}& =  f_n(f_{n+2}f_{n-1}^2 - f_{n-2}f_{n+1}^2)   \\
+f_{2n+1}& = \left\lbrace 
+\begin{array}{ccc}
+F^2f_{n+2}f_n^3 - f_{n-1}f_{n+1}^3 & \mbox{si} & n \text{ est pair}\\
+f_{n+2}f_n^3 - f_{n-1}f_{n+1}^3F^2 & \mbox{si} & n \text{ est impair} \end{array}\right.
+
+\end{array} \right.
+\end{equation} 
+\end{frame}
+
+\begin{frame}
+Ces polynômes s'annulent sur les points de $l$-torsion et permettent de calculer :
+
+\begin{equation}\label{mP}
+[m]P = \left\lbrace
+\begin{array}{lll}
+O_E & \mbox{si} & P \in E[m]  \\
+\left(  x -   \frac{\psi_{m-1}(x,y)\psi_{m+1}(x,y)}{\psi^2_m(x,y)}, \frac{\psi_{2m}(x,y)}{\psi^4_m(x,y)}\right) & \mbox{sinon}  & 
+\end{array}\right.
+\end{equation}
+En posant : 
+\begin{equation*}
+\psi_m= \left\lbrace
+\begin{array}{cc}
+2yf_m & \mbox{si m est pair} \\
+f_m & \mbox{sinon}
+\end{array}\right.
+\end{equation*} 
+\end{frame}
+
+
+\begin{frame}
+\frametitle{Frobenius et Schoof}
+\begin{equation}
+\label{eqnfrobenius}
+\phi_p^2(P)  + [p_l]P = [t_{l}] \phi_p(P) \quad \forall P \in E[l]
+\end{equation} 
+Or pour tout $P=(x,y) \in E[l]$, $f_l(x) = 0$ et $y^2 - x^3 -ax -b=0$. 
+\newline
+On peut donc travailler dans l'anneau : 
+$$ \frac{\mathbb{F}_p[x,y]}{(f_l(x), y^2 - x^3 -ax -b)} $$ 
+La question est donc pour quel valeur $0 \leq \tau < l$ l'équation suivante est vérifié :
+\begin{equation}
+(x^{p^2}, y^{p^2}) + [p_l](x,y) = [\tau_l](x^{p}, y^{p})
+\end{equation}
+\end{frame}
+
+\subsection{Choix des premiers $l$}
+\begin{frame}
+\frametitle{Choix des premiers $l$}
+\end{frame}
 \end{document}
 

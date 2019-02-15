@@ -4,3 +4,5 @@
 \beamer@sectionintoc {2}{Algorithme na\IeC {\"\i }f}{4}{0}{2}
 \beamer@sectionintoc {3}{Algorithme de Schoof}{6}{0}{3}
 \beamer@subsectionintoc {3}{1}{Frobenius}{7}{0}{3}
+\beamer@subsectionintoc {3}{2}{Polyn\IeC {\^o}mes de division}{8}{0}{3}
+\beamer@subsectionintoc {3}{3}{Choix des premiers $l$}{11}{0}{3}
