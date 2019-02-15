@@ -42,7 +42,10 @@
     \setbeamercolor{alerted text}{fg=AlertColor}
     \setbeamercolor{itemize item}{fg=Charcoal}
 
-
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{lmodern}
+  \usepackage[french]{babel}
 \begin{document}
 \title{Compter les points sur une courbe elliptique}   
 \author{Jeremie Coulaud} 
@@ -53,13 +56,57 @@
 \frame{\frametitle{Table of contents}\tableofcontents} 
 
 
-\section{Section no.1} 
+\section{Introduction} 
 \frame{\frametitle{Introduction} 
 blabla
 }
 
-\frame{\frametitle{Algorithme naif}
-
+\section{Algorithme naïf}
+\frame{\frametitle{Algorithme naïf}
+$$ y^2 = x^3 +ax+b = f(x) $$
+\begin{itemize}
+\item  $\genfrac(){}{0}{f(x)}{p} = -1$, $f(x)$ n'est pas un carré modulo $p$, on ne trouve aucun point appartenant à la courbe.
+\item $\genfrac(){}{0}{f(x)}{p} = 0$, $f(x)$ est divisible par $p$, on trouve $1$ point sur la courbe.
+\item $\genfrac(){}{0}{f(x)}{p} = 1$, $f(x)$ est un carré modulo $p$, on trouve $2$ points sur la courbe.
+\end{itemize}
 }
+
+\begin{frame}
+\frametitle{}
+\begin{equation*}
+\#E(\mathbb{F}_p) = 1 + p +\sum_{x \in \mathbb{F}_p}\genfrac(){}{0}{f(x)}{p}
+\end{equation*}
+Complexité en la taille de $p$
+\includegraphics[scale=0.4]{../pictures/brute_force_cputime.png} 
+\end{frame}
+
+\section{Algorithme de Schoof}
+\begin{frame}
+\frametitle{Algorithme de Schoof}
+
+\begin{block}{Théorème Hasse-Weil}
+$\#E(\mathbb{F}_p) = p + 1 - t$ avec $|t| \leq 2 \sqrt{p}$ trace de l'endomorphisme de Frobenius de $E$.
+\end{block}
+Pour trouver l'ordre de $E(\mathbb{F}_p)$ il faut trouver $t$
+\newline
+Idée de Schoof : trouver $t \pmod l$, avec $l$ petit premier et utiliser les restes chinois pour trouver $t$
+\end{frame}
+
+\subsection{Frobenius}
+\begin{frame}
+\frametitle{Frobenius}
+Soit $E$ une courbe elliptique défini sur $\mathbb{F}_p$, l'endomorphisme de Frobenius est défini par 
+
+$\begin{array}{ccccc}
+\phi_p & : & E(\mathbb{F}_p) & \to & E(\mathbb{F}_p) \\
+ & & (x,y) & \mapsto & (x^p, y^p) \\
+\end{array}$
+
+On lui associe son polynôme caractéristique :
+\begin{equation*}
+\phi_p^2 - t \phi_p + p = 0
+\end{equation*}
+\end{frame}
+
 \end{document}
 
