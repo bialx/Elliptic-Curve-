@@ -24,7 +24,7 @@ def schoof2(E):
     """ Compute a set of small prime whose product is > 4* sqrt(p) """
     while N <= 4*sqrt(p):
         if prime == p or prime == 2:
-            pass
+            continue
         prime = next_prime(prime)
         N = N*prime
         list_l.append(prime)
