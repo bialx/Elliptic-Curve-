@@ -171,7 +171,7 @@ Or pour tout $P=(x,y) \in E[l]$, $f_l(x) = 0$ et $y^2 - x^3 -ax -b=0$.
 \newline
 On peut donc travailler dans l'anneau : 
 $$ \frac{\mathbb{F}_p[x,y]}{(f_l(x), y^2 - x^3 -ax -b)} $$ 
-La question est donc pour quel valeur $0 \leq \tau < l$ l'équation suivante est vérifié :
+La question est donc pour quel valeur $0 \leq \tau \leq \frac{l-1}{2}$ l'équation suivante est vérifié :
 \begin{equation}
 (x^{p^2}, y^{p^2}) + [p_l](x,y) = [\tau_l](x^{p}, y^{p})
 \end{equation}
@@ -180,6 +180,19 @@ La question est donc pour quel valeur $0 \leq \tau < l$ l'équation suivante est
 \subsection{Choix des premiers $l$}
 \begin{frame}
 \frametitle{Choix des premiers $l$}
+\begin{itemize}
+\item $S = (l_1, \ldots l_n)$ tel que $\prod l_i > 4\sqrt{p}$
+\item Petits $l_i$ pour que $f_l$ soit de plus petit degré possible.
+\end{itemize}
+
+ 
+\textbf{Cas} $\mathbf{l=2}$ \textbf{:} $t_2 \equiv 0 \pmod 2 \Leftrightarrow E(\mathbb{F}_p)$ a un élément d'ordre $2$
+\begin{itemize}
+\item Point $2$-torsion est de la forme $(x,0)$
+\item $x^3 +ax +b$ à une racine dans $\mathbb{F}_p$
+\item Calcul $\gcd(x^p - x,\, x^3 +ax +b) \ne 1$
+\end{itemize}
+
 \end{frame}
 \end{document}
 
