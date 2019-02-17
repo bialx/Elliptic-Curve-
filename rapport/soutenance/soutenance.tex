@@ -1,14 +1,6 @@
-% This text is proprietary.
-% It's a part of presentation made by myself.
-% It may not used commercial.
-% The noncommercial use such as private and study is free
-% Sep. 2005 
-% Author: Sascha Frank 
-% University Freiburg 
-% www.informatik.uni-freiburg.de/~frank/
-
 
 \documentclass{beamer}
+
 \setbeamertemplate{frametitle}
  	{\begin{centering}\smallskip
     \insertframetitle\par
@@ -46,6 +38,15 @@
   \usepackage[utf8]{inputenc}
   \usepackage{lmodern}
   \usepackage[french]{babel}
+    \usepackage{tikz}  
+      \usepackage{pgfplots}
+  \usepackage{mathabx}
+  \usetikzlibrary{decorations.pathmorphing}
+  \usetikzlibrary{decorations.pathreplacing}
+  \usetikzlibrary{decorations.shapes}
+  \usetikzlibrary{decorations.text}
+  \usetikzlibrary{decorations.markings}
+  \usetikzlibrary{decorations.footprints}
 \begin{document}
 \title{Compter les points sur une courbe elliptique}   
 \author{Jeremie Coulaud} 
@@ -192,7 +193,86 @@ La question est donc pour quel valeur $0 \leq \tau \leq \frac{l-1}{2}$ l'équati
 \item $x^3 +ax +b$ à une racine dans $\mathbb{F}_p$
 \item Calcul $\gcd(x^p - x,\, x^3 +ax +b) \ne 1$
 \end{itemize}
+\end{frame}
 
+\subsection{Expérimentations}
+\begin{frame}
+\frametitle{Expérimentations}
+\begin{columns}[T]
+	\begin{column}{5cm}
+		\includegraphics[scale=0.4]{../pictures/schoof_cputime.png} 
+	\end{column}
+	\begin{column}{5cm}
+		\includegraphics[scale=0.4]{../pictures/schoof_vs_bruteforce.png} 
+	\end{column}
+\end{columns}
+\end{frame}
+
+\section{Algorithme SEA}
+\begin{frame}
+\frametitle{Algorithme SEA}
+Amélioration de l'algorithme de Schoof par Elkies et Atkins.
+\bigskip
+\begin{columns}[T]
+	\begin{column}{5cm}
+		\begin{tikzpicture}[scale = 0.7]
+\begin{axis}[
+  axis x line=center,
+  axis y line=center,
+  title = {Représentation de $E[6]$},
+  xtick={0,...,5},
+  ytick={0,...,5},
+  xticklabels={$0$,$P_1$, $2P_1$, $3p_1$, $4P_1$, $5P_1$},
+  yticklabels={$0$,$P_2$, $2P_2$, $3p_2$, $4P_2$, $5P_2$},
+  xmin=0,
+  xmax=5.5,
+  ymin=0,
+  ymax=5.5]
+\addplot[only marks] coordinates {
+(0,0) (0,1) (0,2) (0,3) (0,4) (0,5) (1,0) (2,0) (3,0) (4,0) (5,0) (1,1) (2,2) (3,3) (4,4) (5,5) (1,2) (1,3) (1,4) (1,5) (2,1) (2,3) (2,4) (2,5) (3,1) (3,2) (3,4) (3,5) (4,1) (4,2)
+(4,3) (4,5) (5,1) (5,2) (5,3) (5,4) 
+};
+\end{axis}
+\end{tikzpicture}
+	\end{column}
+	\begin{column}{5cm}
+		 \begin{tikzpicture}[scale = 0.7]
+
+\begin{axis}[
+  axis x line=center,
+  axis y line=center,
+  title = {Représentation d'un sous groupe de $E[6]$},
+  xtick={0,...,5},
+  ytick={0,...,5},
+  xticklabels={$0$,$P_1$, $2P_1$, $3p_1$, $4P_1$, $5P_1$},
+  yticklabels={$0$,$P_2$, $2P_2$, $3p_2$, $4P_2$, $5P_2$},
+  xmin=0,
+  xmax=5.5,
+  ymin=0,
+  ymax=5.5]
+\addplot[only marks] coordinates {
+(0,0) (1,1) (2,2) (3,3) (4,4) (5,5) 
+};
+\end{axis}
+\end{tikzpicture}
+	\end{column}
+
+\end{columns}
+\end{frame}
+
+
+\subsection{Analyse Complexe}
+\begin{frame}
+\frametitle{Analyse Complexe}
+\end{frame}
+
+\subsection{Isogénie}
+\begin{frame}
+\frametitle{Isogénie}
+\end{frame}
+\subsection{Polynômes modulaires}
+\begin{frame}
+\frametitle{Polynômes modulaires}
 \end{frame}
 \end{document}
 

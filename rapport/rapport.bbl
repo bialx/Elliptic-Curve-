@@ -1,0 +1,25 @@
+\begin{thebibliography}{1}
+
+\bibitem{csi}
+
+
+\bibitem{complexbook}
+{\em Modular Functions and Dirichlet Series in Number Theory}.
+\newblock 1976.
+
+\bibitem{sea}
+Ben Galin.
+\newblock {\em Schoof-Elkies-Atkins Algorithm}.
+\newblock PhD thesis, Standford University, 2007.
+
+\bibitem{volcan}
+Andrew V.~Sutherland Reinier~Broker, Kristin~Lauter.
+\newblock Modular polynomials via isogeny volcanoes.
+\newblock {\em Mathematics of Computation 81}, 2010.
+
+\bibitem{artSchoof}
+René Schoof.
+\newblock Counting points on elliptic curves over finite fields.
+\newblock {\em Journal de Théorie des Nombres de Bordeaux 7}, 1995.
+
+\end{thebibliography}

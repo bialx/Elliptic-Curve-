@@ -214,7 +214,7 @@ On va illustrer la non efficacité de cet algorithme lorsque $p$ devient trop gr
 
 On retrouve bien l'aspect linéaire en $p$ évoqué précédemment.
 \subsection{Shanks}
-Il s'agit d'un algorithme Baby steps-giant steps de complexité exponentielle qu'on ne traitera pas ici, mais plus d'informations peuvent être trouvées ici (inserer ref)
+Il s'agit d'un algorithme Baby steps-giant steps de complexité exponentielle qu'on ne traitera pas ici, mais plus d'informations peuvent être trouvées ici \cite{artSchoof}
 
 \subsection{Schoof}
 Soit $E$ une courbe elliptique définie sur $\mathbb{F}_p$ avec $p$ premier $>3$ sous sa forme réduite 
@@ -576,6 +576,7 @@ p &= 6277101735386680763835789423207666416083908700390324961279\\
 a &= -3 \\
 b &= 1679885593
 \end{align*}
+On a du rajouter une option \path{sparsed=True} lors de la création de nos anneaux de polynômes pour permettre a SAGE de travailler avec des polynômes de très haut degré, il renvoyait une erreur overflow sinon. De plus le cas $l=2$ demande de calculer  $\gcd(x^p -x, x^3 - ax -b)$, ce qui sans algorithme efficace demande beaucoup trop de temps. Plutôt que d'essayer d’accélérer ce calcul le choix a été fait de simplement sauter le nombre premier $2$. De plus dans notre algorithme on test si le $l$-ième polynôme de division est irréductible ou non, s'il ne l'est pas on le remplace par l'un de ses facteurs. On utilise la fonction de SAGE \path{factor()} qui renvoie la factorisation de ce polynôme. Or si le degré devient important la factorisation notre polynôme va devenir plus longue que l’exécution complète de l'algorithme. On a uniquement besoin d'un seul facteur, pas de la décomposition entière, on pourrait donc optimiser cette étape.
 ......rajouter resultats des test ......
 \subsubsection{Complexité}
 La complexité de l'algorithme de Schoof est en $O(\log{q}^8)$ opérations élémentaires. La partie conteuse de l'algorithme réside dans les calculs dans l'anneau $R = \frac{\mathbb{F_p}[x,y]}{(f_l(x), y^2 -x^3 -ax -b)}$. Les éléments de R sont de degré $O(l^2)$ 
@@ -587,7 +588,7 @@ Il va être nécessaire d'introduire plus de théorie avant de s'attaquer à l'a
 
 
 \subsubsection{Analyse complexe}
-La théorie des courbes elliptiques est conséquente sur le corps des complexes mais nous allons uniquement donner des définitions et formules utiles sans rentrer dans le détail de preuves et résultats non pertinents pour la compréhension de l'algorithme SEA. On peut légitimement se demander le rapport entre courbe elliptique et analyse complexe mais on va donc donner quelques définitions avant d'expliciter ce lien.
+La théorie des courbes elliptiques est conséquente sur le corps des complexes mais nous allons uniquement donner des définitions et formules utiles, qu'on pourra retrouver ici \cite{complexbook} \cite{csi}, sans rentrer dans le détail de preuves et résultats non pertinents pour la compréhension de l'algorithme SEA. On peut légitimement se demander le rapport entre courbe elliptique et analyse complexe mais on va donc donner quelques définitions avant d'expliciter ce lien.
 
 \begin{defi}
 Une fonction holomorphe est une fonction à valeur complexe, définie et dérivable en tout point d'un sous ensemble ouvert du plan complexe $\mathbb{C}$. Une fonction est dite méromorphe si elle est holomorphe dans tout le plan complexe $\mathbb{C}$, sauf éventuellement sur un ensemble de points isolés dont chacun est un pôle pour la fonction.
@@ -645,25 +646,6 @@ La fonction $\wp$ satisfait l'équation différentielle suivante :
 \end{equation*}
 où les coefficients $A,B$ sont totalement déterminés en analysant les développements limités en $0$ de $\wp, {\wp'}$ et ${\wp'}^2$ et dépendent du réseau $\Gamma$.
 \end{thm}
-On donne les formules suivantes sans démonstrations et plus d'explications, plus de détails peuvent être trouver ici (inserer ref)
-
-\begin{prop}
-On définit dans $\mathbb{Z}\ldbrack p \rdbrack$ les séries:
-\begin{equation*}
-E_2(p)= 1 -24\sum_{n=1}^{\infty}\frac{np^n}{1-p^n}
-\end{equation*}
-\begin{equation*}
-E_4(p) = 1+240\sum_{n=1}^{\infty}\frac{n^3p^n}{1-p^n}
-\end{equation*}
-\begin{equation*}
-E_6(p) = 1-504\sum_{n=1}^{\infty}\frac{n^5p^n}{1-p^n} 
-\end{equation*}
-Et l’égalité : 
-\begin{equation}
-\label{EC-function of series}
-y^2 = x^3 - \frac{E_4(p)}{48}x + \frac{E_6(p)}{864}
-\end{equation}
-\end{prop}
 
 \subsubsection{Isogénie}
 Soit $K$ un corps fini, on va noter dans la suite $E$/$K$ la courbe elliptique définie sur ce corps et on travaillera uniquement avec des courbes sous forme réduite.
@@ -725,7 +707,7 @@ On donne un exemple de polynôme modulaire, pour $ l =5$ on a :
  -& 770845966336000000xy \\
  +& 1855000000000(x+y) 
 \end{align*}
-On peut noter que les coefficients augmentent très rapidement. Un algorithme efficace pour calculer ces polynômes dans le cas où $l$ est premier est le calcul via volcan d'isogénie (ref : https://arxiv.org/abs/1001.0402 a inserer).
+On peut noter que les coefficients augmentent très rapidement. Un algorithme efficace pour calculer ces polynômes dans le cas où $l$ est premier est le calcul via volcan d'isogénie \cite{volcan}
 
 \subsubsection{Algorithme SEA}
 Avec ce bagage théorique en plus on va pouvoir commencer à détailler l'algorithme SEA (schoof-Elkies-Atkins), on suppose dans la suite que $E$ est une courbe elliptique sur $\mathbb{F}_p$, $p$ premier sous sa forme réduite $y^2 = x^3 + ax +b$. On rappelle que le polynôme caractéristique de l’endomorphisme de Frobenius $\phi$ sur $\mathbb{F}_l$ est $\chi_l(x) = x^2 - t_lx +p_l$ où $t_l$ est la trace du Frobenius modulo $l$, et $p_l$ la caractéristique du corps sur lequel on définit $E$ réduite modulo $l$. On va se demander si $\chi_l$ est irréductible sur $\mathbb{F}_l$. Or ce polynome a une racine dans $\mathbb{F}_l$ si et seulement si sont déterminant $\Delta_{\chi} = t_l^2 - 4p_l$ est un carré dans $\mathbb{F}_l$, ce qui nous amène à la classification suivante :
@@ -830,7 +812,7 @@ x^p = x - \frac{\psi_{\lambda-1}\psi_{\lambda+1}}{\psi_{\lambda}^2}
 \end{equation*}
 On pose $h(x) = \psi_{\lambda}^2(x^p-x) + \psi_{\lambda-1}\psi_{\lambda+1}$, qu'on réduit modulo $g_l$. Il faut trouver une valeur propre $\lambda$ tel que $\gcd(h,g_l) \ne 1$. Une fois que l'on a trouvé une valeur qui correspond on peut calculer $t_l = \lambda + \frac{p_l}{\lambda} \pmod l$
 
-Il faut maintenant montrer comment construire ce polynôme $g_l$. L'idée va être de trouver dans un premier temps le premier coefficient de $g_l$ (qui est moins la somme des racines de $g_l$). On sait que le degré du polynôme $\gcd(\Phi(x,j),x^p-x)$ est plus grand que $0$ comme $l$ est un premier de Elkies et que ses racines sont dans $\mathbb{F}_p$. Notons par exemple $\tilde{j}$ l'une de ses racines. On sait donc qu'il existe une isogénie entre $E$ et la courbe elliptique de $j$-invariant $\tilde{j}$ qu'on note $\tilde{E}:y^2=x^3+\tilde{a_4}x+\tilde{a_6}$. Le noyau de cette isogénie est l'un des $l+1$ sous groupe cyclique de $E[l]$. On va utiliser cette isogénie pour retrouver le premier coefficient de $g_l$. On ne détaillera pas les calculs permettant d'arriver a ce résultat, ils s'appuient fortement sur l'analyse complexe évoqué plus haut. Plus d'informations peuvent être trouver ici (inserer ref).
+Il faut maintenant montrer comment construire ce polynôme $g_l$. L'idée va être de trouver dans un premier temps le premier coefficient de $g_l$ (qui est moins la somme des racines de $g_l$). On sait que le degré du polynôme $\gcd(\Phi(x,j),x^p-x)$ est plus grand que $0$ comme $l$ est un premier de Elkies et que ses racines sont dans $\mathbb{F}_p$. Notons par exemple $\tilde{j}$ l'une de ses racines. On sait donc qu'il existe une isogénie entre $E$ et la courbe elliptique de $j$-invariant $\tilde{j}$ qu'on note $\tilde{E}:y^2=x^3+\tilde{a_4}x+\tilde{a_6}$. Le noyau de cette isogénie est l'un des $l+1$ sous groupe cyclique de $E[l]$. On va utiliser cette isogénie pour retrouver le premier coefficient de $g_l$. On ne détaillera pas les calculs permettant d'arriver a ce résultat, ils s'appuient fortement sur l'analyse complexe évoqué plus haut. Plus d'informations peuvent être trouver ici \cite{sea}.
 
 
 \paragraph*{Premier d'Atkin}
@@ -882,6 +864,8 @@ On donne une description en pseudo-code de l'algorithme SEA.
 \paragraph*{Complexité}
 L'algorithme SEA a une complexité heuristique de $O(\log^4 p)$ en temps, et $O(\log^2 p)$ en espace.
 
-
+\newpage
+\bibliographystyle{plain}
+\bibliography{biblio}
 
 \end{document}
