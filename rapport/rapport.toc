@@ -20,4 +20,4 @@
 \contentsline {subsubsection}{\numberline {3.4.2}Isog\IeC {\'e}nie}{18}
 \contentsline {subsubsection}{\numberline {3.4.3}Polyn\IeC {\^o}me modulaire}{18}
 \contentsline {subsubsection}{\numberline {3.4.4}Algorithme SEA}{19}
-\contentsline {subsubsection}{\numberline {3.4.5}algorithme pseudo-code}{23}
+\contentsline {subsubsection}{\numberline {3.4.5}Algorithme pseudo-code}{23}

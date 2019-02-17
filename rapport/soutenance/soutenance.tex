@@ -47,6 +47,15 @@
   \usetikzlibrary{decorations.text}
   \usetikzlibrary{decorations.markings}
   \usetikzlibrary{decorations.footprints}
+  
+  
+  
+ 
+\DeclareMathOperator{\e}{e}
+\def\Tr{\mathop{\rm{Tr}}\nolimits}
+\def\bwp{{\bar \wp}}
+\def\bwp{{\bar {\wp'}}}
+
 \begin{document}
 \title{Compter les points sur une courbe elliptique}   
 \author{Jeremie Coulaud} 
@@ -209,6 +218,92 @@ La question est donc pour quel valeur $0 \leq \tau \leq \frac{l-1}{2}$ l'équati
 \end{frame}
 
 \section{Algorithme SEA}
+\subsection{Analyse Complexe}
+\begin{frame}
+\frametitle{Analyse Complexe}
+\begin{definition}
+Tout sous groupe discret de $\mathbb{C}$ non nul et non isomorphe à $\mathbb{Z}$ peut s'écrire sous la forme $\mathbb{Z}\omega_1 + \mathbb{Z}\omega_2$, avec $\omega_1, \omega \in \mathbb{C}$, $Im(\frac{w_2}{w_1}) \ne 0, \tau = \frac{\omega_2}{\omega_1}$. C'est un réseau de $\mathbb{C}$ de rang $2$, qu'on note :
+$$\Gamma = \mathbb{Z} + \tau \mathbb{Z}$$
+\end{definition}
+
+\begin{definition}
+On appelle tore le quotient $T=\mathbb{C} / \Gamma$
+\end{definition}
+\end{frame}
+
+\begin{frame}
+Soit $\Gamma$ un réseau de $\mathbb{C}$, on a la $\wp$-fonction de Weirstrass :
+$$ \wp(z) = \frac{1}{z^2} + \sum_{w \in \Gamma, \omega \ne 0} \frac{1}{(z-\omega)^2} - \frac{1}{\omega^2} $$
+et sa dérivée : 
+$$ {\wp'} = -2 \sum_{\omega \in \Gamma} \frac{1}{(z-\omega)^3} $$
+\begin{theorem}
+Soit $E$/$\mathbb{C}$ une courbe elliptique sous forme réduite sur le corps des complexes. Il existe alors un réseau $\Gamma$ tel que l'application suivante soit une bijection:
+\newline
+$\begin{array}{cccc}
+& \mathbb{C}\text{/ }\Gamma & \to & E \\
+& z + \Gamma & \mapsto & \left\lbrace
+\begin{array}{cc}
+ (\wp(z), \frac{{\wp'}(z)}{2})  & z \notin \Gamma \\
+ O & z \in \Gamma
+\end{array}\right.\\
+\end{array}$
+\end{theorem}
+La fonction $\wp$ satisfait l'équation différentielle suivante : 
+\begin{equation*}
+{\wp'}(z)^2 = 4\wp^3(z) + A \wp + B
+\end{equation*}
+\end{frame}
+
+
+\subsection{Isogénie}
+\begin{frame}
+\frametitle{Isogénie}
+\begin{definition}
+Soit $E_1$/$K$ et $E_2$/$K$ deux courbes elliptiques. Si $E_1$ et $E_2$ ont le même $j$-invariant alors elles sont isomorphiques sur $\bar{K}$. 
+\end{definition}
+
+\begin{definition}
+Soit $T_1=\mathbb{C}$/ $\Gamma_1$ et $T_2 = \mathbb{C}$/ $\Gamma_2$ deux tores. Un morphisme de $E_1$ vers $E_2$ est une application holomorphe $\mu$ de $T_1$ vers $T_2$ qui soit un morphisme de groupe. Si ce morphisme est non constant alors on dit que c'est une isogénie.
+\end{definition}
+
+Deux courbes elliptiques $E_1$/$K$ et $E_2$/$K$ sont isogènes s'il existe une isogénie $\psi : E_1 \mapsto E_2$. Le degré de l’isogénie est le degré du noyau de $\psi$.
+
+
+\end{frame}
+\subsection{Polynômes modulaires}
+\begin{frame}
+\frametitle{Polynômes modulaires}
+Le $n$-ème polynome modulaire est noté $\Phi_n(X,Y)$ et il est :
+\begin{itemize}
+\item symétrique 
+\item de degré $n+1$ en chaque variable
+\item de coefficients de termes de plus haut degré $1$
+\item de coefficients dans $\mathbb{Z}$
+\end{itemize}
+\begin{definition}
+Soit $E_1$/$\mathbb{C}$ et $E_2$/$\mathbb{C}$ deux courbes elliptiques de $j$-invariant respectivement $j_{E_1}$ et $j_{E_2}$. Le $n$-ième polynôme modulaire vérifie $\Phi_n(j_{E_1},j_{E_2}) = 0$ si et seulement si il existe une isogénie entre $E_1$ et $E_2$ dont le noyau est cyclique de degré $n$.
+\end{definition}
+
+
+\end{frame}
+
+\begin{frame}
+\begin{example}
+Pour $n=3$ on a le polynôme : 
+\begin{align*}
+\Phi_3(x,y) &= x^4 -x^3y^3 + y^4 \\
+ +& 2232(x^3y^2 + x^2y^3) \\
+ -& 1069956(x^3y^2 + x^2y^3 \\
+ +& 36864000(x^3 + y^3) \\
+ +& 2587918086x^2y^2 \\
+ +& 8900222976000(x^2y + xy^2) \\
+ +& 452984832000000(x^2 + y^2) \\
+ -& 770845966336000000xy \\
+ +& 1855000000000(x+y) 
+\end{align*}
+\end{example}
+\end{frame}
+
 \begin{frame}
 \frametitle{Algorithme SEA}
 Amélioration de l'algorithme de Schoof par Elkies et Atkins.
@@ -260,19 +355,14 @@ Amélioration de l'algorithme de Schoof par Elkies et Atkins.
 \end{columns}
 \end{frame}
 
-
-\subsection{Analyse Complexe}
 \begin{frame}
-\frametitle{Analyse Complexe}
-\end{frame}
-
-\subsection{Isogénie}
-\begin{frame}
-\frametitle{Isogénie}
-\end{frame}
-\subsection{Polynômes modulaires}
-\begin{frame}
-\frametitle{Polynômes modulaires}
+Soit $l$ un petit premier, $\phi$ l'endomorphisme de Frobenius de polynôme caractéristique :
+$$\chi_l(x) = x^2 - t_lx +p_l, \quad \text{avec } t \equiv t_l \pmod l , \, \,p \equiv p_l \pmod l$$ 
+\newline 
+$$\Delta_{\chi_l} = t_l^2 -4p_l $$
+\begin{definition}
+Si $\Delta_{\chi_l}$ est un carré non nul dans $\mathbb{F}_l$, alors $l$ est un premier de Elkies, sinon c'est un premier de Atkins.
+\end{definition}
 \end{frame}
 \end{document}
 

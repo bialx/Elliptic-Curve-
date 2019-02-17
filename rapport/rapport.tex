@@ -597,7 +597,7 @@ Une fonction holomorphe est une fonction à valeur complexe, définie et dériva
 \begin{prop}
 Soit $n \in \mathbb{N}$, $r \in \mathbb{R}$, $(w_i)_{1 \leq i \leq r}$ une partie libre du $\mathbb{R}$-espace vectoriel $\mathbb{R}^n$. Tout sous groupe discret non nul $\Gamma$ de $\mathbb{R}^n$ peut s'écrire sous la forme :
 \begin{equation*}
-\Gamma = \mathbb{Z}_{\omega_1} + \ldots + \mathbb{Z}_{\omega_r}
+\Gamma = \mathbb{Z} \omega_1 + \ldots + \mathbb{Z} \omega_r
 \end{equation*}
 Un tel groupe $\Gamma$ est un réseau de $\mathbb{R}^n$ de rang $r$.
 \end{prop}
@@ -618,7 +618,7 @@ On a une convergence absolue donc uniforme sur tout compact disjoint de $\Gamma$
 \begin{equation*}
 {\wp'} = -2 \sum_{\omega \in \Gamma} \frac{1}{(z-\omega)^3}
 \end{equation*}
-On peut montrer qu'avec $\Gamma = \omega_1 \mathbb{Z} + \omega_2 \mathbb{Z}$ cette fonction $\rho$ est double périodique de période $\omega_1, \omega_2$.
+On peut montrer qu'avec $\Gamma = \omega_1 \mathbb{Z} + \omega_2 \mathbb{Z}$ cette fonction $\rho$ est doublement périodique de période $\omega_1, \omega_2$.
 \end{defi}
 
 Les théorèmes suivants permettent de faire le lien entre ces fonctions d'analyse complexe et les courbes elliptiques.
@@ -642,7 +642,7 @@ $\begin{array}{cccc}
 \begin{thm}
 La fonction $\wp$ satisfait l'équation différentielle suivante : 
 \begin{equation*}
-{\wp'}(z)^2 = 4\rho^3(z) + A \wp + B
+{\wp'}(z)^2 = 4\wp^3(z) + A \wp + B
 \end{equation*}
 où les coefficients $A,B$ sont totalement déterminés en analysant les développements limités en $0$ de $\wp, {\wp'}$ et ${\wp'}^2$ et dépendent du réseau $\Gamma$.
 \end{thm}
@@ -687,7 +687,7 @@ Soit $n$ un nombre premier, le $n$-ième polynôme modulaire est :
 \Phi_n(x,j) = \prod_{\alpha \in S_n^*} (x - j \circ \alpha)
 \end{equation*}
 \end{defi}
-On peut noter que ce polynôme est symétrique et de degré $n+1$ en chaque variable. De plus les coefficient de $x^{n+1}$ et $y^{n+1}$ sont $1$.
+On peut noter que ce polynôme est à coefficients dans $\mathbb{Z}$, symétrique et de degré $n+1$ en chaque variable. De plus les coefficient de $x^{n+1}$ et $y^{n+1}$ sont $1$.
 Ce qui nous permet de faire le lien entre isogénie et polynôme modulaire avec la définition suivante.
 \begin{defi}
 Soit $E_1$/$\mathbb{C}$ et $E_2$/$\mathbb{C}$ deux courbes elliptiques de $j$-invariant respectivement $j_{E_1}$ et $j_{E_2}$. Le $l$-ième polynôme modulaire vérifie $\Phi_l(j_{E_1},j_{E_2}) = 0$ si et seulement si il existe une isogénie entre $E_1$ et $E_2$ dont le noyau est cyclique de degré $l$.
@@ -695,7 +695,7 @@ Soit $E_1$/$\mathbb{C}$ et $E_2$/$\mathbb{C}$ deux courbes elliptiques de $j$-in
 
 Ce théorème nous donne une méthode pour trouver toutes les isogénies à une courbe elliptique $E$/$\mathbb{F}_p$. Soit $l$ un nombre premier différent de $p$, on va chercher les racines de $\Phi_l(j_E, y) \in \mathbb{F}_p[y]$ dans $\mathbb{F}_p$. Quand on trouve une racine on trouve un j-invariant d'une courbe $E_2$ isogène avec $E$. 
 
-On donne un exemple de polynôme modulaire, pour $ l =5$ on a :
+On donne un exemple de polynôme modulaire, pour $ l =3$ on a :
 \begin{align*}
 \Phi_3(x,y) &= x^4 -x^3y^3 + y^4 \\
  +& 2232(x^3y^2 + x^2y^3) \\
@@ -710,7 +710,7 @@ On donne un exemple de polynôme modulaire, pour $ l =5$ on a :
 On peut noter que les coefficients augmentent très rapidement. Un algorithme efficace pour calculer ces polynômes dans le cas où $l$ est premier est le calcul via volcan d'isogénie \cite{volcan}
 
 \subsubsection{Algorithme SEA}
-Avec ce bagage théorique en plus on va pouvoir commencer à détailler l'algorithme SEA (schoof-Elkies-Atkins), on suppose dans la suite que $E$ est une courbe elliptique sur $\mathbb{F}_p$, $p$ premier sous sa forme réduite $y^2 = x^3 + ax +b$. On rappelle que le polynôme caractéristique de l’endomorphisme de Frobenius $\phi$ sur $\mathbb{F}_l$ est $\chi_l(x) = x^2 - t_lx +p_l$ où $t_l$ est la trace du Frobenius modulo $l$, et $p_l$ la caractéristique du corps sur lequel on définit $E$ réduite modulo $l$. On va se demander si $\chi_l$ est irréductible sur $\mathbb{F}_l$. Or ce polynome a une racine dans $\mathbb{F}_l$ si et seulement si sont déterminant $\Delta_{\chi} = t_l^2 - 4p_l$ est un carré dans $\mathbb{F}_l$, ce qui nous amène à la classification suivante :
+Avec ce bagage théorique en plus on va pouvoir commencer à détailler l'algorithme SEA (schoof-Elkies-Atkins), on suppose dans la suite que $E$ est une courbe elliptique sous sa forme réduite $y^2 = x^3 + ax +b$ sur $\mathbb{F}_p$ avec $p$ premier . On rappelle que le polynôme caractéristique de l’endomorphisme de Frobenius $\phi$ sur $\mathbb{F}_l$ est $\chi_l(x) = x^2 - t_lx +p_l$ où $t_l$ est la trace du Frobenius modulo $l$, et $p_l$ la caractéristique du corps sur lequel on définit $E$ réduite modulo $l$. On va se demander si $\chi_l$ est irréductible sur $\mathbb{F}_l$. Or ce polynome a une racine dans $\mathbb{F}_l$ si et seulement si sont déterminant $\Delta_{\chi} = t_l^2 - 4p_l$ est un carré dans $\mathbb{F}_l$, ce qui nous amène à la classification suivante :
 
 \begin{defi}
 \label{Atkins's prime}
@@ -827,7 +827,7 @@ On recherche donc la plus petite extension $\mathbb{F}^{p^i}$ de $\mathbb{F}_p$ 
 On ne peut pas simplement utiliser les restes chinois comme pour l'algorithme de Schoof. En effet la trace que l'on trouve en utilisant les premiers d'Atkins est un ensemble de traces possibles, on n'a pas unicité. Plusieurs possibilités sont possible, la plus simple mais peut etre moins efficace est de considérer plus d'entier $l$ pour calculer notre trace modulo $l$. L'autre idée est d'utiliser un algorithme baby-step/giant-step qui sera plus efficace.
 
 \newpage
-\subsubsection{algorithme pseudo-code}
+\subsubsection{Algorithme pseudo-code}
 On donne une description en pseudo-code de l'algorithme SEA.
 \begin{algorithm}
 \caption{Schoof-Elkies-Atkins}
