@@ -363,7 +363,33 @@ $$\Delta_{\chi_l} = t_l^2 -4p_l $$
 \begin{definition}
 Si $\Delta_{\chi_l}$ est un carré non nul dans $\mathbb{F}_l$, alors $l$ est un premier de Elkies, sinon c'est un premier de Atkins.
 \end{definition}
-Étude de la factorisation de $\Phi_l$
+Étude de la factorisation de $\Phi_l$ pour savoir si $\Delta_{\chi_l}$ est un carré. 
+\newline
+$\Phi_l(x,j) = h_1(x)\ldots h_s(x)$:
+\begin{itemize}
+\item $(1,1,r,\ldots,r)$, $\Delta_{\chi_l}$ est un carré, $\phi_{|E[l]}$ est diagonalisable, $l$ est un premier de Elkies
+\item Calcul $\gcd(\Phi_l(x,j), x^p - x)$
+\end{itemize}
+\end{frame}
+\subsection{Premier d'Elkies}
+\begin{frame}
+\frametitle{Premier d'Elkies}
+\textbf{Premier d'Elkies}
+\newline
+$\phi_p$ est diagonalisable de valeurs propres $\lambda, \mu$. 
+$$\chi_l(x) = x^2 - t_lx +p_l =(x-\lambda)(x-\mu)$$
+Donc :
+\begin{align*}
+t_l &\equiv \lambda + \mu \pmod l
+\end{align*}
+\begin{itemize}
+\item $\exists P_1 \in E[l]$ tel que $\phi_l(P_1) = \lambda P_1$
+\item $C_1$ est le groupe cyclique d'ordre $l$ engendré par $P$
+\item $C_1$ est stable par le Frobenius 
+\end{itemize}
+On peut construire le polynome de degré $l$ :
+$$ g_l(x) = \prod_{\pm P \in C_1^*} (x - x_p), \quad \text{où } P = (x_p, y_p) $$
 \end{frame}
 \end{document}
+
 

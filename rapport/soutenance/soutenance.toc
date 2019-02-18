@@ -11,3 +11,4 @@
 \beamer@subsectionintoc {4}{1}{Analyse Complexe}{13}{0}{4}
 \beamer@subsectionintoc {4}{2}{Isog\IeC {\'e}nie}{15}{0}{4}
 \beamer@subsectionintoc {4}{3}{Polyn\IeC {\^o}mes modulaires}{16}{0}{4}
+\beamer@subsectionintoc {4}{4}{Premier d'Elkies}{20}{0}{4}

@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015/Debian) (preloaded format=pdflatex 2018.11.18)  18 FEB 2019 15:28
+This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015/Debian) (preloaded format=pdflatex 2018.11.18)  18 FEB 2019 19:17
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1837,7 +1837,7 @@ LaTeX Font Info:    Font shape `T1/lmss/m/it' in size <6> not available
 ] [4
 
 ]
-<../pictures/brute_force_cputime.png, id=103, 565.8741pt x 419.8887pt>
+<../pictures/brute_force_cputime.png, id=109, 565.8741pt x 419.8887pt>
 File: ../pictures/brute_force_cputime.png Graphic file (type png)
 
 <use ../pictures/brute_force_cputime.png>
@@ -1879,7 +1879,7 @@ LaTeX Font Info:    Font shape `T1/lmss/m/it' in size <7> not available
 (Font)              Font shape `T1/lmss/m/sl' tried instead on input line 205.
 [11
 
-] <../pictures/schoof_cputime.png, id=149, 566.5968pt x 421.3341pt>
+] <../pictures/schoof_cputime.png, id=155, 566.5968pt x 421.3341pt>
 File: ../pictures/schoof_cputime.png Graphic file (type png)
 
 <use ../pictures/schoof_cputime.png>
@@ -1891,7 +1891,7 @@ Overfull \hbox (84.37093pt too wide) in paragraph at lines 218--218
 [][]  
  []
 
-<../pictures/schoof_vs_bruteforce.png, id=150, 565.8741pt x 419.8887pt>
+<../pictures/schoof_vs_bruteforce.png, id=156, 565.8741pt x 419.8887pt>
 File: ../pictures/schoof_vs_bruteforce.png Graphic file (type png)
 
 <use ../pictures/schoof_vs_bruteforce.png>
@@ -1930,6 +1930,8 @@ Overfull \hbox (13.1705pt too wide) in paragraph at lines 356--356
 
 ] [19
 
+] [20
+
 ]
 \tf@nav=\write6
 \openout6 = `soutenance.nav'.
@@ -1940,20 +1942,20 @@ Overfull \hbox (13.1705pt too wide) in paragraph at lines 356--356
 \tf@snm=\write8
 \openout8 = `soutenance.snm'.
 
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 368.
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 368.
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 393.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 393.
  (./soutenance.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 368.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 368.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 393.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 393.
 Package rerunfilecheck Info: File `soutenance.out' has not changed.
-(rerunfilecheck)             Checksum: F29BD83227744FD8300AA66BE8139364;676.
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 368.
+(rerunfilecheck)             Checksum: A21066169158EF86D0496ABABB443FE6;743.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 393.
  ) 
 Here is how much of TeX's memory you used:
- 31871 strings out of 493029
- 757909 string characters out of 6136233
+ 31879 strings out of 493029
+ 757992 string characters out of 6136233
  945381 words of memory out of 5000000
- 34675 multiletter control sequences out of 15000+600000
+ 34680 multiletter control sequences out of 15000+600000
  89919 words of font info for 86 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  66i,18n,83p,728b,2199s stack positions out of 5000i,500n,10000p,200000b,80000s
@@ -1970,10 +1972,10 @@ ist/fonts/type1/public/mathabx-type1/matha6.pfb></usr/share/texlive/texmf-dist/
 fonts/type1/public/mathabx-type1/matha8.pfb></usr/share/texlive/texmf-dist/font
 s/type1/public/mathabx-type1/mathx10.pfb></usr/share/texlive/texmf-dist/fonts/t
 ype1/public/amsfonts/symbols/msbm10.pfb>
-Output written on soutenance.pdf (19 pages, 313013 bytes).
+Output written on soutenance.pdf (20 pages, 320526 bytes).
 PDF statistics:
- 258 PDF objects out of 1000 (max. 8388607)
- 208 compressed objects within 3 object streams
- 52 named destinations out of 1000 (max. 500000)
- 146 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 269 PDF objects out of 1000 (max. 8388607)
+ 218 compressed objects within 3 object streams
+ 55 named destinations out of 1000 (max. 500000)
+ 154 words of extra memory for PDF output out of 10000 (max. 10000000)
 
