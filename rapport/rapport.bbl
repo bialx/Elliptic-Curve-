@@ -1,16 +1,18 @@
 \begin{thebibliography}{1}
 
 \bibitem{csi}
-
-
-\bibitem{complexbook}
-{\em Modular Functions and Dirichlet Series in Number Theory}.
-\newblock 1976.
+Jean-Marc Couveignes.
+\newblock Courbes elliptiques.
 
 \bibitem{sea}
 Ben Galin.
 \newblock {\em Schoof-Elkies-Atkins Algorithm}.
 \newblock PhD thesis, Standford University, 2007.
+
+\bibitem{complexbook}
+Tom M.Apostol.
+\newblock {\em Modular Functions and Dirichlet Series in Number Theory}.
+\newblock 1976.
 
 \bibitem{volcan}
 Andrew V.~Sutherland Reinier~Broker, Kristin~Lauter.

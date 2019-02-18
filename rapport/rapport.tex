@@ -99,14 +99,16 @@
 \begin{sffamily}
 \begin{center}
 \textsc{\LARGE Université de Bordeaux} \\[2.0cm]
-\textsc{\large Rapport TER} \\[1.5cm]
+
 \vspace{3cm}
   % Title
     \HRule \\[0.4cm]
     { \huge \bfseries Compter les points sur une courbe elliptique\\[0.4cm] }
  \HRule \\[2cm]
  
- \vspace{7cm}
+ \textsc{\large Rapport TER} \\[1.5cm]
+ \textsc{\large Master Cryptologie et sécurité informatique} \\[1.5cm]
+ \vspace{4cm}
     % Author and supervisor
     \begin{minipage}{0.4\textwidth}
       \begin{flushleft} \large
@@ -115,13 +117,13 @@
     \end{minipage}
     \begin{minipage}{0.4\textwidth}
       \begin{flushright} \large
-        \emph{Tuteur :} M. Jean-Marc \textsc{Couveignes}
+        \emph{Tuteur :} M. Jean-Marc \textsc{Couveignes}\\
       \end{flushright}
     \end{minipage}
 
  \vfill
     % Bottom of the page
-    {\large 18 Février 2019}
+    {\large 2018-2019}
 
 \end{center}
 \end{sffamily}
@@ -131,8 +133,9 @@
 \newpage
 
 \section{Introduction}
-La cryptographie sur courbe elliptique introduite en 1985 a révolutionné la cryptographie à clé publique permettant une alternative efficace aux classique RSA et Diffie Hellman. Les courbes elliptiques sont énormément utilisées pour les signatures (ECDSA), notamment pour le Bitcoin, et supportées dans la majorité des applications TLS, SSH. La sécurité d'un cryptosystème basé sur les courbes elliptiques dépend du nombre de points rationnels de la courbe. Il est donc intéressant de trouver des algorithmes efficaces pour déterminer ce nombre dans le but de construire des courbes elliptiques utilisable en cryptographie.
-Le but de ce rapport est de présenter des algorithmes pour compter les points sur une courbe elliptique et de les implémenter pour tester leur efficacité. Après une brève introduction à la théorie de base des courbes elliptiques on va décrire l'algorithme de Schoof, qui est polynomial mais peu efficace en pratique. Dans la suite on va essayer de comprendre les amélioration faites à cet algorithme par Atkins et Elkies conduisant a un algorithme toujours polynomial mais beaucoup plus efficace.
+La cryptographie sur courbe elliptique introduite en 1985 a révolutionné la cryptographie à clé publique permettant une alternative efficace aux classiques RSA et Diffie Hellman. Les courbes elliptiques sont énormément utilisées pour les signatures (ECDSA), notamment pour le Bitcoin, et supportées dans la majorité des applications TLS, SSH. La sécurité d'un cryptosystème basé sur les courbes elliptiques dépend du nombre de points rationnels de la courbe. Il est donc intéressant de trouver des algorithmes efficaces pour déterminer ce nombre dans le but de construire des courbes elliptiques utilisables en cryptographie.
+\newline
+Le but de ce rapport est de présenter des algorithmes pour compter les points sur une courbe elliptique et de les implémenter pour tester leur efficacité. Après une brève introduction à la théorie de base des courbes elliptiques, on va décrire l'algorithme de Schoof, qui est polynomial mais peu efficace en pratique. Dans la suite on va essayer de comprendre les améliorations faites à cet algorithme par Atkins et Elkies conduisant à un algorithme toujours polynomial mais beaucoup plus efficace.
 \newline
 L'ensemble des codes est disponible sur le github \url{https://github.com/bialx/Elliptic-Curve-} Le langage choisi est SAGE, basé sur Python. Il contient un large éventail de fonctions mathématiques prédéfinies, notamment pour les courbes elliptiques ce qui permet de se concentrer sur les algorithmes et non sur une implémentation d'objets mathématiques.
 \section{Introduction aux courbes elliptiques}
@@ -198,7 +201,7 @@ En posant :
 \end{figure}
 
 
-On dispose de formule d'addition pour deux points sur une courbe elliptique on peut donner un sens à la multiplication scalaire d'un point comme $lP = \underbrace{P + \ldots + P}_{l \text{ fois}}$. On va noter cette multiplication scalaire par :
+On dispose de formules d'addition pour deux points sur une courbe elliptique on peut donner un sens à la multiplication scalaire d'un point comme $lP = \underbrace{P + \ldots + P}_{l \text{ fois}}$. On va noter cette multiplication scalaire par :
 \newline
 
 $\begin{array}{ccccc}
@@ -229,7 +232,7 @@ Soit :
 \begin{equation}
 \#E(\mathbb{F}_p) = 1 + p +\sum_{x \in \mathbb{F}_p}\genfrac(){}{0}{f(x)}{p}
 \end{equation}
-On peut implémenter cette fonction brute force très simplement sous sage en utilisant \path{kronecker(a,p)} qui calcule le symbole de Legendre de $a$ modulo $p$.
+On peut implémenter cette fonction brute force très simplement sous SAGE en utilisant \path{kronecker(a,p)} qui calcule le symbole de Legendre de $a$ modulo $p$.
 \medskip
 \begin{lstlisting}
 def brute_force(p, a,b):
@@ -247,7 +250,7 @@ On va illustrer la non efficacité de cet algorithme lorsque $p$ devient trop gr
 
 On retrouve bien l'aspect linéaire en $p$ évoqué précédemment.
 \subsection{Shanks}
-Il s'agit d'un algorithme Baby steps-giant steps de complexité exponentielle qu'on ne traitera pas ici, mais plus d'informations peuvent être trouvées ici \cite{artSchoof}
+Il s'agit d'un algorithme Baby steps-giant steps de complexité exponentielle qu'on ne traitera pas ici, mais plus d'informations peuvent être trouvées ici \cite{artSchoof}.
 
 \subsection{Schoof}
 Soit $E$ une courbe elliptique définie sur $\mathbb{F}_p$ avec $p$ premier $>3$ sous sa forme réduite 
@@ -279,7 +282,7 @@ où $r_1, r_2$ sont les racines de $x^2 - tx +p$ dans $E(\mathbb{F}_{p^n})$, le 
 \begin{proof}
 Les racines de $x^2 - tx +p$ sont $r_1$ et $r_2$, on a donc $\Tr(\phi_p) = t = r_1 + r_2$. 
 \newline
-On remarque de plus que l'on a $\phi_{p^n} = (\phi_p)^n$. Car $\phi_{p^n} (x,y) = (x^{p^n}, y^{p^n}) = \phi_p  (x^{p^{n-1}}, y^{p^{n-1}})$, et par récurrence on trouve le résultat).
+On remarque de plus que l'on a $\phi_{p^n} = (\phi_p)^n$. Car $\phi_{p^n} (x,y) = (x^{p^n}, y^{p^n}) = \phi_p  (x^{p^{n-1}}, y^{p^{n-1}})$, et par récurrence on trouve le résultat.
 \newline
 Ainsi : 
 \begin{align*}
@@ -322,7 +325,7 @@ f_{n+2}f_n^3 - f_{n-1}f_{n+1}^3F^2 & \mbox{si} & n \text{ est impair} \end{array
 
 \end{array} \right.
 \end{equation} 
-Ces polynômes sont de degrés au plus $\frac{(n^2 -1)}{2}$ si $n$ est pair, ou bien  au plus $\frac{(n^2 -2)}{2}$ si $n$ est impair.
+Ces polynômes sont de degré au plus $\frac{(n^2 -1)}{2}$ si $n$ est pair, ou bien  au plus $\frac{(n^2 -2)}{2}$ si $n$ est impair.
 \end{defi}
 
 
@@ -382,7 +385,7 @@ x_1 &= \frac{\phi_m}{\psi^2_m} =  \frac{x \psi^2_m - \psi_{m-1}\psi_{m+1}}{\psi_
 
 
 \end{proof}
-On remarque que $[m]P = (x_1, y_1)$ avec $x_1$ uniquement fonction de $x$. En effet en utilisant les formules de récurrence, si $m$ est pair $\psi_m^2 = 4y^2f_m$, mais en utilisant l'équation de $E$ on peut remplacer $y^2$ par une fonction de $x$, et les polynômes de division sont en fonction de $x$. De plus comme $m$ est pair les polynômes $\psi_{m+1} et \psi_{m-1}$ sont uniquement en fonction de $x$. Dans le cas où $m$ est impair on a l'inverse, le numérateur fait apparaître un $y^2$ qu'on peut remplacer par une fonction de $x$ comme précédemment et le dénominateur est une fonction de $x$. Quand à $y_1$, son degré en $y$ est au plus $1$. Si $m$ est pair $\psi_m^4$ fait apparaître un $y^4$ qui s'exprime en fonction de $x$, et $\psi_{2m}$ amène un $y$. On montre la même chose quelque soit la parité de $m$ et $2m$.
+On remarque que $[m]P = (x_1, y_1)$ avec $x_1$ uniquement fonction de $x$. En effet, en utilisant les formules de récurrence, si $m$ est pair $\psi_m^2 = 4y^2f_m$, mais en utilisant l'équation de $E$ on peut remplacer $y^2$ par une fonction de $x$, et les polynômes de division sont en fonction de $x$. De plus comme $m$ est pair les polynômes $\psi_{m+1} et \psi_{m-1}$ sont uniquement en fonction de $x$. Dans le cas où $m$ est impair on a l'inverse, le numérateur fait apparaître un $y^2$ qu'on peut remplacer par une fonction de $x$ comme précédemment et le dénominateur est une fonction de $x$. Quand à $y_1$, son degré en $y$ est au plus $1$. Si $m$ est pair $\psi_m^4$ fait apparaître un $y^4$ qui s'exprime en fonction de $x$, et $\psi_{2m}$ amène un $y$. On montre la même chose quelque soit la parité de $m$ et $2m$.
 On peut ainsi exprimer $[m]P$ comme un polynôme en $x,y$. Mais ce n'est pas la seule particularité de ces polynômes utiles pour notre algorithme. En effet $P = (x_1, y_1)$ est un point de $l$-torsion si et seulement si $x_1$ est une racine du $l$-ième polynôme de division $f_l$. De plus $P$ est sur la courbe $E$. Les points de $l$-torsion sont donc solutions du système d'équation : 
 \begin{equation}
 E(x,y) = y^2 - x^3 - ax - b = 0, \quad f_l(x) = 0
@@ -415,15 +418,15 @@ while N <= 4*sqrt(p):
 
 
 \subsubsection{Cas $l=2$}
-Ce cas est particulier et doit être traité à part car on suppose nos premiers impairs. On a $t_2 \equiv 0 \pmod 2$ si et seulement si $E(\mathbb{F}_p)$ a un élément d'ordre $2$, c'est à dire un point de $2$-torsion. Or les points de $2$ torsions sont de la forme $(x, 0)$. En effet, si $2P = 0$, pour $P \in E(\mathbb{F_p})$ alors $P = -P$, et cela correspond aux points de l'axe des abscisses. Ainsi $t_2$ est congru à $0$ si et seulement si $x^3 +ax +b$ à une racine dans $\mathbb{F}_p$. Mais les racines de $\mathbb{F}_p$ sont entièrement déterminées par le polynôme $x^p - x$, nos deux polynômes partageraient alors une racine commune. La façon utilisée ici pour décider si $t_2 \equiv 0 \pmod 2$ est donc de calculer si $\gcd(x^p - x, x^3 +ax +b) \ne 1$ (qu'on calcule par exponentiation rapide).
+Ce cas est particulier et doit être traité à part car on suppose nos premiers impairs. On a $t_2 \equiv 0 \pmod 2$ si et seulement si $E(\mathbb{F}_p)$ a un élément d'ordre $2$, c'est à dire un point de $2$-torsion. Or les points de $2$-torsion sont de la forme $(x, 0)$. En effet, si $2P = 0$, pour $P \in E(\mathbb{F_p})$ alors $P = -P$, et cela correspond aux points de l'axe des abscisses. Ainsi $t_2$ est congru à $0$ si et seulement si $x^3 +ax +b$ à une racine dans $\mathbb{F}_p$. Mais les racines de $\mathbb{F}_p$ sont entièrement déterminées par le polynôme $x^p - x$, nos deux polynômes partageraient alors une racine commune. La façon utilisée ici pour décider si $t_2 \equiv 0 \pmod 2$ est donc de calculer si $\gcd(x^p - x, x^3 +ax +b) \ne 1$ (qu'on calcule par exponentiation rapide).
 
 \subsubsection{Calcul des polynômes de division}
-Il existe dans SAGE une fonction permettant de calculer les polynômes de division, \path{polynomial_polynomial(n)} renvoyant le $n$-ième polynôme de division. Mais comme au cours de l'algorithme on doit souvent utiliser différents polynôme de division et de plus ils sont calculés via des formules de récurrence. Il ne me paraissait pas forcement très judicieux d'utiliser la fonction de sage qui allait de toute façon très certainement à chaque appel devoir recalculer via les formules de récurrence le polynôme souhaité. L'idée étant de stocker tous ces polynômes dans un dictionnaire, une fois la phase de pré calcul faite on peut donc accéder à tous les polynômes de division que l'on souhaite en temps constant au cours de l'exécution de l'algorithme de Schoof. Et en utilisant la fonction de SAGE j'ai tout de même vérifié via une fonction de test que je trouvais bien les même polynômes qu'avec ma fonction.
+Il existe dans SAGE une fonction permettant de calculer les polynômes de division, \path{polynomial_polynomial(n)} renvoyant le $n$-ième polynôme de division. Mais comme au cours de l'algorithme on doit souvent utiliser différents polynômes de division et de plus ils sont calculés via des formules de récurrence. Il ne me paraissait pas forcement très judicieux d'utiliser la fonction de SAGE qui allait de toute façon très certainement à chaque appel devoir recalculer via les formules de récurrence le polynôme souhaité. L'idée étant de stocker tous ces polynômes dans un dictionnaire, une fois la phase de pré calcul faite on peut donc accéder à tous les polynômes de division que l'on souhaite en temps constant au cours de l'exécution de l'algorithme de Schoof. Et en utilisant la fonction de SAGE j'ai tout de même vérifié via une fonction de test que je trouvais bien les même polynômes qu'avec ma fonction.
 
 
 \subsubsection{Calcul de $(x^{p^2}, y^{p^2}) + [p_l](x,y)$}
 
-Comme vu en introduction aux courbes elliptiques la somme de deux points appartenant à la courbe dépend de plusieurs cas. Est-ce que nos points sont distincts ou ont la même coordonnée en $x$. En effet les formules à appliquer seront différentes selon que l'on soit dans un cas ou l'autre. Il est plus probable d'avoir des coordonnées différentes, on va donc travailler dans ce cas là. Si l'algorithme trouve un $t_l$ vérifiant l'équation on est dans le bon cas, s'il n'en trouve aucun, cela veut dire que l'on se trouve dans l'autre cas.
+Comme vu en introduction aux courbes elliptiques la somme de deux points appartenant à la courbe dépend de plusieurs cas. Est-ce que nos points sont distincts ou ont la même coordonnée en $x$? En effet les formules à appliquer seront différentes selon que l'on est dans un cas ou l'autre. Il est plus probable d'avoir des coordonnées différentes, on va donc travailler dans ce cas là. Si l'algorithme trouve un $t_l$ vérifiant l'équation on est dans le bon cas, s'il n'en trouve aucun, cela veut dire que l'on se trouve dans l'autre cas.
 \paragraph*{Cas : $(x^{p^2}, y^{p^2}) \ne \pm [p_l](x,y)$}
 
 On peut utiliser notre formule usuelle d'addition sur courbe elliptique pour calculer $(x_1, y_1) = (x^{p^2}, y^{p^2}) + (x_{\bar{p_l}}, Y_{\bar{p_l}})$ en notant $(x_{\bar{p_l}}, y_{\bar{p_l}}) =  [p_l](x,y)$. 
@@ -506,7 +509,7 @@ On donne une version complète en pseudo-code de l'algorithme de schoof :
 \newpage
 
 \paragraph*{Implémentation}
-Il a fallut commencer par implémenter des fonctions de base sur les courbes elliptiques pour additionner, calculer une multiplication scalaire. Les algorithmes d'additions ne nécessitent pas d'explications, juste une application des formules. Pour la multiplication scalaire on avait deux choix, utiliser les polynômes de division ou de l'exponentiation rapide. La méthode utilisant les polynômes a amené des problème d'implémentation, notamment pour faire les calculs dans les bons anneaux, donc je suis resté avec une version plus simple d'exponentiation. L'idée de cet algorithme est d'utiliser la décomposition binaire de $n$ pour calculer $nP$. Pour récupérer cette décomposition on utilise la fonction \path{digits(base)} qui retourne une liste avec les bits de poids faible à gauche de l'écriture binaire de $n$. On va à chaque itération doubler le point que l'on a, on calcule donc $2(2(\ldots2(P))$. Il est même nécessaire lorsque l'on rencontre un $1$ dans la décomposition binaire de $n$ de faire une addition en plus de doubler. Au final on obtient l'algorithme suivant avec comme entre $n$ et $P$: 
+Il a fallu commencer par implémenter des fonctions de base sur les courbes elliptiques pour additionner, calculer une multiplication scalaire. Les algorithmes d'addition ne nécessitent pas d'explications, juste une application des formules. Pour la multiplication scalaire on avait deux choix, utiliser les polynômes de division ou de l'exponentiation rapide. La méthode utilisant les polynômes a amené des problème d'implémentation, notamment pour faire les calculs dans les bons anneaux, donc je suis resté avec une version plus simple d'exponentiation. L'idée de cet algorithme est d'utiliser la décomposition binaire de $n$ pour calculer $nP$. Pour récupérer cette décomposition on utilise la fonction \path{digits(base)} qui retourne une liste avec les bits de poids faible à gauche de l'écriture binaire de $n$. On va à chaque itération doubler le point que l'on a, on calcule donc $2(2(\ldots2(P))$. Il est quand même nécessaire lorsque l'on rencontre un $1$ dans la décomposition binaire de $n$ de faire une addition en plus de doubler. Au final on obtient l'algorithme suivant avec comme entrée $n$ et $P$: 
 \bigskip
 \begin{lstlisting}
     nbits = n.digits(2)
@@ -521,7 +524,7 @@ Il a fallut commencer par implémenter des fonctions de base sur les courbes ell
 \end{lstlisting}
 \bigskip
 
-Sans donner ici le détail complet de l'algorithme sous SAGE il est intéressant de détailler certains points de l'implémentation. Le premier soucis rencontré fut la construction de l'anneau dans lequel on doit travailler. On crée tout simplement un anneau de polynôme dans le corps $K$ pour commencer :
+Sans donner ici le détail complet de l'algorithme de Schoof sous SAGE il est intéressant de détailler certains points de l'implémentation. Le premier soucis rencontré fut la construction de l'anneau dans lequel on doit travailler. On crée tout simplement un anneau de polynôme dans le corps $K$ pour commencer :
 \bigskip
 \begin{lstlisting}
 R.<x> = PolynomialRing(K)
@@ -554,7 +557,7 @@ W = C.quotient(y**2 - f)
 \end{lstlisting}
 \bigskip
 Les calculs pour obtenir les différents $t_l$ modulo $l$ sont juste une succession de test comme décrit dans l'algorithme en pseudo-code. Il faut juste faire attention à bien faire les calculs dans le bon anneau.
-Une fois que l'on a calculé une liste \path{list_t} contenant tous les $t$ modulo $l$ calculés par l'algorithme on peut utiliser la fonction de sage \path{crt(list_t, list_l)} renvoyant la valeur de $t$ final en utilisant les restes chinois.
+Une fois que l'on a calculé une liste \path{list_t} contenant tous les $t$ modulo $l$ calculés par l'algorithme on peut utiliser la fonction de SAGE \path{crt(list_t, list_l)} renvoyant la valeur de $t$ final en utilisant les restes chinois.
 \subsubsection{Exemple}
 On va travailler avec la courbe $E$ suivante, $E$ : $y^2 =x^3 +2x+1$ sur $\mathbb{F}_{19}$.
 
@@ -601,7 +604,7 @@ Maintenant nous devons calculer pour $\tau$ variant de $0$ à $2$ si $(x_3, y_3)
 \end{figure}
 On peut tirer deux informations intéressantes de ce graphique. D'une part on a confirmation que l'algorithme de Schoof est bien plus efficace que la méthode naïve dès que $p$ devient grand, mais on voit graphiquement que pour $p<2500$ il est plus efficace d'utiliser l'algorithme naïf.
 \newline
-Il est intéressant de se demander l'espace mémoire utilisé lors de l’exécution de l'algorithme de schoof, et vers quel quel $p$ premier on commence à atteindre des limites. Pour cela on va utiliser la plateforme Plafrim pour faire nos calcul sur une machine Intel(R) Xeon(R) Gold 6142 CPU (Skylake), un processeur à $16$ cœur, avec un fréquence de $2,60$ GHz. 
+Il est intéressant de se demander quel est l'espace mémoire utilisé lors de l’exécution de l'algorithme de schoof, et vers quel quel $p$ premier on commence à atteindre des limites. Pour cela on va utiliser la plateforme Plafrim pour faire nos calcul sur une machine Intel(R) Xeon(R) Gold 6142 CPU (Skylake), un processeur à $16$ cœur, avec un fréquence de $2,60$ GHz. 
 \newline
 On a testé notre algorithme de Schoof sur une courbe du standard du NIST pour tester les limites de l'algorithme dans un cas réaliste. La courbe choisi est P-192 de paramètres :
 \begin{align*}
@@ -609,7 +612,7 @@ p &= 6277101735386680763835789423207666416083908700390324961279\\
 a &= -3 \\
 b &= 1679885593
 \end{align*}
-On a du rajouter une option \path{sparsed=True} lors de la création de nos anneaux de polynômes pour permettre a SAGE de travailler avec des polynômes de très haut degré, il renvoyait une erreur overflow sinon. De plus le cas $l=2$ demande de calculer  $\gcd(x^p -x, x^3 - ax -b)$, ce qui sans algorithme efficace demande beaucoup trop de temps. Plutôt que d'essayer d’accélérer ce calcul le choix a été fait de simplement sauter le nombre premier $2$. De plus dans notre algorithme on test si le $l$-ième polynôme de division est irréductible ou non, s'il ne l'est pas on le remplace par l'un de ses facteurs. On utilise la fonction de SAGE \path{factor()} qui renvoie la factorisation de ce polynôme. Or si le degré devient important la factorisation notre polynôme va devenir plus longue que l’exécution complète de l'algorithme. On a uniquement besoin d'un seul facteur, pas de la décomposition entière, on pourrait donc optimiser cette étape.
+On a du rajouter une option \path{sparsed=True} lors de la création de nos anneaux de polynômes pour permettre a SAGE de travailler avec des polynômes de très haut degré car sinon il renvoyait une erreur de type overflow. De plus le cas $l=2$ demande de calculer  $\gcd(x^p -x, x^3 - ax -b)$, ce qui sans algorithme efficace demande beaucoup trop de temps. Plutôt que d'essayer d’accélérer ce calcul le choix a été fait de simplement sauter le nombre premier $2$. De plus dans notre algorithme on teste si le $l$-ième polynôme de division est irréductible ou non, s'il ne l'est pas on le remplace par l'un de ses facteurs. On utilise la fonction de SAGE \path{factor()} qui renvoie la factorisation de ce polynôme. Or si le degré devient important la factorisation de notre polynôme va devenir plus longue que l’exécution complète de l'algorithme. On a uniquement besoin d'un seul facteur, pas de la décomposition entière, on pourrait donc optimiser cette étape.
 \newline
 L'algorithme a tourné sur cette courbe pendant environ $25$ heures. L'ensemble de premiers $l$ considéré est : 
 \medskip
@@ -618,11 +621,11 @@ L'algorithme a tourné sur cette courbe pendant environ $25$ heures. L'ensemble 
 73, 83, 97, 103, 109, 127, 137, 149, 157])
 \end{lstlisting}
 \medskip
-Sans le vouloir une erreur s'est glissé dans le code quand le cas $l=2$ a voulu etre écarté. Une fausse manipulation lors d'un copier coller pour passer au nombre premier suivant a eu lieu. En fait on appel deux fois la fonction \path{next_prime()}, et donc comme on le voit dans la liste, un nombre premier sur deux est sauté, ce qui fait qu'on se retrouve avec un $l$ maximum de $157$ au lieu de $79$ en théorie. La phase de pré-calcul a du calculer des polynômes de division jusqu'au $157$. Actuellement l'algorithme a calculé les traces modulo $l$ jusqu’à $l=73$. En terme de mémoire, cela a pour le moment demandé $24$Go. Il faut nuancer ces résultats par le fait que l'algorithme fait des calculs inutiles comme évoqué précédemment et travail sur de mauvais paramètres. 
+Il faut noter que quand le cas $l=2$ a voulu être écarté une fausse manipulation lors d'un copier coller pour passer au nombre premier suivant a eu lieu. En fait on appelle deux fois la fonction \path{next_prime()}, et donc comme on le voit dans la liste, un nombre premier sur deux est sauté, ce qui fait qu'on se retrouve avec un $l$ maximum de $157$ au lieu de $79$ en théorie. La phase de pré-calcul a du calculer des polynômes de division jusqu'au $157$ ième. Au bout de $25$ heures l'algorithme a calculé les traces modulo $l$ jusqu’à $l=73$. En terme de mémoire, cela a pour le moment demandé $24$Go. Il faut nuancer ces résultats par le fait que l'algorithme fait des calculs inutiles comme évoqué précédemment et travaille sur de mauvais paramètres. 
 \subsubsection{Complexité}
-La complexité de l'algorithme de Schoof est en $O(\log{q}^8)$ opérations élémentaires. La partie conteuse de l'algorithme réside dans les calculs dans l'anneau $R = \frac{\mathbb{F_p}[x,y]}{(f_l(x), y^2 -x^3 -ax -b)}$. Les éléments de R sont de degré $O(l^2)$ 
+La complexité de l'algorithme de Schoof est en $O(\log{q}^8)$ opérations élémentaires. La partie coûteuse de l'algorithme réside dans les calculs dans l'anneau $R = \frac{\mathbb{F}_p[x,y]}{(f_l(x), y^2 -x^3 -ax -b)}$. Les éléments de R sont de degré $O(l^2)$ 
 \newline
- L'algorithme est plus efficace qu'une version naïve quand la taille de $p$ augmente mais reste néanmoins limitée pour $p$ trop grand. En effet le degré des polynômes de division en $O(l^2)$ empêche une performance optimale pour des tailles de $p$ trop importante. Les polynômes de division deviennent rapidement très grands, ce qui pose un problème de mémoire. Une amélioration de cet algorithme a été proposée par Elkies-Atkin pour produire un algorithme plus performant, le SEA. 
+ L'algorithme est plus efficace qu'une version naïve quand la taille de $p$ augmente mais reste néanmoins limitée pour $p$ trop grand. En effet le degré des polynômes de division en $O(l^2)$ empêche une performance optimale pour des tailles de $p$ trop importante. Les polynômes de division deviennent rapidement très grands, ce qui pose aussi un problème de mémoire. Une amélioration de cet algorithme a été proposée par Elkies-Atkin pour produire un algorithme plus performant, le SEA. 
  
 \subsection{Algorithme SEA}
 Il va être nécessaire d'introduire plus de théorie avant de s'attaquer à l'algorithme en lui même. L'idée finale est d'utiliser un polynôme de degré plus petit que les polynômes de division utilisés dans l'algorithme de Schoof, les polynômes modulaires. De plus pour comprendre certaines partie de l'algorithme SEA il va être nécessaire d'introduire un peu de théorie d'analyse complexe.
@@ -751,7 +754,7 @@ On donne un exemple de polynôme modulaire, pour $ l =3$ on a :
 On peut noter que les coefficients augmentent très rapidement. Un algorithme efficace pour calculer ces polynômes dans le cas où $l$ est premier est le calcul via volcan d'isogénie \cite{volcan}
 
 \subsubsection{Algorithme SEA}
-Avec ce bagage théorique en plus on va pouvoir commencer à détailler l'algorithme SEA (schoof-Elkies-Atkins), on suppose dans la suite que $E$ est une courbe elliptique sous sa forme réduite $y^2 = x^3 + ax +b$ sur $\mathbb{F}_p$ avec $p$ premier . On rappelle que le polynôme caractéristique de l’endomorphisme de Frobenius $\phi$ sur $\mathbb{F}_l$ est $\chi_l(x) = x^2 - t_lx +p_l$ où $t_l$ est la trace du Frobenius modulo $l$, et $p_l$ la caractéristique du corps sur lequel on définit $E$ réduite modulo $l$. On va se demander si $\chi_l$ est irréductible sur $\mathbb{F}_l$. Or ce polynome a une racine dans $\mathbb{F}_l$ si et seulement si sont déterminant $\Delta_{\chi} = t_l^2 - 4p_l$ est un carré dans $\mathbb{F}_l$, ce qui nous amène à la classification suivante :
+Avec ce bagage théorique en plus on va pouvoir commencer à détailler l'algorithme SEA (schoof-Elkies-Atkins), on suppose dans la suite que $E$ est une courbe elliptique sous sa forme réduite $y^2 = x^3 + ax +b$ sur $\mathbb{F}_p$ avec $p$ premier . On rappelle que le polynôme caractéristique de l’endomorphisme de Frobenius $\phi$ sur $\mathbb{F}_l$ est $\chi_l(x) = x^2 - t_lx +p_l$ où $t_l$ est la trace du Frobenius modulo $l$, et $p_l$ la caractéristique du corps sur lequel on définit $E$ réduite modulo $l$. On va se demander si $\chi_l$ est irréductible sur $\mathbb{F}_l$. Or ce  a une racine dans $\mathbb{F}_l$ si et seulement si sont déterminant $\Delta_{\chi} = t_l^2 - 4p_l$ est un carré dans $\mathbb{F}_l$, ce qui nous amène à la classification suivante :
 
 \begin{defi}
 \label{Atkins's prime}
