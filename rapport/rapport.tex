@@ -404,21 +404,21 @@ On va maintenant détailler l'algorithme étape par étape.
 
 
 \subsubsection{Choix de l'ensemble de premiers}
-L'idée de Schoof est de calculer la trace de l'endomorphisme de Frobenius modulo de petits premiers. Il faut choisir un ensemble $S = (l_1, \ldots l_n)$ tel que $\prod l_i > 4\sqrt{p}$. En effet on rappelle que  $|t| \leq 2 \sqrt{p}$, on veut s'assurer de bien pouvoir reconstruire notre solution quand on va utiliser les restes chinois. Pour construire $S$ on va juste ajouter des nombres premiers à une liste en utilisant la fonction \path{next_prime} de SAGE tant que le produit des éléments de $S$ est plus petit que $ 4\sqrt{p}$. Au final cela revient à la boucle suivante OU $n$ est initialisé à $1$ et \path{list_l} correspond à $S$:
+L'idée de Schoof est de calculer la trace de l'endomorphisme de Frobenius modulo de petits premiers. Il faut choisir un ensemble $S = (l_1, \ldots l_n)$ tel que $\prod l_i > 4\sqrt{p}$. En effet on rappelle que  $|t| \leq 2 \sqrt{p}$, on veut s'assurer de bien pouvoir reconstruire notre solution quand on va utiliser les restes chinois. Pour construire $S$ on va juste ajouter des nombres premiers à une liste en utilisant la fonction \path{next_prime} de SAGE tant que le produit des éléments de $S$ est plus petit que $ 4\sqrt{p}$. Au final cela revient à la boucle suivante ou $N$ et \path{prime} sont initialisés à $1$ et \path{list_l} correspond à $S$:
 \bigskip
 
 \begin{lstlisting}
 while N <= 4*sqrt(p):
-	if prime == p:
-		pass
 	prime = next_prime(prime)
+	if prime == p:
+		continue
 	N = N*prime
 	list_l.append(prime)
 \end{lstlisting}
 
 
 \subsubsection{Cas $l=2$}
-Ce cas est particulier et doit être traité à part car on suppose nos premiers impairs. On a $t_2 \equiv 0 \pmod 2$ si et seulement si $E(\mathbb{F}_p)$ a un élément d'ordre $2$, c'est à dire un point de $2$-torsion. Or les points de $2$-torsion sont de la forme $(x, 0)$. En effet, si $2P = 0$, pour $P \in E(\mathbb{F_p})$ alors $P = -P$, et cela correspond aux points de l'axe des abscisses. Ainsi $t_2$ est congru à $0$ si et seulement si $x^3 +ax +b$ à une racine dans $\mathbb{F}_p$. Mais les racines de $\mathbb{F}_p$ sont entièrement déterminées par le polynôme $x^p - x$, nos deux polynômes partageraient alors une racine commune. La façon utilisée ici pour décider si $t_2 \equiv 0 \pmod 2$ est donc de calculer si $\gcd(x^p - x, x^3 +ax +b) \ne 1$ (qu'on calcule par exponentiation rapide).
+Ce cas est particulier et doit être traité à part car on suppose nos premiers impairs. On a $t_2 \equiv 0 \pmod 2$ si et seulement si $E(\mathbb{F}_p)$ a un élément d'ordre $2$, c'est à dire un point de $2$-torsion. Or les points de $2$-torsion sont de la forme $(x, 0)$. En effet, si $2P = 0$, pour $P \in E(\mathbb{F_p})$ alors $P = -P$, et cela correspond aux points de l'axe des abscisses. Ainsi $t_2$ est congru à $0$ si et seulement si $x^3 +ax +b$ à une racine dans $\mathbb{F}_p$. Mais les racines de $\mathbb{F}_p$ sont entièrement déterminées par le polynôme $x^p - x$, nos deux polynômes partageraient alors une racine commune. La façon utilisée ici pour décider si $t_2 \equiv 0 \pmod 2$ est donc de calculer si $\gcd(x^p - x, x^3 +ax +b) \ne 1$.
 
 \subsubsection{Calcul des polynômes de division}
 Il existe dans SAGE une fonction permettant de calculer les polynômes de division, \path{polynomial_polynomial(n)} renvoyant le $n$-ième polynôme de division. Mais comme au cours de l'algorithme on doit souvent utiliser différents polynômes de division et de plus ils sont calculés via des formules de récurrence. Il ne me paraissait pas forcement très judicieux d'utiliser la fonction de SAGE qui allait de toute façon très certainement à chaque appel devoir recalculer via les formules de récurrence le polynôme souhaité. L'idée étant de stocker tous ces polynômes dans un dictionnaire, une fois la phase de pré calcul faite on peut donc accéder à tous les polynômes de division que l'on souhaite en temps constant au cours de l'exécution de l'algorithme de Schoof. Et en utilisant la fonction de SAGE j'ai tout de même vérifié via une fonction de test que je trouvais bien les même polynômes qu'avec ma fonction.
@@ -621,7 +621,7 @@ L'algorithme a tourné sur cette courbe pendant environ $25$ heures. L'ensemble 
 73, 83, 97, 103, 109, 127, 137, 149, 157])
 \end{lstlisting}
 \medskip
-Il faut noter que quand le cas $l=2$ a voulu être écarté une fausse manipulation lors d'un copier coller pour passer au nombre premier suivant a eu lieu. En fait on appelle deux fois la fonction \path{next_prime()}, et donc comme on le voit dans la liste, un nombre premier sur deux est sauté, ce qui fait qu'on se retrouve avec un $l$ maximum de $157$ au lieu de $79$ en théorie. La phase de pré-calcul a du calculer des polynômes de division jusqu'au $157$ ième. Au bout de $25$ heures l'algorithme a calculé les traces modulo $l$ jusqu’à $l=73$. En terme de mémoire, cela a pour le moment demandé $24$ Go. Il faut nuancer ces résultats par le fait que l'algorithme fait des calculs inutiles comme évoqué précédemment et travaille sur de mauvais paramètres. 
+Il faut noter que quand le cas $l=2$ a voulu être écarté une fausse manipulation lors d'un copier coller a eu lieu. En fait on appelle deux fois la fonction \path{next_prime()}, et donc comme on le voit dans la liste, un nombre premier sur deux est sauté, ce qui fait qu'on se retrouve avec un $l$ maximum de $157$ au lieu de $79$ en théorie. La phase de pré-calcul a du calculer des polynômes de division jusqu'au $157$ ième. Au bout de $25$ heures l'algorithme a calculé les traces modulo $l$ jusqu’à $l=73$. En terme de mémoire, cela a pour le moment demandé $24$ Go. Il faut nuancer ces résultats par le fait que l'algorithme fait des calculs inutiles comme évoqué précédemment et travaille sur de mauvais paramètres. 
 \newline
 On a pu relancer les calculs pendant $9$ heures sur la même machine, mais cette fois ci avec un code correct. On a l'ensemble de premiers suivants :
 \medskip 
@@ -823,7 +823,7 @@ Atkins a montré qu'a partir des polynômes modulaires on peut déterminer si $\
 
 \begin{thm}
 \label{thm calcul r}
-Soit $E$ une courbe elliptique définie sur $\mathbb{F}_p$ de $j$-invariant non nul. On note $\Phi_l(j,y) = h_1(y) \ldots h_s(y)$ la factorisation du $l$-ième polynôme modulaire sur $\mathbb{F}_p[y]$ en produit de polynôme irréductible. On a alors les possibilités suivantes pour les degrés de $h_1, \ldots, h_s$:
+Soit $E$ une courbe elliptique définie sur $\mathbb{F}_p$ de $j$-invariant non nul. On note $\Phi_l(x,j) = h_1(x) \ldots h_s(x)$ la factorisation du $l$-ième polynôme modulaire sur $\mathbb{F}_p[x]$ en produit de polynôme irréductible. On a alors les possibilités suivantes pour les degrés de $h_1, \ldots, h_s$:
 \begin{itemize}
 \item[(1)] $(1,l)$ ou $(1,\ldots,1)$, dans les deux cas $\Delta_{\chi} \equiv 0 \pmod l$, et on pose respectivement $r=l $ et $r=1$.
 \item[(2)] $(1,1,r,\ldots,r)$, dans ce cas $\Delta_{\chi}$ est un carré dans $\mathbb{F}_l$, $r$ divise $l-1$ et $\phi_l$ agit sur $E[l]$ comme la matrice diagonale $\begin{pmatrix}
@@ -842,7 +842,7 @@ Où $\xi$ est une $r$-ième racine primitive de l'unité dans $\bar{\mathbb{F}_l
 \end{thm}
  On rappelle que le $PGL(E)$ d'un espace vectoriel $E$ sur un corps $K$ est le groupe quotient $GL(E)$/$Z(E)$. Où $GL(E)$ est le groupe général linéaire de $E$, le groupe des automorphismes de $E$ muni de la composition des applications. Et $Z(E)$ le centre de $GL(E)$, c'est à dire l'ensemble des éléments de $E$ qui commutent avec tous les autres.
 \newline
-On peut reformuler la classification énoncée dans la définition \ref{Atkins's prime}. Un nombre premier $l$ tel que $\phi_{|E[l]}$ est diagonalisable est un premier de Elkies, et un premier de Atkins sinon. Pour déterminer dans quel cas on se trouve, on va étudier la factorisation de $\Phi_l(x,j)$ ($j$ est le $j$-invariant de notre courbe elliptique $E$). Pour se faire on va calculer le degré de $\gcd(\Phi_l(x,j),x^p-x)$, d'après le théorème précédent si ce $\gcd$ est constant alors $l$ est un premier d'Atkins, sinon c'est un premier d'Elkies.
+Pour déterminer dans quel cas du théorème l'on se trouve, on va étudier la factorisation de $\Phi_l(x,j)$ ($j$ est le $j$-invariant de notre courbe elliptique $E$). Pour se faire on va calculer le degré de $\gcd(\Phi_l(x,j),x^p-x)$, d'après le théorème précédent si ce $\gcd$ est constant alors $l$ est un premier d'Atkins, sinon c'est un premier d'Elkies.
 
 
 \paragraph*{Premier d'Elkies}
