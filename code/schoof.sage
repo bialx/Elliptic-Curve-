@@ -26,7 +26,6 @@ def schoof2(E):
         prime = next_prime(prime)
         if prime == p or prime == 2:
             continue
-        prime = next_prime(prime)
         N = N*prime
         list_l.append(prime)
     print("Set of Prime : ",list_l)
