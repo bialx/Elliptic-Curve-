@@ -87,12 +87,45 @@
 \def\Tr{\mathop{\rm{Tr}}\nolimits}
 \def\bwp{{\bar \wp}}
 \def\bwp{{\bar {\wp'}}}
+\newcommand{\hsp}{\hspace{20pt}}
+\newcommand{\HRule}{\rule{\linewidth}{0.5mm}}
 \begin{document}
 
 \newtheorem{prop}{Proposition}
 \newtheorem{defi}{Définition}
 \newtheorem{thm}{Théorème}
-\maketitle
+%\maketitle
+\begin{titlepage}
+\begin{sffamily}
+\begin{center}
+\textsc{\LARGE Université de Bordeaux} \\[2.0cm]
+\textsc{\large Rapport TER} \\[1.5cm]
+\vspace{3cm}
+  % Title
+    \HRule \\[0.4cm]
+    { \huge \bfseries Compter les points sur une courbe elliptique\\[0.4cm] }
+ \HRule \\[2cm]
+ 
+ \vspace{7cm}
+    % Author and supervisor
+    \begin{minipage}{0.4\textwidth}
+      \begin{flushleft} \large
+        Jérémie \textsc{Coulaud}\\
+      \end{flushleft}
+    \end{minipage}
+    \begin{minipage}{0.4\textwidth}
+      \begin{flushright} \large
+        \emph{Tuteur :} M. Jean-Marc \textsc{Couveignes}
+      \end{flushright}
+    \end{minipage}
+
+ \vfill
+    % Bottom of the page
+    {\large 18 Février 2019}
+
+\end{center}
+\end{sffamily}
+\end{titlepage}
 \newpage
 \tableofcontents
 \newpage
@@ -568,7 +601,7 @@ Maintenant nous devons calculer pour $\tau$ variant de $0$ à $2$ si $(x_3, y_3)
 \end{figure}
 On peut tirer deux informations intéressantes de ce graphique. D'une part on a confirmation que l'algorithme de Schoof est bien plus efficace que la méthode naïve dès que $p$ devient grand, mais on voit graphiquement que pour $p<2500$ il est plus efficace d'utiliser l'algorithme naïf.
 \newline
-Il est intéressant de se demander l'espace mémoire utilisé lors de l’exécution de l'algorithme de schoof, et vers quel quel $p$ premier on commence à atteindre des limites. Pour cela on va utiliser la plateforme Plafrim pour faire nos calcul....  (en attente des calculs). 
+Il est intéressant de se demander l'espace mémoire utilisé lors de l’exécution de l'algorithme de schoof, et vers quel quel $p$ premier on commence à atteindre des limites. Pour cela on va utiliser la plateforme Plafrim pour faire nos calcul sur une machine Intel(R) Xeon(R) Gold 6142 CPU (Skylake), un processeur à $16$ cœur, avec un fréquence de $2,60$ GHz. 
 \newline
 On a testé notre algorithme de Schoof sur une courbe du standard du NIST pour tester les limites de l'algorithme dans un cas réaliste. La courbe choisi est P-192 de paramètres :
 \begin{align*}
@@ -577,7 +610,15 @@ a &= -3 \\
 b &= 1679885593
 \end{align*}
 On a du rajouter une option \path{sparsed=True} lors de la création de nos anneaux de polynômes pour permettre a SAGE de travailler avec des polynômes de très haut degré, il renvoyait une erreur overflow sinon. De plus le cas $l=2$ demande de calculer  $\gcd(x^p -x, x^3 - ax -b)$, ce qui sans algorithme efficace demande beaucoup trop de temps. Plutôt que d'essayer d’accélérer ce calcul le choix a été fait de simplement sauter le nombre premier $2$. De plus dans notre algorithme on test si le $l$-ième polynôme de division est irréductible ou non, s'il ne l'est pas on le remplace par l'un de ses facteurs. On utilise la fonction de SAGE \path{factor()} qui renvoie la factorisation de ce polynôme. Or si le degré devient important la factorisation notre polynôme va devenir plus longue que l’exécution complète de l'algorithme. On a uniquement besoin d'un seul facteur, pas de la décomposition entière, on pourrait donc optimiser cette étape.
-......rajouter resultats des test ......
+\newline
+L'algorithme a tourné sur cette courbe pendant environ $25$ heures. L'ensemble de premiers $l$ considéré est : 
+\medskip
+\begin{lstlisting}
+('liste des premier: ', [5, 11, 17, 23, 31, 41, 47, 59, 67, 
+73, 83, 97, 103, 109, 127, 137, 149, 157])
+\end{lstlisting}
+\medskip
+Sans le vouloir une erreur s'est glissé dans le code quand le cas $l=2$ a voulu etre écarté. Une fausse manipulation lors d'un copier coller pour passer au nombre premier suivant a eu lieu. En fait on appel deux fois la fonction \path{next_prime()}, et donc comme on le voit dans la liste, un nombre premier sur deux est sauté, ce qui fait qu'on se retrouve avec un $l$ maximum de $157$ au lieu de $79$ en théorie. La phase de pré-calcul a du calculer des polynômes de division jusqu'au $157$. Actuellement l'algorithme a calculé les traces modulo $l$ jusqu’à $l=73$. En terme de mémoire, cela a pour le moment demandé $24$Go. Il faut nuancer ces résultats par le fait que l'algorithme fait des calculs inutiles comme évoqué précédemment et travail sur de mauvais paramètres. 
 \subsubsection{Complexité}
 La complexité de l'algorithme de Schoof est en $O(\log{q}^8)$ opérations élémentaires. La partie conteuse de l'algorithme réside dans les calculs dans l'anneau $R = \frac{\mathbb{F_p}[x,y]}{(f_l(x), y^2 -x^3 -ax -b)}$. Les éléments de R sont de degré $O(l^2)$ 
 \newline
@@ -863,7 +904,9 @@ On donne une description en pseudo-code de l'algorithme SEA.
 
 \paragraph*{Complexité}
 L'algorithme SEA a une complexité heuristique de $O(\log^4 p)$ en temps, et $O(\log^2 p)$ en espace.
-
+\newpage
+\section{Conclusion}
+Au cours de cette étude on a vu divers algorithmes permettant de compter le nombres de points sur une courbe elliptique défini sur un corps $\mathbb{F}_p$ avec $p$ premier. Tout d'abord un algorithme de complexité exponentielle, avec la méthode brute-force qui consiste simplement à vérifier si pour tout élément de $\mathbb{F}_p$, ce dernier appartient à la courbe. Peu efficace quand $p$ devient trop important il est néanmoins plus rapide que ses homologues polynomiaux quand on se restreint à de petits premiers $p$. Par la suite avec l'introduction de l'endomorphisme du Frobenius et des polynômes de division, on a pu détailler l'algorithme de Schoof qui lui est de complexité polynomial. Une implémentation a été faite sous SAGE nous permettant de tester l'algorithme sur des cas pratiques. Il est apparut que même si l'algorithme demande un nombre polynomial d'opération élémentaire, il est relativement lent du fait de la taille des polynômes de division, de degré en $O(l^2)$. C'est avec cette idée de travailler avec des polynômes de plus petit degré que Elkies et Atkins ont proposé des améliorations à cet algorithme en utilisant plutôt des polynômes de degré $O(l)$, les polynômes modulaires. Cela a rendu l’algorithme nommé SEA (Schoof-Elkies-Atkins) très efficace, même lorsque que $p$ devient très grand. Pour expliquer l'algorithme il a fallut introduire de la théorie d'analyse complexe, expliciter les isogénies de courbe elliptique et les polynômes modulaires. Un algorithme en pseudo-code a seulement été proposé, sans détailler pleinement toutes les étapes. 
 \newpage
 \bibliographystyle{plain}
 \bibliography{biblio}
