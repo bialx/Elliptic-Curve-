@@ -68,7 +68,23 @@
 
 \section{Introduction} 
 \frame{\frametitle{Introduction} 
-blabla
+
+On définit une courbe elliptique sur un corps $K$ dans un plan par une équation de Weierstrass de la forme : 
+\begin{equation*}
+y^2 + a_1xy + a_3y  = x^3 + a_2x^2 + a_4x + a_6
+\end{equation*}
+Les coefficients $a_{1 \leq i \leq 6}$ sont des éléments du corps $K$.
+
+
+Si  $car(K) \ne 2,3$ on se ramène à l'équation courte suivante : 
+\begin{equation*}
+y^2 = x^3 + ax +b
+\end{equation*}
+\begin{itemize}
+\item $\Delta = -16(4a^3 + 27b^2) \quad \text{et} \quad j(E) = \frac{(-48a)^3}{\Delta}$
+\item $E(K) = \left\{ (x,y) \in \mathbb{K} \, | \, y^2 = x^3 + ax + b = 0 \right\} \bigcup {O}$
+\item $E[l] = \left\{ P \in E(\overline{\mathbb{K}}) \, | \, [l]P = 0 \right\} $
+\end{itemize}
 }
 
 \section{Algorithme naïf}
@@ -127,7 +143,7 @@ On lui associe son polynôme caractéristique :
 \subsection{Polynômes de division}
 \begin{frame}
 \frametitle{Polynômes de division}
-On appelle $f_n(X)$ le n-ième polynôme de divisons définit sur $\mathbb{Z}[x]$par : 
+On appelle $f_n(X)$ le n-ième polynôme de division défini sur $\mathbb{Z}[x]$par : 
 \begin{align*}
 f_0(x) &= 0 \\
 f_1(x) &= 1 \\
@@ -181,7 +197,7 @@ Or pour tout $P=(x,y) \in E[l]$, $f_l(x) = 0$ et $y^2 - x^3 -ax -b=0$.
 \newline
 On peut donc travailler dans l'anneau : 
 $$ \frac{\mathbb{F}_p[x,y]}{(f_l(x), y^2 - x^3 -ax -b)} $$ 
-La question est donc pour quel valeur $0 \leq \tau \leq \frac{l-1}{2}$ l'équation suivante est vérifié :
+La question est donc pour quelle valeur $0 \leq \tau \leq \frac{l-1}{2}$ l'équation suivante est vérifiée :
 \begin{equation}
 (x^{p^2}, y^{p^2}) + [p_l](x,y) = [\tau_l](x^{p}, y^{p})
 \end{equation}
@@ -199,7 +215,7 @@ La question est donc pour quel valeur $0 \leq \tau \leq \frac{l-1}{2}$ l'équati
 \textbf{Cas} $\mathbf{l=2}$ \textbf{:} $t_2 \equiv 0 \pmod 2 \Leftrightarrow E(\mathbb{F}_p)$ a un élément d'ordre $2$
 \begin{itemize}
 \item Point $2$-torsion est de la forme $(x,0)$
-\item $x^3 +ax +b$ à une racine dans $\mathbb{F}_p$
+\item $x^3 +ax +b$ a une racine dans $\mathbb{F}_p$
 \item Calcul $\gcd(x^p - x,\, x^3 +ax +b) \ne 1$
 \end{itemize}
 \end{frame}

@@ -621,18 +621,27 @@ L'algorithme a tourné sur cette courbe pendant environ $25$ heures. L'ensemble 
 73, 83, 97, 103, 109, 127, 137, 149, 157])
 \end{lstlisting}
 \medskip
-Il faut noter que quand le cas $l=2$ a voulu être écarté une fausse manipulation lors d'un copier coller pour passer au nombre premier suivant a eu lieu. En fait on appelle deux fois la fonction \path{next_prime()}, et donc comme on le voit dans la liste, un nombre premier sur deux est sauté, ce qui fait qu'on se retrouve avec un $l$ maximum de $157$ au lieu de $79$ en théorie. La phase de pré-calcul a du calculer des polynômes de division jusqu'au $157$ ième. Au bout de $25$ heures l'algorithme a calculé les traces modulo $l$ jusqu’à $l=73$. En terme de mémoire, cela a pour le moment demandé $24$Go. Il faut nuancer ces résultats par le fait que l'algorithme fait des calculs inutiles comme évoqué précédemment et travaille sur de mauvais paramètres. 
+Il faut noter que quand le cas $l=2$ a voulu être écarté une fausse manipulation lors d'un copier coller pour passer au nombre premier suivant a eu lieu. En fait on appelle deux fois la fonction \path{next_prime()}, et donc comme on le voit dans la liste, un nombre premier sur deux est sauté, ce qui fait qu'on se retrouve avec un $l$ maximum de $157$ au lieu de $79$ en théorie. La phase de pré-calcul a du calculer des polynômes de division jusqu'au $157$ ième. Au bout de $25$ heures l'algorithme a calculé les traces modulo $l$ jusqu’à $l=73$. En terme de mémoire, cela a pour le moment demandé $24$ Go. Il faut nuancer ces résultats par le fait que l'algorithme fait des calculs inutiles comme évoqué précédemment et travaille sur de mauvais paramètres. 
+\newline
+On a pu relancer les calculs pendant $9$ heures sur la même machine, mais cette fois ci avec un code correct. On a l'ensemble de premiers suivants :
+\medskip 
+\begin{lstlisting}
+('liste des premiers: ', [3, 5, 7, 11, 13, 17, 19,
+ 23, 29, 31, 37, 41, 43, 47, 53, 59, 61, 67, 71, 73, 79])
+\end{lstlisting}
+\medskip
+Sur ce temps de calcul on a pu calculer les traces modulo ces nombres premiers jusqu’à $73$. L'algorithme a utilisé environ $4$ Go.
 \subsubsection{Complexité}
 La complexité de l'algorithme de Schoof est en $O(\log{q}^8)$ opérations élémentaires. La partie coûteuse de l'algorithme réside dans les calculs dans l'anneau $R = \frac{\mathbb{F}_p[x,y]}{(f_l(x), y^2 -x^3 -ax -b)}$. Les éléments de R sont de degré $O(l^2)$ 
 \newline
  L'algorithme est plus efficace qu'une version naïve quand la taille de $p$ augmente mais reste néanmoins limitée pour $p$ trop grand. En effet le degré des polynômes de division en $O(l^2)$ empêche une performance optimale pour des tailles de $p$ trop importante. Les polynômes de division deviennent rapidement très grands, ce qui pose aussi un problème de mémoire. Une amélioration de cet algorithme a été proposée par Elkies-Atkin pour produire un algorithme plus performant, le SEA. 
  
 \subsection{Algorithme SEA}
-Il va être nécessaire d'introduire plus de théorie avant de s'attaquer à l'algorithme en lui même. L'idée finale est d'utiliser un polynôme de degré plus petit que les polynômes de division utilisés dans l'algorithme de Schoof, les polynômes modulaires. De plus pour comprendre certaines partie de l'algorithme SEA il va être nécessaire d'introduire un peu de théorie d'analyse complexe.
+Il va être nécessaire d'introduire plus de théorie avant de s'attaquer à l'algorithme en lui même. L'idée finale est d'utiliser un polynôme de degré plus petit que les polynômes de division utilisés dans l'algorithme de Schoof, les polynômes modulaires. De plus pour comprendre certaines parties de l'algorithme SEA il va être nécessaire d'introduire un peu de théorie d'analyse complexe.
 
 
 \subsubsection{Analyse complexe}
-La théorie des courbes elliptiques est conséquente sur le corps des complexes mais nous allons uniquement donner des définitions et formules utiles, qu'on pourra retrouver ici \cite{complexbook} \cite{csi}, sans rentrer dans le détail de preuves et résultats non pertinents pour la compréhension de l'algorithme SEA. On peut légitimement se demander le rapport entre courbe elliptique et analyse complexe mais on va donc donner quelques définitions avant d'expliciter ce lien.
+La théorie des courbes elliptiques est conséquente sur le corps des complexes mais nous allons uniquement donner des définitions et formules utiles, qu'on pourra retrouver ici \cite{complexbook} \cite{csi}, sans rentrer dans le détail de preuves et résultats non pertinents pour la compréhension de l'algorithme SEA. On peut légitimement se demander le rapport entre courbe elliptique et analyse complexe. Nous allons donc donner quelques définitions avant d'expliciter ce lien.
 
 \begin{defi}
 Une fonction holomorphe est une fonction à valeur complexe, définie et dérivable en tout point d'un sous ensemble ouvert du plan complexe $\mathbb{C}$. Une fonction est dite méromorphe si elle est holomorphe dans tout le plan complexe $\mathbb{C}$, sauf éventuellement sur un ensemble de points isolés dont chacun est un pôle pour la fonction.
@@ -737,7 +746,7 @@ Ce qui nous permet de faire le lien entre isogénie et polynôme modulaire avec 
 Soit $E_1$/$\mathbb{C}$ et $E_2$/$\mathbb{C}$ deux courbes elliptiques de $j$-invariant respectivement $j_{E_1}$ et $j_{E_2}$. Le $l$-ième polynôme modulaire vérifie $\Phi_l(j_{E_1},j_{E_2}) = 0$ si et seulement si il existe une isogénie entre $E_1$ et $E_2$ dont le noyau est cyclique de degré $l$.
 \end{defi}
 
-Ce théorème nous donne une méthode pour trouver toutes les isogénies à une courbe elliptique $E$/$\mathbb{F}_p$. Soit $l$ un nombre premier différent de $p$, on va chercher les racines de $\Phi_l(j_E, y) \in \mathbb{F}_p[y]$ dans $\mathbb{F}_p$. Quand on trouve une racine on trouve un j-invariant d'une courbe $E_2$ isogène avec $E$. 
+Ce théorème nous donne une méthode pour trouver toutes les isogénies à une courbe elliptique $E$/$\mathbb{F}_p$. Soit $l$ un nombre premier différent de $p$, on va chercher les racines de $\Phi_l(j_E, y) \in \mathbb{F}_p[y]$ dans $\mathbb{F}_p$. Quand on trouve une racine, on trouve un j-invariant d'une courbe $E_2$ isogène avec $E$. 
 
 On donne un exemple de polynôme modulaire, pour $ l =3$ on a :
 \begin{align*}
@@ -754,7 +763,7 @@ On donne un exemple de polynôme modulaire, pour $ l =3$ on a :
 On peut noter que les coefficients augmentent très rapidement. Un algorithme efficace pour calculer ces polynômes dans le cas où $l$ est premier est le calcul via volcan d'isogénie \cite{volcan}
 
 \subsubsection{Algorithme SEA}
-Avec ce bagage théorique en plus on va pouvoir commencer à détailler l'algorithme SEA (schoof-Elkies-Atkins), on suppose dans la suite que $E$ est une courbe elliptique sous sa forme réduite $y^2 = x^3 + ax +b$ sur $\mathbb{F}_p$ avec $p$ premier . On rappelle que le polynôme caractéristique de l’endomorphisme de Frobenius $\phi$ sur $\mathbb{F}_l$ est $\chi_l(x) = x^2 - t_lx +p_l$ où $t_l$ est la trace du Frobenius modulo $l$, et $p_l$ la caractéristique du corps sur lequel on définit $E$ réduite modulo $l$. On va se demander si $\chi_l$ est irréductible sur $\mathbb{F}_l$. Or ce  a une racine dans $\mathbb{F}_l$ si et seulement si sont déterminant $\Delta_{\chi} = t_l^2 - 4p_l$ est un carré dans $\mathbb{F}_l$, ce qui nous amène à la classification suivante :
+Avec ce bagage théorique en plus, on va pouvoir commencer à détailler l'algorithme SEA (schoof-Elkies-Atkins), on suppose dans la suite que $E$ est une courbe elliptique sous sa forme réduite $y^2 = x^3 + ax +b$ sur $\mathbb{F}_p$ avec $p$ premier . On rappelle que le polynôme caractéristique de l’endomorphisme de Frobenius $\phi$ sur $\mathbb{F}_l$ est $\chi_l(x) = x^2 - t_lx +p_l$ où $t_l$ est la trace du Frobenius modulo $l$, et $p_l$ la caractéristique du corps sur lequel on définit $E$ réduite modulo $l$. On va se demander si $\chi_l$ est irréductible sur $\mathbb{F}_l$. Or ce  a une racine dans $\mathbb{F}_l$ si et seulement si son déterminant $\Delta_{\chi} = t_l^2 - 4p_l$ est un carré dans $\mathbb{F}_l$, ce qui nous amène à la classification suivante :
 
 \begin{defi}
 \label{Atkins's prime}
@@ -783,7 +792,7 @@ On peut représenter graphiquement l'ensemble des points de $l$-torsions. On sai
 \end{axis}
 \end{tikzpicture}
 
-L'idée de l'algorithme SEA est de ne plus travailler sur cet ensemble $E[l]$ mais sur l'un de ses sous groupe contenant $l$ points et décrit par un polynôme $g_l$ divisant $f_l$ mais cet fois de degré en $O(l)$.
+L'idée de l'algorithme SEA est de ne plus travailler sur cet ensemble $E[l]$ mais sur l'un de ses sous groupe contenant $l$ points et décrit par un polynôme $g_l$ divisant $f_l$ mais cette fois de degré en $O(l)$.
 \newline
 \bigskip
 \begin{tikzpicture}[>=latex]
@@ -806,11 +815,11 @@ L'idée de l'algorithme SEA est de ne plus travailler sur cet ensemble $E[l]$ ma
 \end{tikzpicture}
 
 On peut noter que $E[l]$ contient $l+1$ sous groupe cyclique d'ordre $l$.
-La question est donc quel sous groupe prendre ? On va s’intéresser à un sous espace propre de la restriction de $\phi$ à $E[l]$ de dimension $1$ (comme visible sur le graphique précédent on prend une droite) qu'on note $C_{\lambda}$. La valeur propre associée à ce sous espace propre est bien sur $\lambda$ tel que $\phi(P) = \lambda P$ pour $P \in C_{\lambda}$. On décrit $C_{\lambda}$ par $g_l$.
+La question est donc: quel sous groupe prendre ? On va s’intéresser à un sous espace propre de la restriction de $\phi$ à $E[l]$ de dimension $1$ (comme visible sur le graphique précédent on prend une droite) qu'on note $C_{\lambda}$. La valeur propre associée à ce sous espace propre est bien sur $\lambda$ tel que $\phi(P) = \lambda P$ pour $P \in C_{\lambda}$. On décrit $C_{\lambda}$ par $g_l$.
 \newline
-On peut décrire $\phi_{|E[l]}$ par une matrice $2\times2$, la question de trouver des sous espace propre est liée a la question de diagonalisation de cette matrice.
+On peut décrire $\phi_{|E[l]}$ par une matrice $2\times2$, la question de trouver des sous espaces propres est liée à la question de diagonalisation de cette matrice.
 
-Atkins a montré qu'a partir des polynômes modulaire on peut déterminer si $\Delta_{\chi}$ est un carré. Il en résulte le théorème suivant:
+Atkins a montré qu'a partir des polynômes modulaires on peut déterminer si $\Delta_{\chi}$ est un carré. Il en résulte le théorème suivant:
 
 \begin{thm}
 \label{thm calcul r}
@@ -831,22 +840,22 @@ t^2 \equiv p(\xi+\xi^{-1})^2 \pmod l
 \end{equation}
 Où $\xi$ est une $r$-ième racine primitive de l'unité dans $\bar{\mathbb{F}_l}$.
 \end{thm}
- On rappelle que le $PGL(E)$ d'un espace vectoriel $E$ sur un corps $K$ est le groupe quotient $GL(E)$/$Z(E)$. Où $GL(E)$ est le groupe général linéaire de $E$, le groupe des automorphismes de $E$ muni de la composition des applications. Et $Z(E)$ le centre de $GL(E)$, c'est a dire l'ensemble des éléments de $E$ qui commutent avec tous les autres.
+ On rappelle que le $PGL(E)$ d'un espace vectoriel $E$ sur un corps $K$ est le groupe quotient $GL(E)$/$Z(E)$. Où $GL(E)$ est le groupe général linéaire de $E$, le groupe des automorphismes de $E$ muni de la composition des applications. Et $Z(E)$ le centre de $GL(E)$, c'est à dire l'ensemble des éléments de $E$ qui commutent avec tous les autres.
 \newline
-On peut reformuler la classification énoncée dans la définition \ref{Atkins's prime}. Un nombre premier $l$ tel que $\phi_{|E[l]}$ est diagonalisable est un premier de Elkies, et un premier de Atkins sinon. Pour déterminer dans quel cas on se trouve on va étudier la factorisation de $\Phi_l(x,j)$ ($j$ est le $j$-invariant de notre courbe elliptique $E$). Pour se faire on va calculer le degré de $\gcd(\Phi_l(x,j),x^p-x)$, d'après le théorème précédent si ce $\gcd$ est constant alors $l$ est un premier d'Atkins, sinon c'est un premier d'Elkies.
+On peut reformuler la classification énoncée dans la définition \ref{Atkins's prime}. Un nombre premier $l$ tel que $\phi_{|E[l]}$ est diagonalisable est un premier de Elkies, et un premier de Atkins sinon. Pour déterminer dans quel cas on se trouve, on va étudier la factorisation de $\Phi_l(x,j)$ ($j$ est le $j$-invariant de notre courbe elliptique $E$). Pour se faire on va calculer le degré de $\gcd(\Phi_l(x,j),x^p-x)$, d'après le théorème précédent si ce $\gcd$ est constant alors $l$ est un premier d'Atkins, sinon c'est un premier d'Elkies.
 
 
 \paragraph*{Premier d'Elkies}
-On se place dans le cas ou $l$ est un premier d'Elkies. Le Frobenius est diagonalisable, de valeurs propres $\lambda, \mu$, car $\Delta_{\chi_l} =t_l^2 -4p$ est un carré modulo $l$ (on rappelle que $\chi_{l}(x) = x^2 - t_lx +p_l$). Ainsi on a :
+On se place dans le cas où $l$ est un premier d'Elkies. Le Frobenius est diagonalisable, de valeurs propres $\lambda, \mu$, car $\Delta_{\chi_l} =t_l^2 -4p$ est un carré modulo $l$ (on rappelle que $\chi_{l}(x) = x^2 - t_lx +p_l$). Ainsi on a :
 \begin{equation*}
 \chi_l(x) = (x - \lambda)(x- \mu)
 \end{equation*}
-Donc $t_l \equiv \lambda +\mu \equiv \lambda + \frac{p_l}{\lambda} \pmod l$ (car $p_l = \lambda\mu$). On peut la trace modulo $l$ en trouvant une valeur propre du Frobenius. La première question est de se demander si $\lambda \ne \mu$, si on est dans ce cas alors $t_l = 2 \lambda = 2 \sqrt{p_l}$ et on se ramène à un cas expliqué dans la partie sur l'algorithme de Schoof. Le cas le plus intéressant est donc quand $\lambda \ne \mu$. Par définition d'une valeur propre on sait qu'il existe deux points $P_1,P_2 \in E[l]$ non triviaux tel que $\phi_p(P_1) = [\lambda]P_1$ et $\phi_p(P_2) = [\lambda]P_2$. Soit $C_1$ et $C_2$ les deux sous groupes cyclique d'ordre $l$ générés par $P_1$ et $P_2$, ils sont stables par l'action du Frobenius, c'est à dire $\phi_p(C_1) = C_1$. On peut alors construire le polynôme $g_l$ de degré $\frac{(l-1)}{2}$ et divisant le $l$-ième polynôme de division : 
+Donc $t_l \equiv \lambda +\mu \equiv \lambda + \frac{p_l}{\lambda} \pmod l$ (car $p_l = \lambda\mu$). On peut calculer la trace modulo $l$ en trouvant une valeur propre du Frobenius. La première question est de se demander si $\lambda \ne \mu$, si on est dans ce cas alors $t_l = 2 \lambda = 2 \sqrt{p_l}$ et on se ramène à un cas expliqué dans la partie sur l'algorithme de Schoof. Le cas le plus intéressant est donc quand $\lambda \ne \mu$. Par définition d'une valeur propre on sait qu'il existe deux points $P_1,P_2 \in E[l]$ non triviaux tel que $\phi_p(P_1) = [\lambda]P_1$ et $\phi_p(P_2) = [\lambda]P_2$. Soit $C_1$ et $C_2$ les deux sous groupes cycliques d'ordre $l$ générés par $P_1$ et $P_2$, ils sont stables par l'action du Frobenius, c'est à dire $\phi_p(C_1) = C_1$. On peut alors construire le polynôme $g_l$ de degré $\frac{(l-1)}{2}$ et divisant le $l$-ième polynôme de division : 
 \begin{equation}
 \label{poly g_l}
 g_l(x) = \prod_{\pm P \in C_1^*} (x - x_p), \quad \text{où } P = (x_p, y_p)
 \end{equation}
-On peut à partir de ce polynôme utiliser l'algorithme de Schoof pour trouver la trace du Frobenius modulo $l$. On commence par noter que vu que $\lambda$ est valeur propre, pour tout point de $C_1$  on a l'équation $\phi(P) = [\lambda]P$. On peut appliquer nos formules de multipication scalaire énoncé dans notre partie sur les polynomes de division. L'abscisse du point [$\lambda$]$P$ est : 
+On peut à partir de ce polynôme utiliser l'algorithme de Schoof pour trouver la trace du Frobenius modulo $l$. On commence par noter que vu que $\lambda$ est valeur propre, pour tout point de $C_1$  on a l'équation $\phi(P) = [\lambda]P$. On peut appliquer nos formules de multiplication scalaire énoncée dans notre partie sur les polynomes de division. L'abscisse du point [$\lambda$]$P$ est : 
 \begin{equation*}
 x - \frac{\psi_{\lambda-1}\psi_{\lambda+1}}{\psi_{\lambda}^2}
 \end{equation*}
@@ -856,7 +865,7 @@ x^p = x - \frac{\psi_{\lambda-1}\psi_{\lambda+1}}{\psi_{\lambda}^2}
 \end{equation*}
 On pose $h(x) = \psi_{\lambda}^2(x^p-x) + \psi_{\lambda-1}\psi_{\lambda+1}$, qu'on réduit modulo $g_l$. Il faut trouver une valeur propre $\lambda$ tel que $\gcd(h,g_l) \ne 1$. Une fois que l'on a trouvé une valeur qui correspond on peut calculer $t_l = \lambda + \frac{p_l}{\lambda} \pmod l$
 
-Il faut maintenant montrer comment construire ce polynôme $g_l$. L'idée va être de trouver dans un premier temps le premier coefficient de $g_l$ (qui est moins la somme des racines de $g_l$). On sait que le degré du polynôme $\gcd(\Phi(x,j),x^p-x)$ est plus grand que $0$ comme $l$ est un premier de Elkies et que ses racines sont dans $\mathbb{F}_p$. Notons par exemple $\tilde{j}$ l'une de ses racines. On sait donc qu'il existe une isogénie entre $E$ et la courbe elliptique de $j$-invariant $\tilde{j}$ qu'on note $\tilde{E}:y^2=x^3+\tilde{a_4}x+\tilde{a_6}$. Le noyau de cette isogénie est l'un des $l+1$ sous groupe cyclique de $E[l]$. On va utiliser cette isogénie pour retrouver le premier coefficient de $g_l$. On ne détaillera pas les calculs permettant d'arriver a ce résultat, ils s'appuient fortement sur l'analyse complexe évoqué plus haut. Plus d'informations peuvent être trouver ici \cite{sea}.
+Il faut maintenant montrer comment construire ce polynôme $g_l$. L'idée va être de trouver dans un premier temps le premier coefficient de $g_l$ (qui est moins la somme des racines de $g_l$). On sait que le degré du polynôme $\gcd(\Phi(x,j),x^p-x)$ est plus grand que $0$ comme $l$ est un premier de Elkies et que ses racines sont dans $\mathbb{F}_p$. Notons par exemple $\tilde{j}$ l'une de ses racines. On sait donc qu'il existe une isogénie entre $E$ et la courbe elliptique de $j$-invariant $\tilde{j}$ qu'on note $\tilde{E}:y^2=x^3+\tilde{a_4}x+\tilde{a_6}$. Le noyau de cette isogénie est l'un des $l+1$ sous groupe cyclique de $E[l]$. On va utiliser cette isogénie pour retrouver le premier coefficient de $g_l$. On ne détaillera pas les calculs permettant d'arriver à ce résultat, ils s'appuient fortement sur l'analyse complexe évoqué plus haut. Plus d'informations peuvent être trouvées ici \cite{sea}.
 
 
 \paragraph*{Premier d'Atkin}
@@ -864,11 +873,11 @@ On va étudier le degré $r$ de $\phi_p$ dans $PGL_2(\mathbb{F}_l)$. Il faut dan
 \begin{equation}
 \gcd(\Phi_l(x,j), x^{p^i} - x) = \Phi_l(x,j)
 \end{equation}
-On recherche donc la plus petite extension $\mathbb{F}^{p^i}$ de $\mathbb{F}_p$ contenant toutes les racines de $\Phi_l(x,j)$. Ce $i$ est alors le degré de $\phi_p$, et on peut montrer qu'il suffit de tester les $i$ divisant $l+1$ et qui satisfont $(-1)^{\frac{l+1}{i}}= (\frac{p}{l})$. On rappelle qu'on a une relation entre les racines primitives de l'unité et la trace d’après l'équation \ref{trace with root of unity}. On va construire un ensemble de valeurs possibles pour la trace modulo $l$. Soit $\lambda$ et $\mu$ deux valeurs propre de $\phi_p$, alors $\gamma = \frac{\lambda}{\mu}$ est une $r$-ième racine primitive de l'unité et $\gamma \in \mathbb{F}_{l^2}$. On peut aussi écrire, pour $d$ qui n'est pas un carré de $\mathbb{F}_l$, $\mathbb{F}_{l^2} \cong \mathbb{F}_l[\sqrt{d}]$. On peut alors énumérer toute les valeurs de $\gamma$. Soit $g$ un générateur de $\mathbb{F}_{l^2}$ alors $\gamma = g^{\frac{l^2-1}{r}}$ est une $r$-ième racine de l'unité, pour trouver les autres on calcule $\gamma_i = \gamma^i$. Montrons maintenant comment utiliser ces $\gamma_i$ pour calculer notre ensemble de trace. Sans détailler, l'idée est d'écrire $\gamma_i$ sous la forme $\gamma_i = g_{i_1} + g_{i_2}\sqrt{d}$ avec $g_{i_1}, g_{i_2}$ dans $\mathbb{F}_l$, mais on peut aussi montrer que pour $x_1, x_2 \in \mathbb{F}_l$ on a $\lambda = x_1 + x_2\sqrt{d}$ et $\mu = x_1-x_2\sqrt{d}$. En utilisant la relation $\gamma_i = \frac{\lambda}{\mu}$. Les $x_i$ sont inconnu mais pas les $g_{i}$, au final on a la relation $x_1^2 = \frac{p(g_{i_1}+1)}{2}$. Si $x_i^2$ n'est pas un carré dans $\mathbb{F}_l$ on passe au $\gamma_i$ suivant, sinon sachant que $t \equiv \lambda + \mu = 2x_1$ on ajoute à notre ensemble de trace $2x_1$ et $-2x_1$.
+On recherche donc la plus petite extension $\mathbb{F}^{p^i}$ de $\mathbb{F}_p$ contenant toutes les racines de $\Phi_l(x,j)$. Ce $i$ est alors le degré de $\phi_p$, et on peut montrer qu'il suffit de tester les $i$ divisant $l+1$ et qui satisfont $(-1)^{\frac{l+1}{i}}= (\frac{p}{l})$. On rappelle qu'on a une relation entre les racines primitives de l'unité et la trace d’après l'équation \ref{trace with root of unity}. On va construire un ensemble de valeurs possibles pour la trace modulo $l$. Soit $\lambda$ et $\mu$ deux valeurs propres de $\phi_p$, alors $\gamma = \frac{\lambda}{\mu}$ est une $r$-ième racine primitive de l'unité et $\gamma \in \mathbb{F}_{l^2}$. On peut aussi écrire, pour $d$ qui n'est pas un carré de $\mathbb{F}_l$, $\mathbb{F}_{l^2} \cong \mathbb{F}_l[\sqrt{d}]$. On peut alors énumérer toute les valeurs de $\gamma$. Soit $g$ un générateur de $\mathbb{F}_{l^2}$ alors $\gamma = g^{\frac{l^2-1}{r}}$ est une $r$-ième racine de l'unité, pour trouver les autres on calcule $\gamma_i = \gamma^i$. Montrons maintenant comment utiliser ces $\gamma_i$ pour calculer notre ensemble de trace. Sans détailler, l'idée est d'écrire $\gamma_i$ sous la forme $\gamma_i = g_{i_1} + g_{i_2}\sqrt{d}$ avec $g_{i_1}, g_{i_2}$ dans $\mathbb{F}_l$, mais on peut aussi montrer que pour $x_1, x_2 \in \mathbb{F}_l$ on a $\lambda = x_1 + x_2\sqrt{d}$ et $\mu = x_1-x_2\sqrt{d}$. En utilisant la relation $\gamma_i = \frac{\lambda}{\mu}$. Les variables $x_i$ sont inconnues mais pas les $g_{i}$, au final on a la relation $x_1^2 = \frac{p(g_{i_1}+1)}{2}$. Si $x_i^2$ n'est pas un carré dans $\mathbb{F}_l$ on passe au $\gamma_i$ suivant, sinon sachant que $t \equiv \lambda + \mu = 2x_1$ on ajoute à notre ensemble de trace $2x_1$ et $-2x_1$.
 
 
 \paragraph*{Retrouver $t$}
-On ne peut pas simplement utiliser les restes chinois comme pour l'algorithme de Schoof. En effet la trace que l'on trouve en utilisant les premiers d'Atkins est un ensemble de traces possibles, on n'a pas unicité. Plusieurs possibilités sont possible, la plus simple mais peut etre moins efficace est de considérer plus d'entier $l$ pour calculer notre trace modulo $l$. L'autre idée est d'utiliser un algorithme baby-step/giant-step qui sera plus efficace.
+On ne peut pas simplement utiliser les restes chinois comme pour l'algorithme de Schoof. En effet la trace que l'on trouve en utilisant les premiers d'Atkins est un ensemble de traces possibles, on n'a pas unicité. Il y a plusieurs possibilités, la plus simple mais peut être moins efficace est de considérer plus d'entier $l$ pour calculer notre trace modulo $l$. L'autre idée est d'utiliser un algorithme baby-step/giant-step qui sera plus efficace.
 
 \newpage
 \subsubsection{Algorithme pseudo-code}
@@ -897,7 +906,7 @@ On donne une description en pseudo-code de l'algorithme SEA.
 \ELSE
 \STATE Calculer $g_l$ un diviseur de $f_l$
 \STATE Trouver $\lambda$ valeur propre du Frobenius tel que $\gcd(\psi_{\lambda}^2(x^p-x) + \psi_{\lambda-1}\psi_{\lambda+1}, g_l(x)) \ne 1$
-\STATE Calculer $t = \lambda + \frac{\lambda}{p} \pmod l$
+\STATE Calculer $t_l = \lambda + \frac{\lambda}{p} \pmod l$
 \ENDIF
 \ENDFOR
 \STATE retrouver $t$ en utlisiant les $t_l$ 
@@ -906,10 +915,10 @@ On donne une description en pseudo-code de l'algorithme SEA.
 \end{algorithm}
 
 \paragraph*{Complexité}
-L'algorithme SEA a une complexité heuristique de $O(\log^4 p)$ en temps, et $O(\log^2 p)$ en espace.
+L'algorithme SEA a une complexité heuristique de $O(\log^{2+2\epsilon} p)$ en temps, et $O(\log^2 p)$ en espace.
 \newpage
 \section{Conclusion}
-Au cours de cette étude on a vu divers algorithmes permettant de compter le nombres de points sur une courbe elliptique défini sur un corps $\mathbb{F}_p$ avec $p$ premier. Tout d'abord un algorithme de complexité exponentielle, avec la méthode brute-force qui consiste simplement à vérifier si pour tout élément de $\mathbb{F}_p$, ce dernier appartient à la courbe. Peu efficace quand $p$ devient trop important il est néanmoins plus rapide que ses homologues polynomiaux quand on se restreint à de petits premiers $p$. Par la suite avec l'introduction de l'endomorphisme du Frobenius et des polynômes de division, on a pu détailler l'algorithme de Schoof qui lui est de complexité polynomial. Une implémentation a été faite sous SAGE nous permettant de tester l'algorithme sur des cas pratiques. Il est apparut que même si l'algorithme demande un nombre polynomial d'opération élémentaire, il est relativement lent du fait de la taille des polynômes de division, de degré en $O(l^2)$. C'est avec cette idée de travailler avec des polynômes de plus petit degré que Elkies et Atkins ont proposé des améliorations à cet algorithme en utilisant plutôt des polynômes de degré $O(l)$, les polynômes modulaires. Cela a rendu l’algorithme nommé SEA (Schoof-Elkies-Atkins) très efficace, même lorsque que $p$ devient très grand. Pour expliquer l'algorithme il a fallut introduire de la théorie d'analyse complexe, expliciter les isogénies de courbe elliptique et les polynômes modulaires. Un algorithme en pseudo-code a seulement été proposé, sans détailler pleinement toutes les étapes. 
+Au cours de cette étude on a vu divers algorithmes permettant de compter le nombres de points sur une courbe elliptique défini sur un corps $\mathbb{F}_p$ avec $p$ premier. Tout d'abord un algorithme de complexité exponentielle, avec la méthode brute-force qui consiste simplement à vérifier si pour tout élément de $\mathbb{F}_p$, ce dernier appartient à la courbe. Peu efficace quand $p$ devient trop important il est néanmoins plus rapide que ses homologues polynomiaux quand on se restreint à de petits premiers $p$. Par la suite avec l'introduction de l'endomorphisme du Frobenius et des polynômes de division, on a pu détailler l'algorithme de Schoof qui lui est de complexité polynomiale. Une implémentation a été faite sous SAGE nous permettant de tester l'algorithme sur des cas pratiques. Il est apparut que même si l'algorithme demande un nombre polynomial d'opérations élémentaires, il est relativement lent du fait de la taille des polynômes de division, de degré en $O(l^2)$. C'est avec cette idée de travailler avec des polynômes de plus petit degré que Elkies et Atkins ont proposé des améliorations à cet algorithme en utilisant plutôt des polynômes de degré $O(l)$, les polynômes modulaires. Cela a rendu l’algorithme nommé SEA (Schoof-Elkies-Atkins) très efficace, même lorsque que $p$ devient très grand. Pour expliquer l'algorithme il a fallut introduire de la théorie d'analyse complexe, expliciter les isogénies de courbe elliptique et les polynômes modulaires. Un algorithme en pseudo-code a seulement été proposé, sans détailler pleinement toutes les étapes. 
 \newpage
 \bibliographystyle{plain}
 \bibliography{biblio}

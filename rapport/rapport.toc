@@ -18,7 +18,7 @@
 \contentsline {subsection}{\numberline {3.4}Algorithme SEA}{16}
 \contentsline {subsubsection}{\numberline {3.4.1}Analyse complexe}{16}
 \contentsline {subsubsection}{\numberline {3.4.2}Isog\IeC {\'e}nie}{17}
-\contentsline {subsubsection}{\numberline {3.4.3}Polyn\IeC {\^o}me modulaire}{17}
-\contentsline {subsubsection}{\numberline {3.4.4}Algorithme SEA}{18}
-\contentsline {subsubsection}{\numberline {3.4.5}Algorithme pseudo-code}{22}
-\contentsline {section}{\numberline {4}Conclusion}{23}
+\contentsline {subsubsection}{\numberline {3.4.3}Polyn\IeC {\^o}me modulaire}{18}
+\contentsline {subsubsection}{\numberline {3.4.4}Algorithme SEA}{19}
+\contentsline {subsubsection}{\numberline {3.4.5}Algorithme pseudo-code}{23}
+\contentsline {section}{\numberline {4}Conclusion}{24}
