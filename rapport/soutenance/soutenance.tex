@@ -1,5 +1,5 @@
 
-\documentclass{beamer}
+\documentclass[french]{beamer}
 
 \setbeamertemplate{frametitle}
  	{\begin{centering}\smallskip
@@ -38,6 +38,8 @@
   \usepackage[utf8]{inputenc}
   \usepackage{lmodern}
   \usepackage[french]{babel}
+  \uselanguage{French}
+  \languagepath{French}
     \usepackage{tikz}  
       \usepackage{pgfplots}
   \usepackage{mathabx}
@@ -48,9 +50,9 @@
   \usetikzlibrary{decorations.markings}
   \usetikzlibrary{decorations.footprints}
   
-  
-  
- 
+
+\usepackage{amsthm,amssymb}
+
 \DeclareMathOperator{\e}{e}
 \def\Tr{\mathop{\rm{Tr}}\nolimits}
 \def\bwp{{\bar \wp}}
@@ -63,7 +65,7 @@
 
 \frame{\titlepage} 
 
-\frame{\frametitle{Table of contents}\tableofcontents} 
+\frame{\frametitle{Plan}\tableofcontents} 
 
 
 \section{Introduction} 
@@ -121,7 +123,7 @@ Idée de Schoof : trouver $t \pmod l$, avec $l$ petit premier et utiliser les re
 \subsection{Frobenius}
 \begin{frame}
 \frametitle{Frobenius}
-Soit $E$ une courbe elliptique défini sur $\mathbb{F}_p$, l'endomorphisme de Frobenius est défini par 
+Soit $E$ une courbe elliptique définie sur $\mathbb{F}_p$, l'endomorphisme de Frobenius est défini par 
 
 $\begin{array}{ccccc}
 \phi_p & : & E(\mathbb{F}_p) & \to & E(\mathbb{F}_p) \\
@@ -136,7 +138,7 @@ On lui associe son polynôme caractéristique :
 \begin{itemize}
 \item $r_1,r_2$ racines de $\chi_p(x)$
 \item $Tr(\phi_{p^n}(x,y)) = r_1^n + r_2^n$
-\item Hass-Weil : $\#E(\mathbb{F}_{p^n}) = p^n +1 - r_1^n -r_2^n$
+\item Hasse-Weil : $\#E(\mathbb{F}_{p^n}) = p^n +1 - r_1^n -r_2^n$
 \end{itemize}
 \end{frame}
 
@@ -169,13 +171,13 @@ f_{n+2}f_n^3 - f_{n-1}f_{n+1}^3F^2 & \mbox{si} & n \text{ est impair} \end{array
 \begin{frame}
 Ces polynômes s'annulent sur les points de $l$-torsion et permettent de calculer :
 
-\begin{equation}\label{mP}
+\begin{equation*}\label{mP}
 [m]P = \left\lbrace
 \begin{array}{lll}
 O_E & \mbox{si} & P \in E[m]  \\
 \left(  x -   \frac{\psi_{m-1}(x,y)\psi_{m+1}(x,y)}{\psi^2_m(x,y)}, \frac{\psi_{2m}(x,y)}{\psi^4_m(x,y)}\right) & \mbox{sinon}  & 
 \end{array}\right.
-\end{equation}
+\end{equation*}
 En posant : 
 \begin{equation*}
 \psi_m= \left\lbrace
@@ -189,21 +191,21 @@ f_m & \mbox{sinon}
 
 \begin{frame}
 \frametitle{Frobenius et Schoof}
-\begin{equation}
+\begin{equation*}
 \label{eqnfrobenius}
 \phi_p^2(P)  + [p_l]P = [t_{l}] \phi_p(P) \quad \forall P \in E[l]
-\end{equation} 
+\end{equation*} 
 Or pour tout $P=(x,y) \in E[l]$, $f_l(x) = 0$ et $y^2 - x^3 -ax -b=0$. 
 \newline
 On peut donc travailler dans l'anneau : 
 $$ \frac{\mathbb{F}_p[x,y]}{(f_l(x), y^2 - x^3 -ax -b)} $$ 
 La question est donc pour quelle valeur $0 \leq \tau \leq \frac{l-1}{2}$ l'équation suivante est vérifiée :
-\begin{equation}
+\begin{equation*}
 (x^{p^2}, y^{p^2}) + [p_l](x,y) = [\tau_l](x^{p}, y^{p})
-\end{equation}
+\end{equation*}
 \end{frame}
 
-\subsection{Choix des premiers $l$}
+\subsection{Choix des petits premiers $l$}
 \begin{frame}
 \frametitle{Choix des premiers $l$}
 \begin{itemize}
@@ -271,18 +273,18 @@ La fonction $\wp$ satisfait l'équation différentielle suivante :
 \end{frame}
 
 
-\subsection{Isogénie}
+\subsection{Isogénies}
 \begin{frame}
 \frametitle{Isogénie}
 \begin{definition}
 Soit $E_1$/$K$ et $E_2$/$K$ deux courbes elliptiques. Si $E_1$ et $E_2$ ont le même $j$-invariant alors elles sont isomorphiques sur $\bar{K}$. 
 \end{definition}
 
-\begin{definition}
+\begin{theorem}
 Soit $T_1=\mathbb{C}$/ $\Gamma_1$ et $T_2 = \mathbb{C}$/ $\Gamma_2$ deux tores. Un morphisme de $E_1$ vers $E_2$ est une application holomorphe $\mu$ de $T_1$ vers $T_2$ qui soit un morphisme de groupe. Si ce morphisme est non constant alors on dit que c'est une isogénie.
-\end{definition}
+\end{theorem}
 
-Deux courbes elliptiques $E_1$/$K$ et $E_2$/$K$ sont isogènes s'il existe une isogénie $\psi : E_1 \mapsto E_2$. Le degré de l’isogénie est le degré du noyau de $\psi$.
+Deux courbes elliptiques $E_1$/$K$ et $E_2$/$K$ sont isogènes s'il existe une isogénie $\psi : E_1 \mapsto E_2$. Le degré de l’isogénie est le cardinal du noyau de $\psi$.
 
 
 \end{frame}
